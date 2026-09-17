@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.HyperrealApp" parent="android:Theme.Material.Light.NoActionBar" />
+    
+    <style name="Theme.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#080808</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_hyperreal_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.HyperrealApp</item>
+    </style>
+</resources>

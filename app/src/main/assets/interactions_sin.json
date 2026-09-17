@@ -1,0 +1,28 @@
+{
+  "interactions": [
+    {
+      "substance_a": "LSD",
+      "substance_b": "MDMA",
+      "status": "Low Risk & Synergy",
+      "note": "Candyflip. MDMA znacznie nasila psychodeliczne działanie LSD. Ważne jest odpowiednie zgranie czasu (np. MDMA 2-3h po LSD) i odpowiednie nawodnienie."
+    },
+    {
+      "substance_a": "Cocaine",
+      "substance_b": "Alcohol",
+      "status": "Caution",
+      "note": "Tworzy kokaetylen, który jest od 18% do 40% bardziej toksyczny dla serca i wątroby. Zwiększa ryzyko zawału."
+    },
+    {
+      "substance_a": "MDMA",
+      "substance_b": "SSRI",
+      "status": "Low Risk & Decrease",
+      "note": "Leki SSRI blokują działanie MDMA, przez co praktycznie nie odczuwa się jego efektów. Próba przełamania tego większymi dawkami MDMA zwiększa ryzyko neurotoksyczności."
+    },
+    {
+      "substance_a": "Ketamine",
+      "substance_b": "Alcohol",
+      "status": "Dangerous",
+      "note": "Obie substancje są depresantami. W połączeniu powodują utratę przytomności i wysokie ryzyko udławienia się wymiocinami (wymagane ułożenie w pozycji bocznej ustalonej)."
+    }
+  ]
+}
