@@ -5,6 +5,7 @@ data class Substance(
     val name: String,
     val aliases: List<String> = emptyList(),
     val summary: String? = null,
+    val harmReduction: String? = null,
     val classes: List<String> = emptyList(),
     val roas: List<Roa> = emptyList(),
     val interactions: List<Interaction> = emptyList()

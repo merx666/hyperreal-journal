@@ -50,6 +50,20 @@ fun SubstanceDetailScreen(
             Text(text = s.aliases.joinToString(", "), style = MaterialTheme.typography.bodyMedium)
         }
 
+        s.summary?.let { summary ->
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(text = "Opis", style = MaterialTheme.typography.titleMedium)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(text = summary, style = MaterialTheme.typography.bodyMedium)
+        }
+
+        s.harmReduction?.let { hr ->
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(text = "Redukcja Szkód", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.secondary)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(text = hr, style = MaterialTheme.typography.bodyMedium)
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(text = "ROA (Drogi podania):", style = MaterialTheme.typography.titleMedium)

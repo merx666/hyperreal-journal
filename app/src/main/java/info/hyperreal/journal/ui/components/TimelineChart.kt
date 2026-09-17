@@ -2,7 +2,7 @@ package info.hyperreal.journal.ui.components
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -67,11 +67,11 @@ fun TimelineChart(
                 .height(100.dp)
                 .align(Alignment.BottomCenter)
                 .pointerInput(Unit) {
-                    detectDragGestures(
+                    detectHorizontalDragGestures(
                         onDragStart = { offset -> touchX = offset.x.coerceIn(0f, size.width.toFloat()) },
                         onDragEnd = { touchX = null },
                         onDragCancel = { touchX = null },
-                        onDrag = { change, _ ->
+                        onHorizontalDrag = { change, _ ->
                             touchX = change.position.x.coerceIn(0f, size.width.toFloat())
                         }
                     )
