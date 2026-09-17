@@ -1,52 +1,126 @@
 # Hyperreal Journal
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Kotlin-1.9-purple.svg" alt="Kotlin">
-  <img src="https://img.shields.io/badge/Jetpack_Compose-Material3-blue.svg" alt="Compose">
-  <img src="https://img.shields.io/badge/Architecture-MVVM-green.svg" alt="MVVM">
-  <img src="https://img.shields.io/badge/Storage-Room_DB-red.svg" alt="Room">
-  <img src="https://img.shields.io/badge/Dependency_Injection-Hilt-blueviolet.svg" alt="Hilt">
-</p>
+A privacy-focused, offline-first Android application designed for harm reduction, substance tracking, and interaction analysis. Developed entirely with local storage in mind, it utilizes the reliable SIN (Społeczna Inicjatywa Narkopolityki) and TripSit interaction matrices to ensure the safety of its users.
 
-**Hyperreal Journal** to lokalna, prywatna i zaawansowana aplikacja (Android) wspierająca ideologię Harm Reduction (redukcja szkód). Służy do śledzenia przyjmowanych substancji, analizowania nawyków i sprawdzania interakcji za pomocą wbudowanych i zaufanych baz (np. tabele SIN). Została stworzona w 100% z myślą o prywatności (zero-cloud, cała baza na urządzeniu).
+## Key Features
 
-## Główne Funkcje
+- 📝 **Ingestion Journal:** Track dates, times, doses, and routes of administration (RoA) with automatic threshold categorization (Threshold, Light, Common, Strong, Heavy).
+- 📈 **Interactive Pharmacokinetics Chart:** A unique `TimelineChart` module that visually maps the duration phases (Onset, Comeup, Peak, Offset, Afterglow) in real-time.
+- ⚠️ **Harm Reduction & Interactions:** Dynamic mix warning system based on the full SIN/TripSit matrix. Includes a risk degree calculator (Low Risk, Caution, Unsafe, Dangerous) to prevent adverse reactions.
+- 📊 **Insights & Statistics:** Comprehensive analytics covering 30-day usage frequency, average intervals between ingestions, and activity histograms.
+- 🛡️ **Zero-Cloud Privacy:** All data is strictly stored locally using Room (SQLite). Manual exports to encrypted `.json` files are supported.
+- 🌙 **Deep Dark Theme:** Optimized for AMOLED screens with Edge-to-Edge support and neon accents (HyperrealGreen).
 
-- **📝 Dziennik Ingestii:** Śledzenie daty, godziny, dawki oraz drogi podania z automatyczną kategoryzacją progu dawki (Threshold, Light, Common, Strong, Heavy).
-- **📈 Interaktywny Wykres Farmakokinetyki:** Unikalny moduł `TimelineChart`, który w czasie rzeczywistym ilustruje fazy działania na osi czasu (Onset, Comeup, Peak, Offset, Afterglow).
-- **⚠️ Harm Reduction & Interakcje:** Dynamiczny system ostrzegania o mixach. Baza interakcji w oparciu o pełną matrycę SIN/TripSit. Kalkulator pokazujący stopień ryzyka (np. Low Risk, Caution, Unsafe, Dangerous).
-- **📊 Statystyki (Insights):** Rozbudowany widok analizujący m.in. częstotliwość używania z ostatnich 30 dni, średnie przerwy pomiędzy kolejnymi użyciami oraz histogram aktywności.
-- **🛡️ Pełna Prywatność:** Wszystkie wpisy trzymane są w lokalnej bazie Room. Eksport danych odbywa się ręcznie do bezpiecznego pliku `.json`.
-- **🌙 Deep Dark Theme:** Neony (HyperrealGreen) oraz zoptymalizowane kontrasty pasujące do trybów nocnych (Edge-to-Edge).
+## Tech Stack
 
-## Architektura i Technologie
+- **Language**: Kotlin 1.9
+- **UI Framework**: Jetpack Compose (Material Design 3)
+- **Architecture**: Clean Architecture (Domain, Data, UI) + MVVM
+- **Database**: Room (SQLite)
+- **Dependency Injection**: Dagger Hilt
+- **Asynchrony**: Kotlin Coroutines & Flows
+- **Visualizations**: Custom Compose Canvas (Bar charts, complex Bézier curves, custom pointer input handling)
 
-Projekt wykorzystuje nowoczesne wzorce i narzędzia dla Androida:
-- **Język:** Kotlin
-- **UI:** Jetpack Compose, Material Design 3
-- **Baza danych:** Room (SQLite)
-- **Architektura:** Clean Architecture (Domain, Data, UI) połączone ze wzorcem MVVM
-- **Dependency Injection:** Dagger Hilt
-- **Asynchroniczność:** Coroutines & Flows
-- **Wizualizacje:** Niestandardowy Compose Canvas (Wykresy słupkowe oraz złożone krzywe Béziera)
+## Prerequisites
 
-## Instrukcja Uruchomienia / Budowania
+- Android Studio (Jellyfish or newer recommended)
+- Java Development Kit (JDK) 17
+- Android SDK 35
+- Gradle 8.x+
 
-Aplikacja jest standardowym projektem Gradle (Android Studio). 
+## Getting Started
 
-1. Sklonuj repozytorium.
-2. Otwórz projekt w **Android Studio**.
-3. Zsynchronizuj Gradle (Kitten / JDK 17/21).
-4. Zbuduj aplikację (`Build -> Make Project`) i zainstaluj na urządzeniu lub emulatorze (wymagane min. Android API 24).
+### 1. Clone the Repository
 
-## Organizacja Danych
-Wzorcowe bazy (Substancje, Interakcje) są przechowywane w `app/src/main/assets/`. Przy pierwszym uruchomieniu zostaną zmapowane jako źródło wiedzy w warstwie Domain. Wszystkie ingestie trafiają do SQLite.
+```bash
+git clone https://github.com/user/hyperrealandroidapp.git
+cd hyperrealandroidapp
+```
 
-## Licencja
+### 2. Environment Setup
 
-Zgodnie z ideą Harm Reduction, oprogramowanie udostępniane jest jako Open Source. Baza interakcji oraz dane dawkowania bazują na zewnętrznych, non-profit serwisach jak SIN (Społeczna Inicjatywa Narkopolityki).
+Ensure you have Java 17 configured in your environment, as it is required to build the project.
 
-> **Ostrzeżenie:** Informacje w aplikacji służą celom edukacyjnym i poprawie bezpieczeństwa (Harm Reduction). Aplikacja nie zachęca do korzystania z substancji psychoaktywnych.
+```bash
+export JAVA_HOME=/path/to/your/jdk-17
+```
 
----
-*Stay safe.*
+In Android Studio, navigate to **File > Project Structure > SDK Location** and ensure the Gradle JDK is set to JDK 17.
+
+### 3. Build and Run
+
+1. Open the project in **Android Studio**.
+2. Wait for the initial Gradle sync to complete.
+3. Select an emulator (API 26+) or a physical device.
+4. Click **Run > Run 'app'** (or `Shift + F10`).
+
+To build from the command line:
+
+```bash
+./gradlew assembleDebug
+```
+
+## Architecture
+
+The project follows a standard Clean Architecture approach combined with MVVM.
+
+### Directory Structure
+
+```text
+├── app/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── assets/           # Bundled JSON databases (substances.json, interactions.json)
+│   │   │   ├── java/info/hyperreal/journal/
+│   │   │   │   ├── data/         # Repositories, Room DAOs, Entities, JSON Parsers
+│   │   │   │   ├── domain/       # UseCases, Models (Substance, Ingestion, Interaction)
+│   │   │   │   ├── di/           # Hilt Modules
+│   │   │   │   └── ui/           # Jetpack Compose Screens, ViewModels, Components
+│   │   │   └── res/              # Android Resources (Drawables, Values)
+```
+
+### Data Flow
+
+1. User interacts with the Compose UI.
+2. The UI communicates its intents to the `ViewModel`.
+3. The `ViewModel` invokes `UseCases` from the Domain layer.
+4. `UseCases` fetch or mutate data using `Repositories`.
+5. `Repositories` interact with local sources (Room DAOs for ingestions, JSON parsers for read-only substance data).
+6. State flows back up to the UI via Kotlin `StateFlow`.
+
+### Key Components
+
+**Substance Database (`assets/substances.json`)**
+- Pre-bundled data defining substances, ROAs, dosage thresholds, and phase durations.
+- Automatically parsed on first launch and cached in memory.
+
+**Interactive Timeline (`TimelineChart.kt`)**
+- Uses custom `awaitPointerEventScope` to handle multi-touch and drag interactions.
+- Avoids scroll conflicts with parent `ScrollState` via sophisticated pointer interception.
+
+## Available Scripts
+
+| Command | Description |
+|---|---|
+| `./gradlew assembleDebug` | Build the debug APK |
+| `./gradlew test` | Run unit tests |
+| `./gradlew lint` | Run Android linting checks |
+| `./gradlew clean` | Clean the build directory |
+
+## Troubleshooting
+
+### Java Runtime Environment Errors
+
+**Error:** `Unsupported class file major version` or Gradle sync failures related to Java.
+**Solution:** Ensure you are using JDK 17. Check your Android Studio settings: **Preferences > Build, Execution, Deployment > Build Tools > Gradle** and set the "Gradle JDK" to version 17.
+
+### Unresolved References in Compose
+
+**Error:** Code highlighting errors for Jetpack Compose components.
+**Solution:** Click **File > Sync Project with Gradle Files** to rebuild the generated indices.
+
+## License
+
+In accordance with the Harm Reduction ideology, this software is released as Open Source. The interaction database and dosage data are based on external, non-profit organizations such as SIN (Społeczna Inicjatywa Narkopolityki) and TripSit.
+
+> **Disclaimer:** Information provided within the application is strictly for educational purposes and harm reduction. The app does not encourage or condone the use of psychoactive substances.

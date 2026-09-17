@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "0.1.0",
+  "name": "PsychonautWiki Substance",
+  "behavior": "create",
+  "noteNameFormat": "{{title}}",
+  "path": "obsidian-vault/{{title}}.md",
+  "content": "---\naliases: [{{selector:.infobox-title}}]\nclasses: [{{selector:.infobox-class}}]\ntags: [substance]\n---\n# {{title}}\n\n## Summary\n{{selector:.mw-parser-output p:first-of-type}}\n\n## Harm Reduction\n> [!warning] Harm Reduction\n> {{selector:#Toxicity_and_harm_potential ~ p}}\n",
+  "properties": [
+    {
+      "name": "url",
+      "value": "{{url}}",
+      "type": "text"
+    }
+  ]
+}

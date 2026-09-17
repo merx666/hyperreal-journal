@@ -1,0 +1,29 @@
+filters:
+  and:
+    - file.hasTag("substance")
+
+formulas:
+  risk_level: 'if(harmReduction, "⚠️ Has Info", "Safe")'
+
+properties:
+  aliases:
+    displayName: "Aliases"
+  classes:
+    displayName: "Drug Class"
+  formula.risk_level:
+    displayName: "HR Info"
+  file.mtime:
+    displayName: "Last Updated"
+
+views:
+  - type: table
+    name: "Substances Database"
+    order:
+      - file.name
+      - aliases
+      - classes
+      - formula.risk_level
+      - file.mtime
+    groupBy:
+      property: classes
+      direction: ASC

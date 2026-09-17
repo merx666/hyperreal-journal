@@ -2,27 +2,90 @@
     {
         "id": "2C-x",
         "name": "2C-x",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "2C-B",
+            "2C-E",
+            "2C-I",
+            "2C-C",
+            "fenyloetyloaminy 2C"
+        ],
+        "summary": "Rodzina psychodelicznych fenyloetyloamin (np. 2C-B, 2C-E). Efekty wizualne i stymulacja o zmiennej sile zależnie od konkretnej substancji i drogi podania.",
+        "harmReduction": "Traktuj każdą 2C osobno — dawki nie są wymienne. Zacznij nisko, szczególnie przy insufflacji. Unikaj łączenia ze stymulantami. Odczynniki + waga miligramowa. Zadbaj o set i setting.",
+        "classes": [
+            "Psychodelik",
+            "Fenyloetyloamina"
+        ],
         "roas": [
+            {
+                "name": "Insufflated",
+                "dose": {
+                    "threshold": 0.5,
+                    "light": 1.0,
+                    "common": 8.0,
+                    "strong": 12.0,
+                    "heavy": 23.0
+                },
+                "duration": {
+                    "onset": 3.0,
+                    "comeup": 22.5,
+                    "peak": 75.0,
+                    "offset": 150.0,
+                    "afterglow": 180.0,
+                    "total": 300.0
+                }
+            },
+            {
+                "name": "Intravenous",
+                "dose": {
+                    "threshold": 0.5,
+                    "light": 1.0,
+                    "common": 2.5,
+                    "strong": 5.0,
+                    "heavy": 10.0
+                },
+                "duration": {
+                    "onset": 0.2,
+                    "comeup": 0.0,
+                    "peak": 22.5,
+                    "offset": 105.0,
+                    "afterglow": 0.0,
+                    "total": 150.0
+                }
+            },
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 2.5,
+                    "light": 5.0,
+                    "common": 15.0,
+                    "strong": 25.0,
+                    "heavy": 45.0
                 },
                 "duration": {
-                    "onset": 0.0,
+                    "onset": 30.0,
+                    "comeup": 75.0,
+                    "peak": 75.0,
+                    "offset": 180.0,
+                    "afterglow": 180.0,
+                    "total": 360.0
+                }
+            },
+            {
+                "name": "Rectal",
+                "dose": {
+                    "threshold": 0.5,
+                    "light": 1.0,
+                    "common": 8.0,
+                    "strong": 12.0,
+                    "heavy": 23.0
+                },
+                "duration": {
+                    "onset": 10.0,
                     "comeup": 0.0,
                     "peak": 0.0,
                     "offset": 0.0,
                     "afterglow": 0.0,
-                    "total": 0.0
+                    "total": 330.0
                 }
             }
         ],
@@ -31,27 +94,71 @@
     {
         "id": "5-MeO-xAT",
         "name": "5-MeO-xAT",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "5-MeO-DMT",
+            "5-MeO-MiPT",
+            "5-MeO-DiPT",
+            "moxy"
+        ],
+        "summary": "Rodzina tryptamin 5-metoksylowanych. Krótkotrwałe, często bardzo intensywne stany (szczególnie 5-MeO-DMT) lub dłuższe, bardziej „cieliste” efekty (np. 5-MeO-MiPT).",
+        "harmReduction": "Przy 5-MeO-DMT zapewnij trzeźwego opiekuna — utrata orientacji jest częsta. Nie łącz z MAOI bez wiedzy o ryzyku. Dawki mikrogramowe/miligramowe waż na wadze 0,001 g. Unikaj prowadzenia pojazdów.",
+        "classes": [
+            "Psychodelik",
+            "Tryptamina"
+        ],
         "roas": [
+            {
+                "name": "Insufflated",
+                "dose": {
+                    "threshold": 1.5,
+                    "light": 3.0,
+                    "common": 8.0,
+                    "strong": 15.0,
+                    "heavy": 25.0
+                },
+                "duration": {
+                    "onset": 5.5,
+                    "comeup": 0.0,
+                    "peak": 25.0,
+                    "offset": 45.0,
+                    "afterglow": 120.0,
+                    "total": 150.0
+                }
+            },
+            {
+                "name": "Smoked",
+                "dose": {
+                    "threshold": 0.5,
+                    "light": 1.0,
+                    "common": 6.0,
+                    "strong": 12.0,
+                    "heavy": 20.0
+                },
+                "duration": {
+                    "onset": 0.5,
+                    "comeup": 0.8,
+                    "peak": 10.0,
+                    "offset": 15.0,
+                    "afterglow": 37.5,
+                    "total": 30.0
+                }
+            },
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 1.5,
+                    "light": 3.0,
+                    "common": 7.0,
+                    "strong": 15.0,
+                    "heavy": 20.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 30.0,
+                    "comeup": 45.0,
+                    "peak": 150.0,
+                    "offset": 150.0,
+                    "afterglow": 180.0,
+                    "total": 390.0
                 }
             }
         ],
@@ -60,27 +167,35 @@
     {
         "id": "AMT",
         "name": "AMT",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "αMT",
+            "alpha-Methyltryptamine",
+            "Alphamethyltryptamine"
+        ],
+        "summary": "Długo działająca tryptamina o działaniu psychodelicznym i stymulującym. Silny wpływ na apetyt, sen i nastrój; efekty mogą utrzymywać się ponad 12 h.",
+        "harmReduction": "Długi czas działania — nie redosinguj wcześnie. Ryzyko nudności i przebodźcowania. Unikaj MAOI i innych silnych serotonergików. Zaplanuj wolny dzień na afterglow.",
+        "classes": [
+            "Psychodelik",
+            "Tryptamina",
+            "Stymulant"
+        ],
         "roas": [
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 2.5,
+                    "light": 5.0,
+                    "common": 25.0,
+                    "strong": 40.0,
+                    "heavy": 60.0
                 },
                 "duration": {
-                    "onset": 0.0,
+                    "onset": 120.0,
                     "comeup": 0.0,
-                    "peak": 0.0,
+                    "peak": 300.0,
                     "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "afterglow": 180.0,
+                    "total": 840.0
                 }
             }
         ],
@@ -89,27 +204,35 @@
     {
         "id": "Alkohol",
         "name": "Alkohol",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Etanol",
+            "Ethanol",
+            "Piwo",
+            "Wódka",
+            "Wino"
+        ],
+        "summary": "Depresant OUN działający m.in. przez receptor GABA-A. Obniża hamowanie, zaburza koordynację, pamięć i ocenę ryzyka; w większych dawkach grozi zatruciem i depresją oddechową.",
+        "harmReduction": "Jedz przed i w trakcie, pij wodę, ustal limit wcześniej. Nie łącz z innymi depresantami (opioidy, benzo, GHB). Nie prowadź pojazdu. Po binge daj wątrobie kilka dni przerwy.",
+        "classes": [
+            "Depresant"
+        ],
         "roas": [
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 5.0,
+                    "light": 10.0,
+                    "common": 20.0,
+                    "strong": 30.0,
+                    "heavy": 40.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 3.5,
+                    "comeup": 30.0,
+                    "peak": 60.0,
+                    "offset": 82.5,
+                    "afterglow": 1620.0,
+                    "total": 195.0
                 }
             }
         ],
@@ -118,27 +241,53 @@
     {
         "id": "Amfetamina",
         "name": "Amfetamina",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Speed",
+            "Amfa",
+            "Wład",
+            "Amphetamine",
+            "Pep"
+        ],
+        "summary": "Stymulant zwiększający uwalnianie dopaminy i noradrenaliny. Podnosi energię, koncentrację i czujność; może powodować tachykardię, bezsenność, lęk i silny zjazd.",
+        "harmReduction": "Nawadniaj się i jedz mimo braku apetytu. Pilnuj snu — chroniczna bezsenność prowadzi do paranoi. Rób przerwy między użyciami. Testuj odczynnikami (często zanieczyszczenia). Nie łącz z MAOI.",
+        "classes": [
+            "Stymulant"
+        ],
         "roas": [
+            {
+                "name": "Insufflated",
+                "dose": {
+                    "threshold": 2.0,
+                    "light": 4.0,
+                    "common": 15.0,
+                    "strong": 30.0,
+                    "heavy": 50.0
+                },
+                "duration": {
+                    "onset": 3.0,
+                    "comeup": 60.0,
+                    "peak": 90.0,
+                    "offset": 135.0,
+                    "afterglow": 180.0,
+                    "total": 270.0
+                }
+            },
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 1.25,
+                    "light": 2.5,
+                    "common": 10.0,
+                    "strong": 25.0,
+                    "heavy": 50.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 37.5,
+                    "comeup": 82.5,
+                    "peak": 195.0,
+                    "offset": 150.0,
+                    "afterglow": 270.0,
+                    "total": 420.0
                 }
             }
         ],
@@ -147,27 +296,37 @@
     {
         "id": "Benzodiazepiny",
         "name": "Benzodiazepiny",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Benzo",
+            "Xanax",
+            "Alprazolam",
+            "Diazepam",
+            "Klonazepam",
+            "Relanium"
+        ],
+        "summary": "Klasa depresantów wzmacniających sygnał GABA. Działają przeciwlękowo, nasennie i miorelaksacyjnie; szybko budują tolerancję i zależność, a odstawienie bywa niebezpieczne.",
+        "harmReduction": "Nie łącz z alkoholem, opioidami ani GHB — ryzyko depresji oddechowej. Unikaj codziennego używania. Redukuj dawki powoli pod opieką lekarza. Pamiętaj o amnezji i blackoutach.",
+        "classes": [
+            "Depresant",
+            "Benzodiazepina"
+        ],
         "roas": [
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 0.05,
+                    "light": 0.1,
+                    "common": 0.5,
+                    "strong": 1.5,
+                    "heavy": 2.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 22.5,
+                    "comeup": 70.0,
+                    "peak": 90.0,
+                    "offset": 180.0,
+                    "afterglow": 900.0,
+                    "total": 420.0
                 }
             }
         ],
@@ -176,27 +335,72 @@
     {
         "id": "Cannabinoidy",
         "name": "Cannabinoidy",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "THC",
+            "Cannabis",
+            "Marihuana",
+            "Hash",
+            "Weed",
+            "Joint"
+        ],
+        "summary": "Kannabinoidy (głównie THC) modulują układ endokannabinoidowy. Relaks, zmiany percepcji, wzrost apetytu; w większych dawkach lęk, tachykardia i zaburzenia pamięci krótkotrwałej.",
+        "harmReduction": "Zacznij od niskiej dawki — szczególnie przy edibles (opóźniony onset). W lęku zmień otoczenie, oddychaj, rozważ CBD/pieprz. Unikaj prowadzenia pojazdów. Synergia z psychodelikami bywa nieprzewidywalna.",
+        "classes": [
+            "Kannabinoid"
+        ],
         "roas": [
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 0.5,
+                    "light": 1.0,
+                    "common": 5.0,
+                    "strong": 10.0,
+                    "heavy": 25.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
+                    "onset": 40.0,
+                    "comeup": 45.0,
+                    "peak": 90.0,
+                    "offset": 300.0,
+                    "afterglow": 540.0,
+                    "total": 420.0
+                }
+            },
+            {
+                "name": "Smoked",
+                "dose": {
+                    "threshold": 0.2,
+                    "light": 0.4,
+                    "common": 2.0,
+                    "strong": 4.0,
+                    "heavy": 10.0
+                },
+                "duration": {
+                    "onset": 5.0,
+                    "comeup": 7.5,
+                    "peak": 30.0,
+                    "offset": 210.0,
+                    "afterglow": 112.5,
+                    "total": 225.0
+                }
+            },
+            {
+                "name": "Sublingual",
+                "dose": {
+                    "threshold": 0.0,
+                    "light": 0.0,
+                    "common": 0.0,
+                    "strong": 0.0,
+                    "heavy": 0.0
+                },
+                "duration": {
+                    "onset": 5.5,
+                    "comeup": 22.5,
+                    "peak": 45.0,
+                    "offset": 300.0,
                     "afterglow": 0.0,
-                    "total": 0.0
+                    "total": 300.0
                 }
             }
         ],
@@ -205,27 +409,34 @@
     {
         "id": "DMT",
         "name": "DMT",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "N,N-DMT",
+            "Dimitri",
+            "Spice"
+        ],
+        "summary": "Krótko działająca tryptamina psychodeliczna. Po inhalacji efekty narastają w sekundach i trwają zwykle kilka–kilkanaście minut, z intensywnymi wizjami i możliwą utratą kontaktu z otoczeniem.",
+        "harmReduction": "Siadaj/leż w bezpiecznym miejscu z trzeźwym opiekunem. Nie łącz z MAOI bez przygotowania (ayahuasca to osobny protokół). Unikaj wstań tuż po peaku. Zadbaj o set i setting.",
+        "classes": [
+            "Psychodelik",
+            "Tryptamina"
+        ],
         "roas": [
             {
-                "name": "Oral",
+                "name": "Smoked",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 1.0,
+                    "light": 2.0,
+                    "common": 20.0,
+                    "strong": 40.0,
+                    "heavy": 60.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 0.5,
+                    "comeup": 2.0,
+                    "peak": 5.0,
+                    "offset": 3.5,
+                    "afterglow": 35.0,
+                    "total": 12.5
                 }
             }
         ],
@@ -234,27 +445,55 @@
     {
         "id": "DOx",
         "name": "DOx",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "DOC",
+            "DOI",
+            "DOM",
+            "DOB",
+            "amphetaminy psychodeliczne"
+        ],
+        "summary": "Długo działające psychodeliczne amfetaminy (np. DOC, DOI). Silna stymulacja + wizje; total często 12–24 h, z wyraźnym obciążeniem ciała i naczyń.",
+        "harmReduction": "Nie myl z LSD — dłużej i mocniej stymuluje. Dawki miligramowe, waga obligatoryjna. Unikaj stymulantów i dużego wysiłku cieplnego. Zaplanuj cały dzień+noc wolnego.",
+        "classes": [
+            "Psychodelik",
+            "Stymulant",
+            "Fenyloetyloamina"
+        ],
         "roas": [
+            {
+                "name": "Insufflated",
+                "dose": {
+                    "threshold": 0.12,
+                    "light": 0.25,
+                    "common": 1.0,
+                    "strong": 2.0,
+                    "heavy": 3.5
+                },
+                "duration": {
+                    "onset": 3.0,
+                    "comeup": 20.0,
+                    "peak": 240.0,
+                    "offset": 300.0,
+                    "afterglow": 780.0,
+                    "total": 563.0
+                }
+            },
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 0.25,
+                    "light": 0.5,
+                    "common": 2.0,
+                    "strong": 4.0,
+                    "heavy": 6.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 90.0,
+                    "comeup": 150.0,
+                    "peak": 540.0,
+                    "offset": 300.0,
+                    "afterglow": 900.0,
+                    "total": 1080.0
                 }
             }
         ],
@@ -263,27 +502,33 @@
     {
         "id": "DXM",
         "name": "DXM",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Dextromethorphan",
+            "Dex",
+            "Robo"
+        ],
+        "summary": "Dysocjant (antagonista NMDA) stosowany także jako lek przeciwkaszlowy. W dawkach rekreacyjnych daje dystans od ciała, zmiany percepcji i możliwe nudności; efekty zależą silnie od dawki (plateau).",
+        "harmReduction": "Unikaj preparatów z paracetamolem, antyhistaminikami i Guaifenesiną — bierz czysty DXM. Nie łącz z MAOI i alkoholem. Leż w bezpiecznym miejscu, miej przy sobie wodę. Dawka wg masy ciała.",
+        "classes": [
+            "Dysocjant"
+        ],
         "roas": [
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 37.5,
+                    "light": 75.0,
+                    "common": 200.0,
+                    "strong": 400.0,
+                    "heavy": 700.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 75.0,
+                    "comeup": 90.0,
+                    "peak": 270.0,
+                    "offset": 180.0,
+                    "afterglow": 840.0,
+                    "total": 600.0
                 }
             }
         ],
@@ -292,27 +537,35 @@
     {
         "id": "GHB/GBL",
         "name": "GHB/GBL",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "GHB",
+            "GBL",
+            "1,4-BD",
+            "Liquid ecstasy",
+            "G"
+        ],
+        "summary": "Depresant OUN (GBL/1,4-BD to proleki GHB). Euforia, relaks, senność; wąski margines bezpieczeństwa — niewielkie przekroczenie dawki grozi nagłą utratą przytomności.",
+        "harmReduction": "Mierz mililitry strzykawką doustną, nigdy „na oko”. Odczekaj pełne 2 h przed redosem. Absolutnie nie łącz z alkoholem, benzo ani opioidami. Używaj z zaufaną osobą.",
+        "classes": [
+            "Depresant"
+        ],
         "roas": [
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 0.25,
+                    "light": 0.5,
+                    "common": 1.0,
+                    "strong": 2.5,
+                    "heavy": 4.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 17.5,
+                    "comeup": 15.0,
+                    "peak": 67.5,
+                    "offset": 22.5,
+                    "afterglow": 180.0,
+                    "total": 120.0
                 }
             }
         ],
@@ -321,27 +574,36 @@
     {
         "id": "Grzyby psylocybinowe",
         "name": "Grzyby psylocybinowe",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Psylocybina",
+            "Magic mushrooms",
+            "Shroomy",
+            "Psilocybin",
+            "Kokarki"
+        ],
+        "summary": "Grzyby zawierające psylocybinę/psylocynę — klasyczny psychodelik tryptaminowy. Zmiany nastroju, wizje, introspekcja; czas działania zwykle ok. 4–6 h plus afterglow.",
+        "harmReduction": "Odmierzaj wagę suchej masy (potencja bywa różna). Set & setting, trzeźwy opiekun przy wyższych dawkach. Unikaj mieszania z alkoholem i stymulantami. Nie zbieraj na własną rękę bez pewnej identyfikacji.",
+        "classes": [
+            "Psychodelik",
+            "Tryptamina"
+        ],
         "roas": [
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 1.25,
+                    "light": 2.5,
+                    "common": 10.0,
+                    "strong": 25.0,
+                    "heavy": 50.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 32.5,
+                    "comeup": 75.0,
+                    "peak": 135.0,
+                    "offset": 180.0,
+                    "afterglow": 840.0,
+                    "total": 420.0
                 }
             }
         ],
@@ -350,27 +612,52 @@
     {
         "id": "Ketamina",
         "name": "Ketamina",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Keta",
+            "K",
+            "Ketamine",
+            "Special K"
+        ],
+        "summary": "Dysocjant (antagonista NMDA) stosowany także medycznie. Od lekkiego dystansu po „dziurę K”; krótszy czas przy insufflacji niż doustnie, możliwa amnezja i zaburzenia równowagi.",
+        "harmReduction": "Siadaj/leż — upadki są częste. Rób przerwy (pęcherz i drogi moczowe przy chronicznym użyciu). Nie łącz z alkoholem. Odczynnik + nie dziel narzędzi do insufflacji.",
+        "classes": [
+            "Dysocjant"
+        ],
         "roas": [
+            {
+                "name": "Insufflated",
+                "dose": {
+                    "threshold": 2.5,
+                    "light": 5.0,
+                    "common": 30.0,
+                    "strong": 75.0,
+                    "heavy": 150.0
+                },
+                "duration": {
+                    "onset": 2.0,
+                    "comeup": 10.0,
+                    "peak": 30.0,
+                    "offset": 45.0,
+                    "afterglow": 420.0,
+                    "total": 90.0
+                }
+            },
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 25.0,
+                    "light": 50.0,
+                    "common": 100.0,
+                    "strong": 300.0,
+                    "heavy": 450.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 20.0,
+                    "comeup": 12.5,
+                    "peak": 67.5,
+                    "offset": 270.0,
+                    "afterglow": 360.0,
+                    "total": 370.0
                 }
             }
         ],
@@ -379,27 +666,52 @@
     {
         "id": "Kokaina",
         "name": "Kokaina",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Cocaine",
+            "Coca",
+            "Koks",
+            "Crack"
+        ],
+        "summary": "Silny, krótko działający stymulant blokujący wychwyt zwrotny dopaminy. Euforia i pobudzenie szybko przechodzą w craving; obciąża serce i układ naczyniowy.",
+        "harmReduction": "Rób przerwy między liniami, nie łącz z alkoholem (kokaetylen). Pilnuj ciśnienia i tętna. Nie dziel słomek. Po sesji jedz, pij i śpij. Unikaj przy problemach kardiologicznych.",
+        "classes": [
+            "Stymulant"
+        ],
         "roas": [
             {
-                "name": "Oral",
+                "name": "Insufflated",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 2.5,
+                    "light": 5.0,
+                    "common": 30.0,
+                    "strong": 60.0,
+                    "heavy": 90.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
+                    "onset": 5.5,
+                    "comeup": 10.0,
+                    "peak": 22.5,
+                    "offset": 20.0,
                     "afterglow": 0.0,
-                    "total": 0.0
+                    "total": 50.0
+                }
+            },
+            {
+                "name": "Smoked",
+                "dose": {
+                    "threshold": 0.0,
+                    "light": 0.0,
+                    "common": 0.0,
+                    "strong": 0.0,
+                    "heavy": 0.0
+                },
+                "duration": {
+                    "onset": 0.1,
+                    "comeup": 1.5,
+                    "peak": 6.0,
+                    "offset": 3.0,
+                    "afterglow": 0.0,
+                    "total": 10.0
                 }
             }
         ],
@@ -408,27 +720,54 @@
     {
         "id": "LSD",
         "name": "LSD",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Acid",
+            "Lucy",
+            "LSD-25",
+            "Blotter",
+            "Kwas"
+        ],
+        "summary": "Klasyczny psychodelik z grupy lizergamidów. Długie, intensywne zmiany percepcji i myślenia (zwykle 8–12 h), wrażliwość na set i setting.",
+        "harmReduction": "Testuj blotter odczynnikiem Ehrlicha (odrzuć gorzki smak — możliwe NBOMe). Zacznij od niskiej dawki. Unikaj łączenia z litium i stymulantami. Zaplanuj wolny dzień.",
+        "classes": [
+            "Psychodelik",
+            "Lizergamid"
+        ],
         "roas": [
+            {
+                "name": "Sublingual",
+                "dose": {
+                    "threshold": 7.5,
+                    "light": 15.0,
+                    "common": 75.0,
+                    "strong": 150.0,
+                    "heavy": 300.0
+                },
+                "duration": {
+                    "onset": 22.5,
+                    "comeup": 67.5,
+                    "peak": 240.0,
+                    "offset": 240.0,
+                    "afterglow": 1800.0,
+                    "total": 600.0
+                }
+            },
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 7.5,
+                    "light": 15.0,
+                    "common": 75.0,
+                    "strong": 150.0,
+                    "heavy": 300.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 22.5,
+                    "comeup": 67.5,
+                    "peak": 240.0,
+                    "offset": 240.0,
+                    "afterglow": 1800.0,
+                    "total": 600.0
                 }
             }
         ],
@@ -437,27 +776,36 @@
     {
         "id": "MAOI",
         "name": "MAOI",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Inhibitory MAO",
+            "Harmaina",
+            "Harmalina",
+            "Syrian rue",
+            "Moklobemid",
+            "Fenelzyna"
+        ],
+        "summary": "Klasa inhibitorów monoaminooksydazy (leki i alkaloidy harmala). Blokują rozkład wielu amin — przez to dramatycznie zmieniają siłę i bezpieczeństwo innych substancji oraz niektórych pokarmów.",
+        "harmReduction": "Przed jakimkolwiek miksem sprawdź interakcje (szczególnie MDMA, amfetaminy, tramadol, SSRI). Dieta niskotyraminowa przy nieodwracalnych MAOI. To nie „dopalacz do tripa” — błąd może skończyć się przełomem nadciśnieniowym lub zespołem serotoninowym.",
+        "classes": [
+            "MAOI"
+        ],
         "roas": [
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 50.0,
+                    "light": 100.0,
+                    "common": 150.0,
+                    "strong": 300.0,
+                    "heavy": 500.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
+                    "onset": 30.0,
+                    "comeup": 60.0,
+                    "peak": 240.0,
+                    "offset": 240.0,
                     "afterglow": 0.0,
-                    "total": 0.0
+                    "total": 480.0
                 }
             }
         ],
@@ -466,27 +814,36 @@
     {
         "id": "MDMA",
         "name": "MDMA",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Ecstasy",
+            "Molly",
+            "Mandzia",
+            "XTC",
+            "Emka"
+        ],
+        "summary": "Empatogen/entaktogen uwalniający serotoninę, dopaminę i noradrenalinę. Euforia, bliskość, wgląd; po peaku możliwy zjazd nastroju i wyczerpanie zasobów serotoniny.",
+        "harmReduction": "Limit dawek (nie redosuj wielokrotnie), przerwy ≥6–8 tygodni. Nawadniaj się umiarkowanie, chłodź się, bierz przerwy od tańca. Testuj (Marquis itd.). Nigdy z MAOI. Suplementacja tylko jako dodatek do snu, jedzenia i czasu.",
+        "classes": [
+            "Empatogen",
+            "Stymulant"
+        ],
         "roas": [
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 10.0,
+                    "light": 20.0,
+                    "common": 80.0,
+                    "strong": 120.0,
+                    "heavy": 150.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 37.5,
+                    "comeup": 22.5,
+                    "peak": 120.0,
+                    "offset": 75.0,
+                    "afterglow": 1800.0,
+                    "total": 270.0
                 }
             }
         ],
@@ -495,27 +852,50 @@
     {
         "id": "MXE",
         "name": "MXE",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Methoxetamine",
+            "Mexxy"
+        ],
+        "summary": "Dysocjant zbliżony profilem do ketaminy, często dłuższy i bardziej „serotonergiczny”. Od lekkiego dystansu po silną dysocjację; redosing łatwo prowadzi do utraty kontroli nad dawką.",
+        "harmReduction": "Odczekaj pełny onset przed redosem. Unikaj alkoholu i innych depresantów. Bezpieczna pozycja leżąca, trzeźwy opiekun przy wyższych dawkach. Waga miligramowa.",
+        "classes": [
+            "Dysocjant"
+        ],
         "roas": [
+            {
+                "name": "Insufflated",
+                "dose": {
+                    "threshold": 2.5,
+                    "light": 5.0,
+                    "common": 20.0,
+                    "strong": 35.0,
+                    "heavy": 60.0
+                },
+                "duration": {
+                    "onset": 12.5,
+                    "comeup": 52.5,
+                    "peak": 90.0,
+                    "offset": 75.0,
+                    "afterglow": 1560.0,
+                    "total": 240.0
+                }
+            },
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 2.5,
+                    "light": 5.0,
+                    "common": 25.0,
+                    "strong": 45.0,
+                    "heavy": 70.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 22.5,
+                    "comeup": 67.5,
+                    "peak": 120.0,
+                    "offset": 75.0,
+                    "afterglow": 1620.0,
+                    "total": 300.0
                 }
             }
         ],
@@ -524,27 +904,35 @@
     {
         "id": "Mescaline",
         "name": "Mescaline",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Meskalina",
+            "Peyotl",
+            "San Pedro",
+            "3,4,5-Trimethoxyphenethylamine"
+        ],
+        "summary": "Klasyczny psychodelik fenyloetyloaminowy (kaktusy). Długi, „ciepły” trip z wizjami i wglądem; częste nudności na comeupie.",
+        "harmReduction": "Lekki posiłek wcześniej, miejsce do leżenia przy nudnościach. Długi czas — nie dorzucaj wcześnie. Unikaj prowadzenia pojazdów. Szacunek do tradycyjnych źródeł roślinnych.",
+        "classes": [
+            "Psychodelik",
+            "Fenyloetyloamina"
+        ],
         "roas": [
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 25.0,
+                    "light": 50.0,
+                    "common": 200.0,
+                    "strong": 400.0,
+                    "heavy": 800.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 67.5,
+                    "comeup": 90.0,
+                    "peak": 300.0,
+                    "offset": 150.0,
+                    "afterglow": 1260.0,
+                    "total": 660.0
                 }
             }
         ],
@@ -553,27 +941,71 @@
     {
         "id": "Metamfetamina",
         "name": "Metamfetamina",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Meth",
+            "Crystal",
+            "META",
+            "Ice",
+            "Methamphetamine"
+        ],
+        "summary": "Bardzo silny stymulant o długim działaniu i wysokim potencjale uzależnienia. Intensywna euforia i czujność, potem wyczerpanie, bezsenność i ryzyko psychozy przy nieprzespanych dniach.",
+        "harmReduction": "Priorytet: sen, jedzenie, zęby i higiena. Unikaj binge trwających dniami. Nie łącz z MAOI. Harm reduction przy iniekcjach: własne sterylne igły, nigdy share. Szukaj pomocy przy cravingu.",
+        "classes": [
+            "Stymulant"
+        ],
         "roas": [
+            {
+                "name": "Insufflated",
+                "dose": {
+                    "threshold": 2.5,
+                    "light": 5.0,
+                    "common": 10.0,
+                    "strong": 30.0,
+                    "heavy": 60.0
+                },
+                "duration": {
+                    "onset": 4.0,
+                    "comeup": 4.0,
+                    "peak": 135.0,
+                    "offset": 180.0,
+                    "afterglow": 900.0,
+                    "total": 330.0
+                }
+            },
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 2.5,
+                    "light": 5.0,
+                    "common": 10.0,
+                    "strong": 25.0,
+                    "heavy": 50.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 30.0,
+                    "comeup": 120.0,
+                    "peak": 240.0,
+                    "offset": 210.0,
+                    "afterglow": 1080.0,
+                    "total": 600.0
+                }
+            },
+            {
+                "name": "Smoked",
+                "dose": {
+                    "threshold": 2.5,
+                    "light": 5.0,
+                    "common": 10.0,
+                    "strong": 20.0,
+                    "heavy": 60.0
+                },
+                "duration": {
+                    "onset": 0.1,
+                    "comeup": 0.1,
+                    "peak": 120.0,
+                    "offset": 120.0,
+                    "afterglow": 780.0,
+                    "total": 240.0
                 }
             }
         ],
@@ -582,27 +1014,56 @@
     {
         "id": "Metylon/Mefedron",
         "name": "Metylon/Mefedron",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Mefedron",
+            "4-MMC",
+            "Mephedrone",
+            "Methylone",
+            "bk-MDMA",
+            "Meow"
+        ],
+        "summary": "Katynony empatogenno-stymulujące (mefedron, metylon). Szybka euforia i chęć redosu; silne obciążenie serca, szczęki i snu, wysoki potencjał kompulsywnego używania.",
+        "harmReduction": "Odważaj pojedyncze dawki z góry, schowaj resztę. Rób twarde przerwy między sesjami. Nawadniaj się, nie przegrzewaj. Testuj — rynek jest zmienny. Nie łącz z MAOI ani ciężkimi stymulantami.",
+        "classes": [
+            "Stymulant",
+            "Empatogen",
+            "Katynon"
+        ],
         "roas": [
+            {
+                "name": "Insufflated",
+                "dose": {
+                    "threshold": 2.5,
+                    "light": 5.0,
+                    "common": 45.0,
+                    "strong": 80.0,
+                    "heavy": 125.0
+                },
+                "duration": {
+                    "onset": 6.5,
+                    "comeup": 22.5,
+                    "peak": 52.5,
+                    "offset": 60.0,
+                    "afterglow": 180.0,
+                    "total": 135.0
+                }
+            },
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 7.5,
+                    "light": 15.0,
+                    "common": 100.0,
+                    "strong": 200.0,
+                    "heavy": 300.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 30.0,
+                    "comeup": 22.5,
+                    "peak": 180.0,
+                    "offset": 67.5,
+                    "afterglow": 180.0,
+                    "total": 270.0
                 }
             }
         ],
@@ -611,27 +1072,53 @@
     {
         "id": "NBOMe",
         "name": "NBOMe",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "25I-NBOMe",
+            "25B-NBOMe",
+            "25C-NBOMe",
+            "N-Bomb"
+        ],
+        "summary": "Bardzo potężne psychodeliki 25x-NBOMe, często sprzedawane na blotterach jako LSD. Wąski margines bezpieczeństwa, ryzyko skurczu naczyń, tachykardii i drgawek.",
+        "harmReduction": "Zawsze testuj blotter (Ehrlich nie wykryje NBOMe — użyj dodatkowych odczynników). Gorzki smak = wypluj. Nigdy nie insuffluj NBOMe. Unikaj stymulantów. To jedna z najbardziej ryzykownych „podróbek LSD”.",
+        "classes": [
+            "Psychodelik",
+            "Fenyloetyloamina"
+        ],
         "roas": [
             {
-                "name": "Oral",
+                "name": "Insufflated",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 25.0,
+                    "light": 50.0,
+                    "common": 500.0,
+                    "strong": 700.0,
+                    "heavy": 0.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 7.5,
+                    "comeup": 20.0,
+                    "peak": 90.0,
+                    "offset": 150.0,
+                    "afterglow": 4.0,
+                    "total": 300.0
+                }
+            },
+            {
+                "name": "Sublingual",
+                "dose": {
+                    "threshold": 25.0,
+                    "light": 50.0,
+                    "common": 500.0,
+                    "strong": 700.0,
+                    "heavy": 1000.0
+                },
+                "duration": {
+                    "onset": 67.5,
+                    "comeup": 75.0,
+                    "peak": 180.0,
+                    "offset": 150.0,
+                    "afterglow": 4.5,
+                    "total": 480.0
                 }
             }
         ],
@@ -640,27 +1127,35 @@
     {
         "id": "N₂O (Gaz rozweselający)",
         "name": "N₂O (Gaz rozweselający)",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Nitrous",
+            "N2O",
+            "Baloony",
+            "Gaz rozweselający",
+            "Whippets"
+        ],
+        "summary": "Krótko działający dysocjant wziewny. Szybki onset, efekty trwają zwykle 1–5 minut; przy powtarzaniu możliwe niedotlenienie i niedobór B12 przy chronicznym użyciu.",
+        "harmReduction": "Oddychaj powietrzem między wdechami — nigdy czysty N₂O w zamkniętej masce/folii. Siedź, nie stój. Nie łącz z alkoholem i depresantami. Ogranicz częstotliwość; dbaj o witaminę B12 przy regularnym użyciu.",
+        "classes": [
+            "Dysocjant"
+        ],
         "roas": [
             {
-                "name": "Oral",
+                "name": "Inhaled",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 2.0,
+                    "light": 4.0,
+                    "common": 8.0,
+                    "strong": 16.0,
+                    "heavy": 40.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 0.1,
+                    "comeup": 0.1,
+                    "peak": 0.4,
+                    "offset": 3.0,
+                    "afterglow": 22.5,
+                    "total": 3.0
                 }
             }
         ],
@@ -669,27 +1164,73 @@
     {
         "id": "Opioidy",
         "name": "Opioidy",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Heroina",
+            "Morfina",
+            "Oksykodon",
+            "Fentanyl",
+            "Codeine",
+            "Opioids"
+        ],
+        "summary": "Klasa agonistów receptorów opioidowych. Analgezja, euforia, sedacja; główne ryzyko to depresja oddechowa, szczególnie w połączeniu z innymi depresantami i przy nieznanej mocy (fentanyl).",
+        "harmReduction": "Nigdy nie używaj sam — miej nalokson jeśli dostępny. Testuj na fentanyl. Nie łącz z alkoholem, benzo, GHB. Tolerancja spada po przerwie — wracaj do niższej dawki. Harm reduction iniekcji: sterylny sprzęt.",
+        "classes": [
+            "Opioid",
+            "Depresant"
+        ],
         "roas": [
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 5.0,
+                    "light": 10.0,
+                    "common": 15.0,
+                    "strong": 20.0,
+                    "heavy": 30.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
+                    "onset": 20.0,
+                    "comeup": 30.0,
+                    "peak": 150.0,
+                    "offset": 90.0,
                     "afterglow": 0.0,
-                    "total": 0.0
+                    "total": 300.0
+                }
+            },
+            {
+                "name": "Insufflated",
+                "dose": {
+                    "threshold": 2.5,
+                    "light": 5.0,
+                    "common": 20.0,
+                    "strong": 35.0,
+                    "heavy": 50.0
+                },
+                "duration": {
+                    "onset": 0.6,
+                    "comeup": 0.6,
+                    "peak": 45.5,
+                    "offset": 120.0,
+                    "afterglow": 135.0,
+                    "total": 300.0
+                }
+            },
+            {
+                "name": "Smoked",
+                "dose": {
+                    "threshold": 1.0,
+                    "light": 2.0,
+                    "common": 15.0,
+                    "strong": 25.0,
+                    "heavy": 50.0
+                },
+                "duration": {
+                    "onset": 0.1,
+                    "comeup": 0.1,
+                    "peak": 22.5,
+                    "offset": 22.5,
+                    "afterglow": 20.0,
+                    "total": 240.0
                 }
             }
         ],
@@ -698,27 +1239,69 @@
     {
         "id": "PCP",
         "name": "PCP",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Phencyclidine",
+            "Angel dust",
+            "Peace pill"
+        ],
+        "summary": "Silny dysocjant arylocykloheksyloaminowy. Od znieczulenia i dystansu po majaczenie, agresję i amnezję; efekty bywają długie i trudne do przerwania.",
+        "harmReduction": "Unikaj wysokich dawek i nieznanych źródeł. Bezpieczne, spokojne otoczenie, zero prowadzenia pojazdów. Nie łącz z alkoholem i innymi depresantami. Osoby z psychozą w wywiadzie — szczególnie wysokie ryzyko.",
+        "classes": [
+            "Dysocjant"
+        ],
         "roas": [
+            {
+                "name": "Insufflated",
+                "dose": {
+                    "threshold": 0.5,
+                    "light": 1.0,
+                    "common": 4.0,
+                    "strong": 8.0,
+                    "heavy": 15.0
+                },
+                "duration": {
+                    "onset": 16.5,
+                    "comeup": 60.0,
+                    "peak": 150.0,
+                    "offset": 90.0,
+                    "afterglow": 1560.0,
+                    "total": 300.0
+                }
+            },
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 0.5,
+                    "light": 1.0,
+                    "common": 5.0,
+                    "strong": 10.0,
+                    "heavy": 15.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
-                    "afterglow": 0.0,
-                    "total": 0.0
+                    "onset": 60.0,
+                    "comeup": 80.0,
+                    "peak": 150.0,
+                    "offset": 90.0,
+                    "afterglow": 1560.0,
+                    "total": 360.0
+                }
+            },
+            {
+                "name": "Smoked",
+                "dose": {
+                    "threshold": 0.5,
+                    "light": 1.0,
+                    "common": 4.0,
+                    "strong": 8.0,
+                    "heavy": 12.0
+                },
+                "duration": {
+                    "onset": 11.0,
+                    "comeup": 30.0,
+                    "peak": 150.0,
+                    "offset": 90.0,
+                    "afterglow": 1560.0,
+                    "total": 300.0
                 }
             }
         ],
@@ -727,27 +1310,37 @@
     {
         "id": "SSRI/SNRI",
         "name": "SSRI/SNRI",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "SSRI",
+            "SNRI",
+            "Sertralina",
+            "Fluoksetyna",
+            "Venlafaksyna",
+            "Escitalopram"
+        ],
+        "summary": "Leki przeciwdepresyjne hamujące wychwyt serotoniny (SSRI) lub serotoniny i noradrenaliny (SNRI). Efekt terapeutyczny narasta tygodniami; wchodzą w istotne interakcje z substancjami serotonergicznymi.",
+        "harmReduction": "Nie łącz z MDMA, tramadol, MAOI, DXM w wysokich dawkach — ryzyko zespołu serotoninowego / braku efektu empatogenu. Nie odstawiaj nagle bez lekarza. Informuj lekarza o używkach. Washout bywa długi (np. fluoksetyna).",
+        "classes": [
+            "Lek",
+            "SSRI/SNRI"
+        ],
         "roas": [
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 5.0,
+                    "light": 10.0,
+                    "common": 20.0,
+                    "strong": 40.0,
+                    "heavy": 60.0
                 },
                 "duration": {
-                    "onset": 0.0,
+                    "onset": 180.0,
                     "comeup": 0.0,
                     "peak": 0.0,
                     "offset": 0.0,
                     "afterglow": 0.0,
-                    "total": 0.0
+                    "total": 1440.0
                 }
             }
         ],
@@ -756,27 +1349,33 @@
     {
         "id": "Tramadol",
         "name": "Tramadol",
-        "aliases": [],
-        "summary": "Pobieranie opisu...",
-        "harmReduction": "Pobieranie zasad redukcji szkód...",
-        "classes": [],
+        "aliases": [
+            "Tramal",
+            "Ultram"
+        ],
+        "summary": "Atypowy opioid z dodatkowym wpływem na serotoninę i noradrenalinę. Przeciwbólowy i lekko stymulujący; podwyższa ryzyko drgawek oraz interakcji serotonergicznych.",
+        "harmReduction": "Nie łącz z alkoholem, SSRI/SNRI, MAOI ani innymi opioidami. Nie przekraczaj dawek — próg drgawkowy bywa niski. To nie „bezpieczny słaby opioid”. Przechowuj poza zasięgiem dzieci.",
+        "classes": [
+            "Opioid",
+            "Atypowy opioid"
+        ],
         "roas": [
             {
                 "name": "Oral",
                 "dose": {
-                    "threshold": 0,
-                    "light": 0,
-                    "common": 0,
-                    "strong": 0,
-                    "heavy": 0
+                    "threshold": 12.5,
+                    "light": 25.0,
+                    "common": 100.0,
+                    "strong": 250.0,
+                    "heavy": 300.0
                 },
                 "duration": {
-                    "onset": 0.0,
-                    "comeup": 0.0,
-                    "peak": 0.0,
-                    "offset": 0.0,
+                    "onset": 37.5,
+                    "comeup": 45.0,
+                    "peak": 240.0,
+                    "offset": 180.0,
                     "afterglow": 0.0,
-                    "total": 0.0
+                    "total": 480.0
                 }
             }
         ],
