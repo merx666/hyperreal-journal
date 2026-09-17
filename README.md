@@ -1,27 +1,52 @@
 # Hyperreal Journal
 
-**Hyperreal Journal** to prywatny, lokalny dziennik substancji z nastawieniem na Redukcję Szkód (Harm Reduction), stworzony dla społeczności.
+<p align="center">
+  <img src="https://img.shields.io/badge/Kotlin-1.9-purple.svg" alt="Kotlin">
+  <img src="https://img.shields.io/badge/Jetpack_Compose-Material3-blue.svg" alt="Compose">
+  <img src="https://img.shields.io/badge/Architecture-MVVM-green.svg" alt="MVVM">
+  <img src="https://img.shields.io/badge/Storage-Room_DB-red.svg" alt="Room">
+  <img src="https://img.shields.io/badge/Dependency_Injection-Hilt-blueviolet.svg" alt="Hilt">
+</p>
+
+**Hyperreal Journal** to lokalna, prywatna i zaawansowana aplikacja (Android) wspierająca ideologię Harm Reduction (redukcja szkód). Służy do śledzenia przyjmowanych substancji, analizowania nawyków i sprawdzania interakcji za pomocą wbudowanych i zaufanych baz (np. tabele SIN). Została stworzona w 100% z myślą o prywatności (zero-cloud, cała baza na urządzeniu).
 
 ## Główne Funkcje
 
-- **Dziennik Substancji:** Śledź swoje przyjęcia, dokładne dawki (threshold, light, common, strong, heavy) i Drogi Podania (ROA).
-- **Interaktywny Wykres Faz (Timeline):** Zobacz na żywo w jakiej fazie (Onset, Comeup, Peak, Offset, Afterglow) jesteś po zażyciu wybranej substancji.
-- **Kalkulator Miksów:** Wbudowana matryca bezpieczeństwa bazująca na tabeli Społecznej Inicjatywy Narkopolityki (SIN). Pozwala sprawdzić przed zażyciem interakcję dwóch różnych substancji (np. Low Risk & Synergy, Caution, Dangerous).
-- **Prywatność (Local-Only):** Aplikacja działa całkowicie w oparciu o lokalną bazę Room. Nie ma żadnej synchronizacji w chmurze – Twoje dane są bezpieczne na Twoim urządzeniu.
+- **📝 Dziennik Ingestii:** Śledzenie daty, godziny, dawki oraz drogi podania z automatyczną kategoryzacją progu dawki (Threshold, Light, Common, Strong, Heavy).
+- **📈 Interaktywny Wykres Farmakokinetyki:** Unikalny moduł `TimelineChart`, który w czasie rzeczywistym ilustruje fazy działania na osi czasu (Onset, Comeup, Peak, Offset, Afterglow).
+- **⚠️ Harm Reduction & Interakcje:** Dynamiczny system ostrzegania o mixach. Baza interakcji w oparciu o pełną matrycę SIN/TripSit. Kalkulator pokazujący stopień ryzyka (np. Low Risk, Caution, Unsafe, Dangerous).
+- **📊 Statystyki (Insights):** Rozbudowany widok analizujący m.in. częstotliwość używania z ostatnich 30 dni, średnie przerwy pomiędzy kolejnymi użyciami oraz histogram aktywności.
+- **🛡️ Pełna Prywatność:** Wszystkie wpisy trzymane są w lokalnej bazie Room. Eksport danych odbywa się ręcznie do bezpiecznego pliku `.json`.
+- **🌙 Deep Dark Theme:** Neony (HyperrealGreen) oraz zoptymalizowane kontrasty pasujące do trybów nocnych (Edge-to-Edge).
 
-## Budowanie i Uruchomienie (Android)
+## Architektura i Technologie
 
-Projekt zbudowany jest przy użyciu najnowszych standardów:
-- **Jetpack Compose** (UI)
-- **Kotlin Coroutines / Flow**
-- **Room** (Baza Danych)
-- **Hilt** (Dependency Injection)
+Projekt wykorzystuje nowoczesne wzorce i narzędzia dla Androida:
+- **Język:** Kotlin
+- **UI:** Jetpack Compose, Material Design 3
+- **Baza danych:** Room (SQLite)
+- **Architektura:** Clean Architecture (Domain, Data, UI) połączone ze wzorcem MVVM
+- **Dependency Injection:** Dagger Hilt
+- **Asynchroniczność:** Coroutines & Flows
+- **Wizualizacje:** Niestandardowy Compose Canvas (Wykresy słupkowe oraz złożone krzywe Béziera)
 
-Wymagania:
-- Android Studio Ladybug lub nowsze.
-- Java 17+.
+## Instrukcja Uruchomienia / Budowania
 
-Otwórz projekt w Android Studio i uruchom `app` na urządzeniu z Androidem 8.0+.
+Aplikacja jest standardowym projektem Gradle (Android Studio). 
 
-## Redukcja Szkód
-Aplikacja została zaprojektowana wyłącznie w celach edukacyjnych i dokumentacyjnych. Bądź ostrożny i dbaj o swoje bezpieczeństwo. Zawsze sprawdzaj potencjalne interakcje!
+1. Sklonuj repozytorium.
+2. Otwórz projekt w **Android Studio**.
+3. Zsynchronizuj Gradle (Kitten / JDK 17/21).
+4. Zbuduj aplikację (`Build -> Make Project`) i zainstaluj na urządzeniu lub emulatorze (wymagane min. Android API 24).
+
+## Organizacja Danych
+Wzorcowe bazy (Substancje, Interakcje) są przechowywane w `app/src/main/assets/`. Przy pierwszym uruchomieniu zostaną zmapowane jako źródło wiedzy w warstwie Domain. Wszystkie ingestie trafiają do SQLite.
+
+## Licencja
+
+Zgodnie z ideą Harm Reduction, oprogramowanie udostępniane jest jako Open Source. Baza interakcji oraz dane dawkowania bazują na zewnętrznych, non-profit serwisach jak SIN (Społeczna Inicjatywa Narkopolityki).
+
+> **Ostrzeżenie:** Informacje w aplikacji służą celom edukacyjnym i poprawie bezpieczeństwa (Harm Reduction). Aplikacja nie zachęca do korzystania z substancji psychoaktywnych.
+
+---
+*Stay safe.*

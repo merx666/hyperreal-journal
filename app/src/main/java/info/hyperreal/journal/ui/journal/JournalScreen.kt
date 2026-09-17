@@ -110,7 +110,8 @@ fun JournalScreen(
                                         Spacer(modifier = Modifier.height(8.dp))
                                         TimelineChart(
                                             duration = duration,
-                                            timeSinceIngestionMs = now - entry.ingestion.timestamp
+                                            timeSinceIngestionMs = now - entry.ingestion.timestamp,
+                                            ingestionTimeMs = entry.ingestion.timestamp
                                         )
                                     }
                                 }

@@ -1,28 +1,2005 @@
 {
+  "source": "SIN - Społeczna Inicjatywa Narkopolityki",
+  "source_url": "https://sin.org.pl/wp-content/uploads/2019/06/tabelamiksow.pdf",
+  "last_updated": "2019-06",
   "interactions": [
     {
-      "substance_a": "LSD",
-      "substance_b": "MDMA",
-      "status": "Low Risk & Synergy",
-      "note": "Candyflip. MDMA znacznie nasila psychodeliczne działanie LSD. Ważne jest odpowiednie zgranie czasu (np. MDMA 2-3h po LSD) i odpowiednie nawodnienie."
+      "substance_a": "Alkohol",
+      "substance_b": "GHB/GBL",
+      "status": "Dangerous",
+      "note": "Nawet w niskich dawkach szybko prowadzi do utraty pamięci, silnej ataksji i utraty przytomności. Wysokie ryzyko zachłyśnięcia wymiocinami."
     },
     {
-      "substance_a": "Cocaine",
-      "substance_b": "Alcohol",
+      "substance_a": "Alkohol",
+      "substance_b": "Opioidy",
+      "status": "Dangerous",
+      "note": "Wysokie ryzyko blackoutu i utraty przytomności."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "Tramadol",
+      "status": "Dangerous",
+      "note": "Podwyższone ryzyko drgawek."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "Benzodiazepiny",
+      "status": "Dangerous",
+      "note": "Ryzyko utraty pamięci i utraty przytomności."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "MAOI",
+      "status": "Unsafe",
+      "note": "Według tabeli miksów SIN/TripSit połączenie jest niebezpieczne i istotnie podwyższa ryzyko działań niepożądanych."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "SSRI/SNRI",
       "status": "Caution",
-      "note": "Tworzy kokaetylen, który jest od 18% do 40% bardziej toksyczny dla serca i wątroby. Zwiększa ryzyko zawału."
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "Kokaina",
+      "status": "Unsafe",
+      "note": "Według tabeli miksów SIN/TripSit połączenie jest niebezpieczne i istotnie podwyższa ryzyko działań niepożądanych."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "Amfetamina",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "Metamfetamina",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "MDMA",
+      "status": "Caution",
+      "note": "Podwyższone obciążenie układu sercowo-naczyniowego."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "Cannabinoidy",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "Ketamina",
+      "status": "Dangerous",
+      "note": "Wysokie ryzyko zachłyśnięcia wymiocinami przy utracie przytomności."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "MXE",
+      "status": "Dangerous",
+      "note": "Ryzyko utraty pamięci i utraty przytomności."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "DXM",
+      "status": "Dangerous",
+      "note": "Wysokie ryzyko zachłyśnięcia wymiocinami przy utracie przytomności."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "N₂O (Gaz rozweselający)",
+      "status": "Caution",
+      "note": "Wysokie ryzyko blackoutu i utraty przytomności."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "LSD",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "DMT",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "Mescaline",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "DOx",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "NBOMe",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "2C-x",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "5-MeO-xAT",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "AMT",
+      "status": "Caution",
+      "note": "Efekty mogą być nieprzewidywalne; zalecana ostrożność."
+    },
+    {
+      "substance_a": "Alkohol",
+      "substance_b": "PCP",
+      "status": "Unsafe",
+      "note": "Efekty mogą być nieprzewidywalne; zalecana ostrożność."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "Opioidy",
+      "status": "Dangerous",
+      "note": "Wysokie ryzyko zachłyśnięcia wymiocinami przy utracie przytomności."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "Tramadol",
+      "status": "Dangerous",
+      "note": "Ryzyko depresji oddechowej — substancje łącznie tłumią ośrodkowy układ nerwowy."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "Benzodiazepiny",
+      "status": "Dangerous",
+      "note": "Wysokie ryzyko zachłyśnięcia wymiocinami przy utracie przytomności."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "MAOI",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "SSRI/SNRI",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "Kokaina",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "Amfetamina",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "Metamfetamina",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "MDMA",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "Metylon/Mefedron",
+      "status": "Caution",
+      "note": "Podwyższone obciążenie serca i układu krążenia."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "Cannabinoidy",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "Ketamina",
+      "status": "Dangerous",
+      "note": "Wysokie ryzyko zachłyśnięcia wymiocinami przy utracie przytomności."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "MXE",
+      "status": "Dangerous",
+      "note": "Wysokie ryzyko zachłyśnięcia wymiocinami przy utracie przytomności."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "DXM",
+      "status": "Dangerous",
+      "note": "Wysokie ryzyko zachłyśnięcia wymiocinami przy utracie przytomności."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "N₂O (Gaz rozweselający)",
+      "status": "Caution",
+      "note": "Wysokie ryzyko blackoutu i utraty przytomności."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "LSD",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "DMT",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "Mescaline",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "DOx",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "NBOMe",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "2C-x",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "5-MeO-xAT",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "AMT",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "GHB/GBL",
+      "substance_b": "PCP",
+      "status": "Dangerous",
+      "note": "Efekty mogą być nieprzewidywalne; zalecana ostrożność."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "Tramadol",
+      "status": "Dangerous",
+      "note": "Podwyższone ryzyko drgawek."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "Benzodiazepiny",
+      "status": "Dangerous",
+      "note": "Wysokie ryzyko blackoutu i utraty przytomności."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "MAOI",
+      "status": "Caution",
+      "note": "Podwyższone ryzyko drgawek."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "SSRI/SNRI",
+      "status": "Low Risk & No Synergy",
+      "note": "Ryzyko zespołu serotoninowego."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "Kokaina",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "Amfetamina",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "Metamfetamina",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "MDMA",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "Metylon/Mefedron",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "Cannabinoidy",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "Ketamina",
+      "status": "Dangerous",
+      "note": "Wysokie ryzyko zachłyśnięcia wymiocinami przy utracie przytomności."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "MXE",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "DXM",
+      "status": "Dangerous",
+      "note": "Podwyższone obciążenie serca i układu krążenia."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "N₂O (Gaz rozweselający)",
+      "status": "Caution",
+      "note": "Wysokie ryzyko blackoutu i utraty przytomności."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "LSD",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "DMT",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "Mescaline",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "DOx",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "NBOMe",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "2C-x",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "5-MeO-xAT",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "AMT",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "Opioidy",
+      "substance_b": "PCP",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "Benzodiazepiny",
+      "status": "Dangerous",
+      "note": "Wysokie ryzyko zachłyśnięcia wymiocinami przy utracie przytomności."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "MAOI",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "SSRI/SNRI",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "Kokaina",
+      "status": "Dangerous",
+      "note": "Podwyższone ryzyko drgawek."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "Amfetamina",
+      "status": "Dangerous",
+      "note": "Podwyższone ryzyko drgawek."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "Metamfetamina",
+      "status": "Dangerous",
+      "note": "Podwyższone ryzyko drgawek."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "MDMA",
+      "status": "Dangerous",
+      "note": "Podwyższone ryzyko drgawek."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "Metylon/Mefedron",
+      "status": "Dangerous",
+      "note": "Ryzyko zespołu serotoninowego."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "Cannabinoidy",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "Ketamina",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "MXE",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "DXM",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "N₂O (Gaz rozweselający)",
+      "status": "Caution",
+      "note": "Wysokie ryzyko blackoutu i utraty przytomności."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "LSD",
+      "status": "Unsafe",
+      "note": "Podwyższone ryzyko drgawek."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Unsafe",
+      "note": "Podwyższone ryzyko drgawek."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "DMT",
+      "status": "Unsafe",
+      "note": "Podwyższone ryzyko drgawek."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "Mescaline",
+      "status": "Unsafe",
+      "note": "Podwyższone ryzyko drgawek."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "DOx",
+      "status": "Unsafe",
+      "note": "Podwyższone ryzyko drgawek."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "NBOMe",
+      "status": "Unsafe",
+      "note": "Podwyższone ryzyko drgawek."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "2C-x",
+      "status": "Unsafe",
+      "note": "Podwyższone ryzyko drgawek."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "5-MeO-xAT",
+      "status": "Unsafe",
+      "note": "Według tabeli miksów SIN/TripSit połączenie jest niebezpieczne i istotnie podwyższa ryzyko działań niepożądanych."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "AMT",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "Tramadol",
+      "substance_b": "PCP",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "MAOI",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "SSRI/SNRI",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "Kokaina",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "Amfetamina",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "Metamfetamina",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "MDMA",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "Cannabinoidy",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "Ketamina",
+      "status": "Caution",
+      "note": "Wysokie ryzyko zachłyśnięcia wymiocinami przy utracie przytomności."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "MXE",
+      "status": "Caution",
+      "note": "Wysokie ryzyko zachłyśnięcia wymiocinami przy utracie przytomności."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "DXM",
+      "status": "Caution",
+      "note": "Wysokie ryzyko zachłyśnięcia wymiocinami przy utracie przytomności."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "N₂O (Gaz rozweselający)",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "LSD",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "DMT",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "Mescaline",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "DOx",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "NBOMe",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "2C-x",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "5-MeO-xAT",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "AMT",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "Benzodiazepiny",
+      "substance_b": "PCP",
+      "status": "Unsafe",
+      "note": "Wysokie ryzyko blackoutu i utraty przytomności."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "SSRI/SNRI",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "Kokaina",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "Amfetamina",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "Metamfetamina",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "MDMA",
+      "status": "Dangerous",
+      "note": "Inhibitory MAO-A z MDMA mogą wywołać przełom nadciśnieniowy. MAO-B mogą nieprzewidywalnie zwiększać siłę i czas działania."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "Cannabinoidy",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "Ketamina",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "MXE",
+      "status": "Unsafe",
+      "note": "Według tabeli miksów SIN/TripSit połączenie jest niebezpieczne i istotnie podwyższa ryzyko działań niepożądanych."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "DXM",
+      "status": "Dangerous",
+      "note": "Ryzyko zespołu serotoninowego."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "N₂O (Gaz rozweselający)",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "LSD",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "DMT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "Mescaline",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "DOx",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "NBOMe",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "2C-x",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "5-MeO-xAT",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "AMT",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "MAOI",
+      "substance_b": "PCP",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "Kokaina",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "Amfetamina",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "Metamfetamina",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "MDMA",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "Cannabinoidy",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "Ketamina",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "MXE",
+      "status": "Caution",
+      "note": "Efekty mogą być nieprzewidywalne; zalecana ostrożność."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "DXM",
+      "status": "Dangerous",
+      "note": "Ryzyko zespołu serotoninowego."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "N₂O (Gaz rozweselający)",
+      "status": "Low Risk & No Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; brak istotnej synergii."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "LSD",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "DMT",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "Mescaline",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "DOx",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "NBOMe",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "2C-x",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "5-MeO-xAT",
+      "status": "Low Risk & Decrease",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; jedna substancja może osłabiać działanie drugiej."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "AMT",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "SSRI/SNRI",
+      "substance_b": "PCP",
+      "status": "Unsafe",
+      "note": "Efekty mogą być nieprzewidywalne; zalecana ostrożność."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "Amfetamina",
+      "status": "Caution",
+      "note": "Podwyższone obciążenie serca i układu krążenia."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "Metamfetamina",
+      "status": "Caution",
+      "note": "Podwyższone obciążenie serca i układu krążenia."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "MDMA",
+      "status": "Caution",
+      "note": "Podwyższone obciążenie serca i układu krążenia."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "Cannabinoidy",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "Ketamina",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "MXE",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "DXM",
+      "status": "Unsafe",
+      "note": "Podwyższone obciążenie serca i układu krążenia."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "N₂O (Gaz rozweselający)",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "LSD",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "DMT",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "Mescaline",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "DOx",
+      "status": "Unsafe",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "NBOMe",
+      "status": "Unsafe",
+      "note": "Podwyższone obciążenie serca i układu krążenia."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "2C-x",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "5-MeO-xAT",
+      "status": "Unsafe",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "AMT",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "Kokaina",
+      "substance_b": "PCP",
+      "status": "Unsafe",
+      "note": "Według tabeli miksów SIN/TripSit połączenie jest niebezpieczne i istotnie podwyższa ryzyko działań niepożądanych."
+    },
+    {
+      "substance_a": "Amfetamina",
+      "substance_b": "MDMA",
+      "status": "Caution",
+      "note": "Połączenie stymulantów obciąża serce i podnosi ryzyko problemów sercowo-naczyniowych. Amfetaminy nasilają neurotoksyczność MDMA oraz ryzyko hipertermii."
+    },
+    {
+      "substance_a": "Amfetamina",
+      "substance_b": "Cannabinoidy",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Amfetamina",
+      "substance_b": "Ketamina",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "Amfetamina",
+      "substance_b": "MXE",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "Amfetamina",
+      "substance_b": "DXM",
+      "status": "Unsafe",
+      "note": "Podwyższone obciążenie serca i układu krążenia."
+    },
+    {
+      "substance_a": "Amfetamina",
+      "substance_b": "N₂O (Gaz rozweselający)",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Amfetamina",
+      "substance_b": "LSD",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Amfetamina",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Amfetamina",
+      "substance_b": "DMT",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Amfetamina",
+      "substance_b": "Mescaline",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Amfetamina",
+      "substance_b": "DOx",
+      "status": "Unsafe",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Amfetamina",
+      "substance_b": "NBOMe",
+      "status": "Unsafe",
+      "note": "Podwyższone ryzyko drgawek."
+    },
+    {
+      "substance_a": "Amfetamina",
+      "substance_b": "2C-x",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Amfetamina",
+      "substance_b": "5-MeO-xAT",
+      "status": "Unsafe",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Amfetamina",
+      "substance_b": "AMT",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "Amfetamina",
+      "substance_b": "PCP",
+      "status": "Unsafe",
+      "note": "Według tabeli miksów SIN/TripSit połączenie jest niebezpieczne i istotnie podwyższa ryzyko działań niepożądanych."
+    },
+    {
+      "substance_a": "Metamfetamina",
+      "substance_b": "MDMA",
+      "status": "Caution",
+      "note": "Połączenie stymulantów obciąża serce i podnosi ryzyko problemów sercowo-naczyniowych. Amfetaminy nasilają neurotoksyczność MDMA oraz ryzyko hipertermii."
+    },
+    {
+      "substance_a": "Metamfetamina",
+      "substance_b": "Cannabinoidy",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Metamfetamina",
+      "substance_b": "Ketamina",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "Metamfetamina",
+      "substance_b": "MXE",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "Metamfetamina",
+      "substance_b": "DXM",
+      "status": "Unsafe",
+      "note": "Podwyższone obciążenie serca i układu krążenia."
+    },
+    {
+      "substance_a": "Metamfetamina",
+      "substance_b": "N₂O (Gaz rozweselający)",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Metamfetamina",
+      "substance_b": "LSD",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Metamfetamina",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Metamfetamina",
+      "substance_b": "DMT",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Metamfetamina",
+      "substance_b": "Mescaline",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Metamfetamina",
+      "substance_b": "DOx",
+      "status": "Unsafe",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Metamfetamina",
+      "substance_b": "NBOMe",
+      "status": "Unsafe",
+      "note": "Podwyższone ryzyko drgawek."
+    },
+    {
+      "substance_a": "Metamfetamina",
+      "substance_b": "2C-x",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Metamfetamina",
+      "substance_b": "5-MeO-xAT",
+      "status": "Unsafe",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Metamfetamina",
+      "substance_b": "AMT",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "Metamfetamina",
+      "substance_b": "PCP",
+      "status": "Unsafe",
+      "note": "Według tabeli miksów SIN/TripSit połączenie jest niebezpieczne i istotnie podwyższa ryzyko działań niepożądanych."
     },
     {
       "substance_a": "MDMA",
-      "substance_b": "SSRI",
-      "status": "Low Risk & Decrease",
-      "note": "Leki SSRI blokują działanie MDMA, przez co praktycznie nie odczuwa się jego efektów. Próba przełamania tego większymi dawkami MDMA zwiększa ryzyko neurotoksyczności."
+      "substance_b": "Metylon/Mefedron",
+      "status": "Dangerous",
+      "note": "Ryzyko zespołu serotoninowego."
     },
     {
-      "substance_a": "Ketamine",
-      "substance_b": "Alcohol",
+      "substance_a": "MDMA",
+      "substance_b": "Cannabinoidy",
+      "status": "Low Risk & Synergy",
+      "note": "Efekty mogą być nieprzewidywalne; zalecana ostrożność."
+    },
+    {
+      "substance_a": "MDMA",
+      "substance_b": "Ketamina",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MDMA",
+      "substance_b": "MXE",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "MDMA",
+      "substance_b": "DXM",
       "status": "Dangerous",
-      "note": "Obie substancje są depresantami. W połączeniu powodują utratę przytomności i wysokie ryzyko udławienia się wymiocinami (wymagane ułożenie w pozycji bocznej ustalonej)."
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "MDMA",
+      "substance_b": "N₂O (Gaz rozweselający)",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MDMA",
+      "substance_b": "LSD",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MDMA",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MDMA",
+      "substance_b": "DMT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MDMA",
+      "substance_b": "Mescaline",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MDMA",
+      "substance_b": "DOx",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "MDMA",
+      "substance_b": "NBOMe",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "MDMA",
+      "substance_b": "2C-x",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MDMA",
+      "substance_b": "5-MeO-xAT",
+      "status": "Caution",
+      "note": "Efekty mogą być nieprzewidywalne; zalecana ostrożność."
+    },
+    {
+      "substance_a": "MDMA",
+      "substance_b": "AMT",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "MDMA",
+      "substance_b": "PCP",
+      "status": "Unsafe",
+      "note": "Według tabeli miksów SIN/TripSit połączenie jest niebezpieczne i istotnie podwyższa ryzyko działań niepożądanych."
+    },
+    {
+      "substance_a": "Metylon/Mefedron",
+      "substance_b": "DXM",
+      "status": "Dangerous",
+      "note": "Ryzyko zespołu serotoninowego."
+    },
+    {
+      "substance_a": "Metylon/Mefedron",
+      "substance_b": "LSD",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Metylon/Mefedron",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Low Risk & Synergy",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Metylon/Mefedron",
+      "substance_b": "DMT",
+      "status": "Low Risk & Synergy",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Metylon/Mefedron",
+      "substance_b": "DOx",
+      "status": "Caution",
+      "note": "Może nasilać lęk i ryzyko nieprzyjemnych pętli myślowych."
+    },
+    {
+      "substance_a": "Cannabinoidy",
+      "substance_b": "Ketamina",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Cannabinoidy",
+      "substance_b": "MXE",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Cannabinoidy",
+      "substance_b": "DXM",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Cannabinoidy",
+      "substance_b": "N₂O (Gaz rozweselający)",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Cannabinoidy",
+      "substance_b": "LSD",
+      "status": "Caution",
+      "note": "Konopie mają niespodziewanie silną i częściowo nieprzewidywalną synergię z psychodelikami."
+    },
+    {
+      "substance_a": "Cannabinoidy",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Caution",
+      "note": "Konopie mają niespodziewanie silną i częściowo nieprzewidywalną synergię z psychodelikami."
+    },
+    {
+      "substance_a": "Cannabinoidy",
+      "substance_b": "DMT",
+      "status": "Caution",
+      "note": "Konopie mają niespodziewanie silną i częściowo nieprzewidywalną synergię z psychodelikami."
+    },
+    {
+      "substance_a": "Cannabinoidy",
+      "substance_b": "Mescaline",
+      "status": "Caution",
+      "note": "Konopie mają niespodziewanie silną i częściowo nieprzewidywalną synergię z psychodelikami."
+    },
+    {
+      "substance_a": "Cannabinoidy",
+      "substance_b": "DOx",
+      "status": "Caution",
+      "note": "Konopie mają niespodziewanie silną i częściowo nieprzewidywalną synergię z psychodelikami."
+    },
+    {
+      "substance_a": "Cannabinoidy",
+      "substance_b": "NBOMe",
+      "status": "Caution",
+      "note": "Konopie mają niespodziewanie silną i częściowo nieprzewidywalną synergię z psychodelikami."
+    },
+    {
+      "substance_a": "Cannabinoidy",
+      "substance_b": "2C-x",
+      "status": "Caution",
+      "note": "Konopie mają niespodziewanie silną i częściowo nieprzewidywalną synergię z psychodelikami."
+    },
+    {
+      "substance_a": "Cannabinoidy",
+      "substance_b": "5-MeO-xAT",
+      "status": "Caution",
+      "note": "Konopie mają niespodziewanie silną i częściowo nieprzewidywalną synergię z psychodelikami."
+    },
+    {
+      "substance_a": "Cannabinoidy",
+      "substance_b": "AMT",
+      "status": "Caution",
+      "note": "Konopie mają niespodziewanie silną i częściowo nieprzewidywalną synergię z psychodelikami."
+    },
+    {
+      "substance_a": "Cannabinoidy",
+      "substance_b": "PCP",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Ketamina",
+      "substance_b": "MXE",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Ketamina",
+      "substance_b": "DXM",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Ketamina",
+      "substance_b": "N₂O (Gaz rozweselający)",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Ketamina",
+      "substance_b": "LSD",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Ketamina",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Ketamina",
+      "substance_b": "DMT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Ketamina",
+      "substance_b": "Mescaline",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Ketamina",
+      "substance_b": "DOx",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Ketamina",
+      "substance_b": "NBOMe",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Ketamina",
+      "substance_b": "2C-x",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Ketamina",
+      "substance_b": "5-MeO-xAT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Ketamina",
+      "substance_b": "AMT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Ketamina",
+      "substance_b": "PCP",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MXE",
+      "substance_b": "DXM",
+      "status": "Unsafe",
+      "note": "Ryzyko zespołu serotoninowego."
+    },
+    {
+      "substance_a": "MXE",
+      "substance_b": "N₂O (Gaz rozweselający)",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MXE",
+      "substance_b": "LSD",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MXE",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MXE",
+      "substance_b": "DMT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MXE",
+      "substance_b": "Mescaline",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MXE",
+      "substance_b": "DOx",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "MXE",
+      "substance_b": "NBOMe",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "MXE",
+      "substance_b": "2C-x",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MXE",
+      "substance_b": "5-MeO-xAT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "MXE",
+      "substance_b": "AMT",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "MXE",
+      "substance_b": "PCP",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "DXM",
+      "substance_b": "N₂O (Gaz rozweselający)",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "DXM",
+      "substance_b": "LSD",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "DXM",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "DXM",
+      "substance_b": "DMT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "DXM",
+      "substance_b": "Mescaline",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "DXM",
+      "substance_b": "DOx",
+      "status": "Unsafe",
+      "note": "Według tabeli miksów SIN/TripSit połączenie jest niebezpieczne i istotnie podwyższa ryzyko działań niepożądanych."
+    },
+    {
+      "substance_a": "DXM",
+      "substance_b": "NBOMe",
+      "status": "Unsafe",
+      "note": "Według tabeli miksów SIN/TripSit połączenie jest niebezpieczne i istotnie podwyższa ryzyko działań niepożądanych."
+    },
+    {
+      "substance_a": "DXM",
+      "substance_b": "2C-x",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "DXM",
+      "substance_b": "5-MeO-xAT",
+      "status": "Unsafe",
+      "note": "Według tabeli miksów SIN/TripSit połączenie jest niebezpieczne i istotnie podwyższa ryzyko działań niepożądanych."
+    },
+    {
+      "substance_a": "DXM",
+      "substance_b": "AMT",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "DXM",
+      "substance_b": "PCP",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "N₂O (Gaz rozweselający)",
+      "substance_b": "LSD",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "N₂O (Gaz rozweselający)",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "N₂O (Gaz rozweselający)",
+      "substance_b": "DMT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "N₂O (Gaz rozweselający)",
+      "substance_b": "Mescaline",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "N₂O (Gaz rozweselający)",
+      "substance_b": "DOx",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "N₂O (Gaz rozweselający)",
+      "substance_b": "NBOMe",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "N₂O (Gaz rozweselający)",
+      "substance_b": "2C-x",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "N₂O (Gaz rozweselający)",
+      "substance_b": "5-MeO-xAT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "N₂O (Gaz rozweselający)",
+      "substance_b": "AMT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "N₂O (Gaz rozweselający)",
+      "substance_b": "PCP",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "LSD",
+      "substance_b": "Grzyby psylocybinowe",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "LSD",
+      "substance_b": "DMT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "LSD",
+      "substance_b": "Mescaline",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "LSD",
+      "substance_b": "DOx",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "LSD",
+      "substance_b": "NBOMe",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "LSD",
+      "substance_b": "2C-x",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "LSD",
+      "substance_b": "5-MeO-xAT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "LSD",
+      "substance_b": "AMT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "LSD",
+      "substance_b": "PCP",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Grzyby psylocybinowe",
+      "substance_b": "DMT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Grzyby psylocybinowe",
+      "substance_b": "Mescaline",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Grzyby psylocybinowe",
+      "substance_b": "DOx",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Grzyby psylocybinowe",
+      "substance_b": "NBOMe",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Grzyby psylocybinowe",
+      "substance_b": "2C-x",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Grzyby psylocybinowe",
+      "substance_b": "5-MeO-xAT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Grzyby psylocybinowe",
+      "substance_b": "AMT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Grzyby psylocybinowe",
+      "substance_b": "PCP",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "DMT",
+      "substance_b": "Mescaline",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "DMT",
+      "substance_b": "DOx",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "DMT",
+      "substance_b": "NBOMe",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "DMT",
+      "substance_b": "2C-x",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "DMT",
+      "substance_b": "5-MeO-xAT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "DMT",
+      "substance_b": "AMT",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "DMT",
+      "substance_b": "PCP",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "Mescaline",
+      "substance_b": "DOx",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "Mescaline",
+      "substance_b": "NBOMe",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "Mescaline",
+      "substance_b": "2C-x",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "Mescaline",
+      "substance_b": "5-MeO-xAT",
+      "status": "Caution",
+      "note": "Efekty mogą być nieprzewidywalne; zalecana ostrożność."
+    },
+    {
+      "substance_a": "Mescaline",
+      "substance_b": "AMT",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "Mescaline",
+      "substance_b": "PCP",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "DOx",
+      "substance_b": "NBOMe",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "DOx",
+      "substance_b": "2C-x",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "DOx",
+      "substance_b": "5-MeO-xAT",
+      "status": "Caution",
+      "note": "Efekty mogą być nieprzewidywalne; zalecana ostrożność."
+    },
+    {
+      "substance_a": "DOx",
+      "substance_b": "AMT",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "DOx",
+      "substance_b": "PCP",
+      "status": "Unsafe",
+      "note": "Efekty mogą być nieprzewidywalne; zalecana ostrożność."
+    },
+    {
+      "substance_a": "NBOMe",
+      "substance_b": "2C-x",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "NBOMe",
+      "substance_b": "5-MeO-xAT",
+      "status": "Caution",
+      "note": "Efekty mogą być nieprzewidywalne; zalecana ostrożność."
+    },
+    {
+      "substance_a": "NBOMe",
+      "substance_b": "AMT",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "NBOMe",
+      "substance_b": "PCP",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "2C-x",
+      "substance_b": "5-MeO-xAT",
+      "status": "Caution",
+      "note": "Według tabeli miksów SIN/TripSit wymagana jest ostrożność — efekty bywają nieprzewidywalne lub silniejsze."
+    },
+    {
+      "substance_a": "2C-x",
+      "substance_b": "AMT",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "2C-x",
+      "substance_b": "PCP",
+      "status": "Low Risk & Synergy",
+      "note": "Według tabeli miksów SIN/TripSit niskie ryzyko; substancje mogą wzajemnie wzmacniać efekty."
+    },
+    {
+      "substance_a": "5-MeO-xAT",
+      "substance_b": "AMT",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "5-MeO-xAT",
+      "substance_b": "PCP",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
+    },
+    {
+      "substance_a": "AMT",
+      "substance_b": "PCP",
+      "status": "Dangerous",
+      "note": "Według tabeli miksów SIN/TripSit to połączenie zagraża zdrowiu i życiu — należy go unikać."
     }
   ]
 }
