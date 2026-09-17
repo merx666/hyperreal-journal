@@ -82,7 +82,6 @@ class JournalViewModelTest {
         every { substanceRepository.getAllSubstances() } returns flowOf(listOf(testSubstance))
 
         val vm = JournalViewModel(ingestionRepository, substanceRepository, timelineCalculator)
-        testDispatcher.scheduler.advanceUntilIdle()
 
         vm.entries.test {
             val entries = awaitItem()
@@ -97,9 +96,9 @@ class JournalViewModelTest {
         every { substanceRepository.getAllSubstances() } returns flowOf(listOf(testSubstance))
 
         val vm = JournalViewModel(ingestionRepository, substanceRepository, timelineCalculator)
-        testDispatcher.scheduler.advanceUntilIdle()
 
         vm.entries.test {
+            assertEquals(emptyList<JournalEntry>(), awaitItem())
             val entries = awaitItem()
             assertEquals(1, entries.size)
             assertEquals(testSubstance, entries[0].substance)
@@ -116,9 +115,9 @@ class JournalViewModelTest {
         every { substanceRepository.getAllSubstances() } returns flowOf(listOf(testSubstance))
 
         val vm = JournalViewModel(ingestionRepository, substanceRepository, timelineCalculator)
-        testDispatcher.scheduler.advanceUntilIdle()
 
         vm.entries.test {
+            assertEquals(emptyList<JournalEntry>(), awaitItem())
             val entries = awaitItem()
             assertEquals(2, entries.size)
             assertTrue(entries[0].ingestion.timestamp > entries[1].ingestion.timestamp)
@@ -132,13 +131,67 @@ class JournalViewModelTest {
         every { substanceRepository.getAllSubstances() } returns flowOf(emptyList()) // no substances
 
         val vm = JournalViewModel(ingestionRepository, substanceRepository, timelineCalculator)
-        testDispatcher.scheduler.advanceUntilIdle()
 
         vm.entries.test {
+            assertEquals(emptyList<JournalEntry>(), awaitItem())
             val entries = awaitItem()
             assertEquals(1, entries.size)
             assertNull(entries[0].substance)
             assertNull(entries[0].timelineStatus)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `searchQuery filters entries by name or notes`() = runTest {
+        val entryWithNotes = recentIngestion.copy(notes = "party with friends")
+        every { ingestionRepository.getAllIngestions() } returns flowOf(listOf(entryWithNotes, oldIngestion))
+        every { substanceRepository.getAllSubstances() } returns flowOf(listOf(testSubstance))
+
+        val vm = JournalViewModel(ingestionRepository, substanceRepository, timelineCalculator)
+
+        vm.setSearchQuery("party")
+        vm.entries.test {
+            assertEquals(emptyList<JournalEntry>(), awaitItem())
+            val filtered = awaitItem()
+            assertEquals(1, filtered.size)
+            assertEquals("party with friends", filtered[0].ingestion.notes)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `filter ACTIVE_ONLY includes only active entries`() = runTest {
+        // recentIngestion (1 hour ago, total 390 min) is active in PEAK
+        // oldIngestion (24 hours ago) is at BASELINE
+        every { ingestionRepository.getAllIngestions() } returns flowOf(listOf(recentIngestion, oldIngestion))
+        every { substanceRepository.getAllSubstances() } returns flowOf(listOf(testSubstance))
+
+        val vm = JournalViewModel(ingestionRepository, substanceRepository, timelineCalculator)
+
+        vm.setFilter(JournalFilter.ACTIVE_ONLY)
+        vm.entries.test {
+            assertEquals(emptyList<JournalEntry>(), awaitItem())
+            val active = awaitItem()
+            assertEquals(1, active.size)
+            assertEquals(recentIngestion.id, active[0].ingestion.id)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `activeEntries emits active substances with countdown`() = runTest {
+        every { ingestionRepository.getAllIngestions() } returns flowOf(listOf(recentIngestion, oldIngestion))
+        every { substanceRepository.getAllSubstances() } returns flowOf(listOf(testSubstance))
+
+        val vm = JournalViewModel(ingestionRepository, substanceRepository, timelineCalculator)
+
+        vm.activeEntries.test {
+            assertEquals(emptyList<ActiveEntryInfo>(), awaitItem())
+            val activeList = awaitItem()
+            assertEquals(1, activeList.size)
+            assertEquals("MDMA", activeList[0].entry.substance?.name)
+            assertNotNull(activeList[0].countdown.minutesToBaseline)
             cancelAndIgnoreRemainingEvents()
         }
     }

@@ -7,6 +7,7 @@ import info.hyperreal.journal.domain.model.Ingestion
 import info.hyperreal.journal.domain.model.Roa
 import info.hyperreal.journal.domain.model.Substance
 import info.hyperreal.journal.domain.repository.IngestionRepository
+import info.hyperreal.journal.domain.repository.InteractionRepository
 import info.hyperreal.journal.domain.repository.SubstanceRepository
 import info.hyperreal.journal.domain.usecase.InteractionChecker
 import info.hyperreal.journal.domain.usecase.InteractionWarning
@@ -16,13 +17,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class AddIngestionViewModel @Inject constructor(
     private val substanceRepository: SubstanceRepository,
     private val ingestionRepository: IngestionRepository,
+    private val interactionRepository: InteractionRepository,
     private val interactionChecker: InteractionChecker
 ) : ViewModel() {
 
@@ -45,6 +46,9 @@ class AddIngestionViewModel @Inject constructor(
     private val _ingestionTime = MutableStateFlow<Long>(System.currentTimeMillis())
     val ingestionTime: StateFlow<Long> = _ingestionTime.asStateFlow()
 
+    private val _notes = MutableStateFlow("")
+    val notes: StateFlow<String> = _notes.asStateFlow()
+
     private val _interactionWarnings = MutableStateFlow<List<InteractionWarning>>(emptyList())
     val interactionWarnings: StateFlow<List<InteractionWarning>> = _interactionWarnings.asStateFlow()
 
@@ -66,12 +70,22 @@ class AddIngestionViewModel @Inject constructor(
         _ingestionTime.value = timeMs
     }
 
+    fun setNotes(notes: String) {
+        _notes.value = notes
+    }
+
     fun checkInteractions() {
         val newSubst = _selectedSubstance.value ?: return
         viewModelScope.launch {
             val allSubstances = substanceRepository.getAllSubstances().first()
             val recentIngestions = ingestionRepository.getAllIngestions().first()
-            val warnings = interactionChecker.checkInteractions(newSubst, recentIngestions, allSubstances)
+            val allSinInteractions = interactionRepository.getAllInteractions()
+            val warnings = interactionChecker.checkInteractions(
+                newSubstance = newSubst,
+                recentIngestions = recentIngestions,
+                knownSubstances = allSubstances,
+                sinInteractions = allSinInteractions
+            )
             _interactionWarnings.value = warnings
         }
     }
@@ -81,6 +95,7 @@ class AddIngestionViewModel @Inject constructor(
         val roa = _selectedRoa.value ?: return
         val amount = _doseAmount.value ?: return
         val time = _ingestionTime.value
+        val note = _notes.value
 
         viewModelScope.launch {
             val ingestion = Ingestion(
@@ -90,7 +105,7 @@ class AddIngestionViewModel @Inject constructor(
                 doseAmount = amount,
                 doseUnit = roa.dose?.units ?: "mg",
                 timestamp = time,
-                notes = ""
+                notes = note
             )
             ingestionRepository.insertIngestion(ingestion)
             onComplete()

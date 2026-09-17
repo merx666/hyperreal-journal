@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Hyperreal App</string>
+    <string name="app_name">Hyperreal Journal</string>
+    <string name="widget_name">Hyperreal Timeline</string>
+    <string name="widget_description">Pokazuje aktywną substancję i aktualną fazę działania.</string>
 </resources>

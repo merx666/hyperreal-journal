@@ -37,16 +37,78 @@ class SettingsViewModel @Inject constructor(
             initialValue = true
         )
 
+    val isSecurityLockEnabled: StateFlow<Boolean> = userPreferencesRepository.userPreferencesFlow
+        .map { it.isSecurityLockEnabled }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = false
+        )
+
+    val widgetDiscreteMode: StateFlow<Boolean> = userPreferencesRepository.userPreferencesFlow
+        .map { it.widgetDiscreteMode }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = false
+        )
+
+    val widgetShowCountdown: StateFlow<Boolean> = userPreferencesRepository.userPreferencesFlow
+        .map { it.widgetShowCountdown }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = true
+        )
+
+    private val currentPinHash: StateFlow<String?> = userPreferencesRepository.userPreferencesFlow
+        .map { it.pinHash }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null
+        )
+
     private val _showDeleteConfirm = MutableStateFlow(false)
     val showDeleteConfirm: StateFlow<Boolean> = _showDeleteConfirm.asStateFlow()
 
     private val _deleteComplete = MutableStateFlow(false)
     val deleteComplete: StateFlow<Boolean> = _deleteComplete.asStateFlow()
 
+    fun toggleWidgetDiscreteMode(context: Context, enabled: Boolean) {
+        viewModelScope.launch {
+            userPreferencesRepository.updateWidgetDiscreteMode(enabled)
+            info.hyperreal.journal.ui.widget.TimelineWidgetProvider.updateAllWidgets(context)
+        }
+    }
+
+    fun toggleWidgetShowCountdown(context: Context, enabled: Boolean) {
+        viewModelScope.launch {
+            userPreferencesRepository.updateWidgetShowCountdown(enabled)
+            info.hyperreal.journal.ui.widget.TimelineWidgetProvider.updateAllWidgets(context)
+        }
+    }
+
     fun toggleDarkMode(enabled: Boolean) {
         viewModelScope.launch {
             userPreferencesRepository.updateIsDarkMode(enabled)
         }
+    }
+
+    fun setPin(pin: String) {
+        viewModelScope.launch {
+            userPreferencesRepository.setPin(pin)
+        }
+    }
+
+    fun disableSecurityLock() {
+        viewModelScope.launch {
+            userPreferencesRepository.removePin()
+        }
+    }
+
+    fun verifyPin(pin: String): Boolean {
+        return userPreferencesRepository.verifyPin(pin, currentPinHash.value)
     }
 
     fun exportData(context: Context) {
@@ -57,6 +119,7 @@ class SettingsViewModel @Inject constructor(
             try {
                 val file = File(context.cacheDir, "hyperreal_journal_export.json")
                 file.writeText(json)
+                file.deleteOnExit()
 
                 val uri: Uri = FileProvider.getUriForFile(
                     context,

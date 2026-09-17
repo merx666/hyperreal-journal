@@ -4,6 +4,15 @@
 
 # Room
 -keep class * extends androidx.room.RoomDatabase
+-keep @androidx.room.Entity class * { *; }
+-keep @androidx.room.Dao interface * { *; }
+
+# Domain Models & Gson Reflection
+-keep class info.hyperreal.journal.domain.model.** { *; }
+-keepclassmembers class info.hyperreal.journal.domain.model.** { <fields>; }
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class com.google.gson.** { *; }
 
 # Coroutines
 -keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
