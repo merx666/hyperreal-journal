@@ -38,15 +38,12 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="8dp" />
-
     <!-- Substance name and dose -->
     <TextView
         android:id="@+id/widget_substance_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Brak aktywnej substancji"
         android:textColor="#F8FAFC"
         android:textSize="17sp"
@@ -61,29 +58,23 @@
         android:textColor="#94A3B8"
         android:textSize="12sp" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10dp" />
-
     <!-- Progress bar -->
     <ProgressBar
         android:id="@+id/widget_progress_bar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="6dp"
+        android:layout_marginTop="10dp"
         android:max="100"
         android:progress="0"
         android:progressTint="#38BDF8" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="6dp" />
 
     <!-- Footer: Time info -->
     <TextView
         android:id="@+id/widget_time_elapsed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
         android:text="Dotknij, aby otworzyć aplikację"
         android:textColor="#64748B"
         android:textSize="10sp" />
