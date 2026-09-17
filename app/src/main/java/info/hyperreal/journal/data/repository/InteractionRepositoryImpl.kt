@@ -8,6 +8,7 @@ import info.hyperreal.journal.domain.repository.InteractionRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import timber.log.Timber
 import javax.inject.Inject
 
 class InteractionRepositoryImpl @Inject constructor(
@@ -45,7 +46,7 @@ class InteractionRepositoryImpl @Inject constructor(
                 )
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            Timber.e(e, "Failed to load interactions_sin.json")
         }
 
         cachedInteractions = interactionsList

@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.io.InputStreamReader
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -42,7 +43,7 @@ class SubstanceRepositoryImpl @Inject constructor(
             cachedSubstances = substances
             substances
         } catch (e: Exception) {
-            e.printStackTrace()
+            Timber.e(e, "Failed to load substances.json")
             emptyList()
         }
     }

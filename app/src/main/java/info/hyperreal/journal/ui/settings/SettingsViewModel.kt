@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.io.File
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -70,7 +71,7 @@ class SettingsViewModel @Inject constructor(
                 }
                 context.startActivity(Intent.createChooser(shareIntent, "Eksportuj dziennik"))
             } catch (e: Exception) {
-                e.printStackTrace()
+                Timber.e(e, "Failed to export data")
             }
         }
     }
