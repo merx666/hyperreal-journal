@@ -28,4 +28,7 @@ interface IngestionDao {
 
     @Query("SELECT * FROM ingestions WHERE timestamp >= :sinceTimestamp ORDER BY timestamp DESC")
     fun getIngestionsSince(sinceTimestamp: Long): Flow<List<IngestionEntity>>
+
+    @Query("DELETE FROM ingestions")
+    suspend fun deleteAll()
 }

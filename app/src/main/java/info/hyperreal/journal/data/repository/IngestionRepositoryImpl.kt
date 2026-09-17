@@ -40,4 +40,8 @@ class IngestionRepositoryImpl @Inject constructor(
             list.map { it.toDomainModel() }
         }
     }
+
+    override suspend fun deleteAll() {
+        ingestionDao.deleteAll()
+    }
 }

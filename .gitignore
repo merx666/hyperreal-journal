@@ -24,3 +24,4 @@ grok_durations.json
 # Build directories
 build/
 app/build/
+.idea/

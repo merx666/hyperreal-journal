@@ -10,12 +10,13 @@ import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import info.hyperreal.journal.data.local.datastore.UserPreferencesRepository
 import info.hyperreal.journal.domain.repository.IngestionRepository
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -35,6 +36,12 @@ class SettingsViewModel @Inject constructor(
             initialValue = true
         )
 
+    private val _showDeleteConfirm = MutableStateFlow(false)
+    val showDeleteConfirm: StateFlow<Boolean> = _showDeleteConfirm.asStateFlow()
+
+    private val _deleteComplete = MutableStateFlow(false)
+    val deleteComplete: StateFlow<Boolean> = _deleteComplete.asStateFlow()
+
     fun toggleDarkMode(enabled: Boolean) {
         viewModelScope.launch {
             userPreferencesRepository.updateIsDarkMode(enabled)
@@ -45,17 +52,17 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             val ingestions = ingestionRepository.getAllIngestions().first()
             val json = gson.toJson(ingestions)
-            
+
             try {
                 val file = File(context.cacheDir, "hyperreal_journal_export.json")
                 file.writeText(json)
-                
+
                 val uri: Uri = FileProvider.getUriForFile(
                     context,
                     "${context.packageName}.fileprovider",
                     file
                 )
-                
+
                 val shareIntent = Intent(Intent.ACTION_SEND).apply {
                     type = "application/json"
                     putExtra(Intent.EXTRA_STREAM, uri)
@@ -66,5 +73,25 @@ class SettingsViewModel @Inject constructor(
                 e.printStackTrace()
             }
         }
+    }
+
+    fun requestDeleteAll() {
+        _showDeleteConfirm.value = true
+    }
+
+    fun cancelDelete() {
+        _showDeleteConfirm.value = false
+    }
+
+    fun confirmDeleteAll() {
+        viewModelScope.launch {
+            ingestionRepository.deleteAll()
+            _showDeleteConfirm.value = false
+            _deleteComplete.value = true
+        }
+    }
+
+    fun dismissDeleteComplete() {
+        _deleteComplete.value = false
     }
 }

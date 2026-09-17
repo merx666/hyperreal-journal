@@ -10,4 +10,5 @@ interface IngestionRepository {
     suspend fun getIngestionById(id: Long): Ingestion?
     fun getAllIngestions(): Flow<List<Ingestion>>
     fun getIngestionsSince(timestamp: Long): Flow<List<Ingestion>>
+    suspend fun deleteAll()
 }

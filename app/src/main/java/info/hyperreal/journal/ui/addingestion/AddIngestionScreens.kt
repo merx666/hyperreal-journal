@@ -39,7 +39,7 @@ fun ChooseSubstanceScreen(
                     headlineContent = { Text(substance.name) },
                     modifier = Modifier.clickable { onSubstanceSelected(substance) }
                 )
-                Divider()
+                HorizontalDivider()
             }
         }
     }
@@ -58,7 +58,7 @@ fun ChooseRoaScreen(
                     headlineContent = { Text(roa.name) },
                     modifier = Modifier.clickable { onRoaSelected(roa) }
                 )
-                Divider()
+                HorizontalDivider()
             }
         }
     }

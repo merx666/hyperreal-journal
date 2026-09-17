@@ -30,71 +30,58 @@ fun MixCalculatorScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Kalkulator Miksów") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.primary
-                )
-            )
+    if (uiState.isLoading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
         }
-    ) { padding ->
-        if (uiState.isLoading) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
-        } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding)
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Sprawdź bezpieczeństwo połączenia dwóch substancji",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = 24.dp)
+            )
+
+            SubstanceSelector(
+                label = "Substancja A",
+                selectedSubstance = uiState.substanceA,
+                substances = uiState.substances,
+                onSubstanceSelected = viewModel::selectSubstanceA
+            )
+
+            IconButton(
+                onClick = { viewModel.swapSubstances() },
+                modifier = Modifier.padding(vertical = 8.dp)
             ) {
-                Text(
-                    text = "Sprawdź bezpieczeństwo połączenia dwóch substancji",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(bottom = 24.dp)
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = "Zamień",
+                    tint = MaterialTheme.colorScheme.primary
                 )
+            }
 
-                SubstanceSelector(
-                    label = "Substancja A",
-                    selectedSubstance = uiState.substanceA,
-                    substances = uiState.substances,
-                    onSubstanceSelected = viewModel::selectSubstanceA
+            SubstanceSelector(
+                label = "Substancja B",
+                selectedSubstance = uiState.substanceB,
+                substances = uiState.substances,
+                onSubstanceSelected = viewModel::selectSubstanceB
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            if (uiState.substanceA != null && uiState.substanceB != null) {
+                InteractionResultCard(
+                    interaction = uiState.interactionResult,
+                    subA = uiState.substanceA!!.name,
+                    subB = uiState.substanceB!!.name
                 )
-
-                IconButton(
-                    onClick = { viewModel.swapSubstances() },
-                    modifier = Modifier.padding(vertical = 8.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Refresh,
-                        contentDescription = "Zamień",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-
-                SubstanceSelector(
-                    label = "Substancja B",
-                    selectedSubstance = uiState.substanceB,
-                    substances = uiState.substances,
-                    onSubstanceSelected = viewModel::selectSubstanceB
-                )
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                if (uiState.substanceA != null && uiState.substanceB != null) {
-                    InteractionResultCard(
-                        interaction = uiState.interactionResult,
-                        subA = uiState.substanceA!!.name,
-                        subB = uiState.substanceB!!.name
-                    )
-                }
             }
         }
     }
