@@ -51,115 +51,168 @@ fun InsightsScreen(
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
-        // Stats cards row
+        // Time range filter chips
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            StatCard(
-                title = "Wpisy",
-                value = "${data.totalIngestions}",
-                icon = Icons.Default.DateRange,
-                modifier = Modifier.weight(1f)
-            )
-            StatCard(
-                title = "Substancje",
-                value = "${data.uniqueSubstances}",
-                icon = Icons.Default.Favorite,
-                modifier = Modifier.weight(1f)
-            )
-            StatCard(
-                title = "7 dni",
-                value = "${data.last7DaysCount}",
-                icon = Icons.Default.Star,
-                modifier = Modifier.weight(1f)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Top substance
-        data.topSubstance?.let { top ->
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+            InsightsTimeRange.entries.forEach { range ->
+                androidx.compose.material3.FilterChip(
+                    selected = data.selectedTimeRange == range,
+                    onClick = { viewModel.setTimeRange(range) },
+                    label = { Text(range.label) }
                 )
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        "Najczęściej",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        top,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
             }
         }
 
-        // Average gap
-        data.averageDaysBetween?.let { avg ->
-            Spacer(modifier = Modifier.height(8.dp))
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                )
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        "Średni odstęp",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        "%.1f dni".format(avg),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
-        }
+        Spacer(modifier = Modifier.height(12.dp))
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // 30-day histogram
-        if (data.last30DaysCounts.isNotEmpty()) {
-            Text(
-                "Ostatnie 30 dni",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            BarChart(
-                dayCounts = data.last30DaysCounts,
+        if (data.totalIngestions == 0) {
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(120.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Substance breakdown
-        if (data.substanceBreakdown.isNotEmpty()) {
-            Text(
-                "Substancje (top 10)",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            data.substanceBreakdown.forEach { item ->
-                SubstanceBar(
-                    name = item.name,
-                    count = item.count,
-                    maxCount = data.substanceBreakdown.first().count
+                    .padding(vertical = 48.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        imageVector = Icons.Default.DateRange,
+                        contentDescription = null,
+                        modifier = Modifier.size(64.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "Brak danych do analizy",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Dodaj wpisy w Dzienniku, aby zobaczyć statystyki, częstotliwość zażywania i wykresy.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        } else {
+            // Stats cards row
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                StatCard(
+                    title = "Wszystkie",
+                    value = "${data.totalIngestions}",
+                    icon = Icons.Default.DateRange,
+                    modifier = Modifier.weight(1f)
                 )
-                Spacer(modifier = Modifier.height(6.dp))
+                StatCard(
+                    title = "Substancje",
+                    value = "${data.uniqueSubstances}",
+                    icon = Icons.Default.Favorite,
+                    modifier = Modifier.weight(1f)
+                )
+                StatCard(
+                    title = data.selectedTimeRange.label,
+                    value = "${data.periodIngestionsCount}",
+                    icon = Icons.Default.Star,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Top substance
+            data.topSubstance?.let { top ->
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant
+                    )
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            "Najczęściej w wybranym okresie",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Text(
+                            top,
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+
+            // Average gap
+            data.averageDaysBetween?.let { avg ->
+                Spacer(modifier = Modifier.height(8.dp))
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant
+                    )
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            "Średni odstęp między przyjęciami",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Text(
+                            "%.1f dni".format(avg),
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Histogram
+            if (data.last30DaysCounts.isNotEmpty()) {
+                val chartTitle = when (data.selectedTimeRange) {
+                    InsightsTimeRange.DAYS_7 -> "Aktywność w ostatnich 7 dniach"
+                    InsightsTimeRange.DAYS_30 -> "Aktywność w ostatnich 30 dniach"
+                    InsightsTimeRange.DAYS_90 -> "Aktywność w ostatnich 90 dniach"
+                    InsightsTimeRange.ALL -> "Aktywność dzienna (ostatnie 30 dni)"
+                }
+                Text(
+                    chartTitle,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                BarChart(
+                    dayCounts = data.last30DaysCounts,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Substance breakdown
+            if (data.substanceBreakdown.isNotEmpty()) {
+                Text(
+                    "Podział według substancji",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                data.substanceBreakdown.forEach { item ->
+                    SubstanceBar(
+                        name = item.name,
+                        count = item.count,
+                        maxCount = data.substanceBreakdown.first().count
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                }
             }
         }
     }

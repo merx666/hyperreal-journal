@@ -200,4 +200,44 @@ class TimelineCalculatorTest {
         assertEquals(TimelinePhase.ONSET, result.phase)
         assert(result.progressPercent in 0f..1f) { "Progress ${result.progressPercent} not in [0, 1]" }
     }
+
+    // --- Countdown tests ---
+
+    @Test
+    fun `calculateCountdown in ONSET predicts COMEUP and baseline correctly`() {
+        // baseTime + 10 min (20 min remaining in onset, 380 min remaining in total 390 min)
+        val countdown = calculator.calculateCountdown(
+            substance, "Oral", baseTime,
+            currentTimeMs = baseTime + minutesToMs(10f)
+        )
+        assertEquals(TimelinePhase.ONSET, countdown.currentPhase)
+        assertEquals(20L, countdown.minutesToNextPhase)
+        assertEquals(TimelinePhase.COMEUP, countdown.nextPhase)
+        assertEquals(380L, countdown.minutesToBaseline)
+    }
+
+    @Test
+    fun `calculateCountdown in PEAK predicts OFFSET correctly`() {
+        // onset(30) + comeup(30) = 60. Peak lasts 120 min (until 180 min).
+        // At 80 min: 180 - 80 = 100 min left in peak, 390 - 80 = 310 min to baseline
+        val countdown = calculator.calculateCountdown(
+            substance, "Oral", baseTime,
+            currentTimeMs = baseTime + minutesToMs(80f)
+        )
+        assertEquals(TimelinePhase.PEAK, countdown.currentPhase)
+        assertEquals(100L, countdown.minutesToNextPhase)
+        assertEquals(TimelinePhase.OFFSET, countdown.nextPhase)
+        assertEquals(310L, countdown.minutesToBaseline)
+    }
+
+    @Test
+    fun `calculateCountdown at BASELINE returns zero remaining`() {
+        val countdown = calculator.calculateCountdown(
+            substance, "Oral", baseTime,
+            currentTimeMs = baseTime + minutesToMs(400f)
+        )
+        assertEquals(TimelinePhase.BASELINE, countdown.currentPhase)
+        assertEquals(null, countdown.minutesToNextPhase)
+        assertEquals(0L, countdown.minutesToBaseline)
+    }
 }

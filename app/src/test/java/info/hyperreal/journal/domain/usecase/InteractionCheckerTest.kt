@@ -203,4 +203,95 @@ class InteractionCheckerTest {
         assertEquals("Dangerous", result[0].status)
         assertEquals("forward", result[0].notes)
     }
+
+    // --- SIN database & Aliases ---
+
+    @Test
+    fun `detects interaction from SIN database list`() {
+        val alcohol = makeSubstance("alcohol", "Alkohol")
+        val ghb = makeSubstance("ghb", "GHB/GBL")
+        val ingestion = makeIngestion("alcohol")
+
+        val sinInteractions = listOf(
+            info.hyperreal.journal.domain.model.SubstanceInteraction(
+                substanceA = "Alkohol",
+                substanceB = "GHB/GBL",
+                status = info.hyperreal.journal.domain.model.InteractionStatus.DANGEROUS,
+                note = "Zagrożenie depresją oddechową"
+            )
+        )
+
+        val result = checker.checkInteractions(
+            newSubstance = ghb,
+            recentIngestions = listOf(ingestion),
+            knownSubstances = listOf(alcohol, ghb),
+            sinInteractions = sinInteractions
+        )
+
+        assertEquals(1, result.size)
+        assertEquals("Dangerous", result[0].status)
+        assertEquals("Alkohol", result[0].pastSubstanceName)
+        assertEquals("Zagrożenie depresją oddechową", result[0].notes)
+    }
+
+    @Test
+    fun `detects SIN interaction via alias`() {
+        val mdma = Substance(
+            id = "mdma",
+            name = "MDMA",
+            aliases = listOf("Ekstaza", "Molly")
+        )
+        val ssri = Substance(
+            id = "ssri",
+            name = "SSRI",
+            aliases = listOf("Sertralina", "Fluoksetyna")
+        )
+        val ingestion = makeIngestion("ssri")
+
+        val sinInteractions = listOf(
+            info.hyperreal.journal.domain.model.SubstanceInteraction(
+                substanceA = "MDMA",
+                substanceB = "SSRI",
+                status = info.hyperreal.journal.domain.model.InteractionStatus.UNSAFE,
+                note = "Ryzyko zespołu serotoninowego i stłumienie efektów"
+            )
+        )
+
+        val result = checker.checkInteractions(
+            newSubstance = mdma,
+            recentIngestions = listOf(ingestion),
+            knownSubstances = listOf(ssri, mdma),
+            sinInteractions = sinInteractions
+        )
+
+        assertEquals(1, result.size)
+        assertEquals("Unsafe", result[0].status)
+    }
+
+    @Test
+    fun `ignores past ingestions outside max window`() {
+        val alcohol = makeSubstance("alcohol", "Alkohol")
+        val ghb = makeSubstance("ghb", "GHB/GBL")
+        // 48 hours ago
+        val oldIngestion = makeIngestion("alcohol", timestamp = System.currentTimeMillis() - 48 * 3600_000L)
+
+        val sinInteractions = listOf(
+            info.hyperreal.journal.domain.model.SubstanceInteraction(
+                substanceA = "Alkohol",
+                substanceB = "GHB/GBL",
+                status = info.hyperreal.journal.domain.model.InteractionStatus.DANGEROUS,
+                note = "Zagrożenie"
+            )
+        )
+
+        val result = checker.checkInteractions(
+            newSubstance = ghb,
+            recentIngestions = listOf(oldIngestion),
+            knownSubstances = listOf(alcohol, ghb),
+            sinInteractions = sinInteractions,
+            maxWindowHours = 24
+        )
+
+        assertTrue("Old ingestion (>24h) should not trigger active warning", result.isEmpty())
+    }
 }

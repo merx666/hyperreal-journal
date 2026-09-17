@@ -2,6 +2,7 @@ package info.hyperreal.journal.ui.navigation
 
 sealed class Screen(val route: String) {
     data object Onboarding : Screen("onboarding")
+    data object SecurityLock : Screen("security_lock")
     data object Main : Screen("main")
     data object Journal : Screen("journal")
     data object Substances : Screen("substances")

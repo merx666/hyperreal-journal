@@ -162,7 +162,35 @@ fun MainScreen() {
             NavHost(
                 navController = navController,
                 startDestination = Screen.Journal.route,
-                modifier = Modifier.padding(padding)
+                modifier = Modifier.padding(padding),
+                enterTransition = {
+                    androidx.compose.animation.fadeIn(animationSpec = androidx.compose.animation.core.tween(250)) +
+                            androidx.compose.animation.slideInHorizontally(
+                                animationSpec = androidx.compose.animation.core.tween(250),
+                                initialOffsetX = { fullWidth -> fullWidth / 5 }
+                            )
+                },
+                exitTransition = {
+                    androidx.compose.animation.fadeOut(animationSpec = androidx.compose.animation.core.tween(250)) +
+                            androidx.compose.animation.slideOutHorizontally(
+                                animationSpec = androidx.compose.animation.core.tween(250),
+                                targetOffsetX = { fullWidth -> -fullWidth / 5 }
+                            )
+                },
+                popEnterTransition = {
+                    androidx.compose.animation.fadeIn(animationSpec = androidx.compose.animation.core.tween(250)) +
+                            androidx.compose.animation.slideInHorizontally(
+                                animationSpec = androidx.compose.animation.core.tween(250),
+                                initialOffsetX = { fullWidth -> -fullWidth / 5 }
+                            )
+                },
+                popExitTransition = {
+                    androidx.compose.animation.fadeOut(animationSpec = androidx.compose.animation.core.tween(250)) +
+                            androidx.compose.animation.slideOutHorizontally(
+                                animationSpec = androidx.compose.animation.core.tween(250),
+                                targetOffsetX = { fullWidth -> fullWidth / 5 }
+                            )
+                }
             ) {
                 composable(Screen.Journal.route) {
                     JournalScreen(

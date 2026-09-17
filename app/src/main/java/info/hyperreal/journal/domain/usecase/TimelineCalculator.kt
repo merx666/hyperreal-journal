@@ -19,6 +19,13 @@ data class TimelineStatus(
     val progressPercent: Float // 0.0 to 1.0 within the current phase
 )
 
+data class PhaseCountdown(
+    val currentPhase: TimelinePhase,
+    val minutesToNextPhase: Long?,
+    val nextPhase: TimelinePhase?,
+    val minutesToBaseline: Long?
+)
+
 class TimelineCalculator @Inject constructor() {
 
     fun calculatePhase(
@@ -77,5 +84,63 @@ class TimelineCalculator @Inject constructor() {
         }
 
         return TimelineStatus(TimelinePhase.BASELINE, 1.0f)
+    }
+
+    fun calculateCountdown(
+        substance: Substance,
+        roaName: String,
+        ingestionTimeMs: Long,
+        currentTimeMs: Long = System.currentTimeMillis()
+    ): PhaseCountdown {
+        val roa = substance.roas.find { it.name.equals(roaName, ignoreCase = true) }
+        val duration = roa?.duration ?: return PhaseCountdown(TimelinePhase.BASELINE, null, null, 0L)
+
+        val elapsedMinutes = (currentTimeMs - ingestionTimeMs) / (1000f * 60f)
+        val onset = duration.onset ?: 0f
+        val comeup = duration.comeup ?: 0f
+        val peak = duration.peak ?: 0f
+        val offset = duration.offset ?: 0f
+        val afterglow = duration.afterglow ?: 0f
+        val total = duration.total ?: (onset + comeup + peak + offset + afterglow)
+
+        if (elapsedMinutes < 0) {
+            val toStart = (-elapsedMinutes).toLong().coerceAtLeast(1)
+            val toBase = (total + toStart).toLong()
+            return PhaseCountdown(TimelinePhase.NOT_STARTED, toStart, TimelinePhase.ONSET, toBase)
+        }
+
+        val tOnset = onset
+        val tComeup = tOnset + comeup
+        val tPeak = tComeup + peak
+        val tOffset = tPeak + offset
+        val tAfterglow = tOffset + afterglow
+
+        val minToBaseline = (total - elapsedMinutes).toLong().coerceAtLeast(0)
+
+        return when {
+            elapsedMinutes < tOnset -> {
+                val toNext = (tOnset - elapsedMinutes).toLong().coerceAtLeast(1)
+                PhaseCountdown(TimelinePhase.ONSET, toNext, TimelinePhase.COMEUP, minToBaseline)
+            }
+            elapsedMinutes < tComeup -> {
+                val toNext = (tComeup - elapsedMinutes).toLong().coerceAtLeast(1)
+                PhaseCountdown(TimelinePhase.COMEUP, toNext, TimelinePhase.PEAK, minToBaseline)
+            }
+            elapsedMinutes < tPeak -> {
+                val toNext = (tPeak - elapsedMinutes).toLong().coerceAtLeast(1)
+                PhaseCountdown(TimelinePhase.PEAK, toNext, TimelinePhase.OFFSET, minToBaseline)
+            }
+            elapsedMinutes < tOffset -> {
+                val toNext = (tOffset - elapsedMinutes).toLong().coerceAtLeast(1)
+                PhaseCountdown(TimelinePhase.OFFSET, toNext, TimelinePhase.AFTERGLOW, minToBaseline)
+            }
+            elapsedMinutes < tAfterglow -> {
+                val toNext = (tAfterglow - elapsedMinutes).toLong().coerceAtLeast(1)
+                PhaseCountdown(TimelinePhase.AFTERGLOW, toNext, TimelinePhase.BASELINE, minToBaseline)
+            }
+            else -> {
+                PhaseCountdown(TimelinePhase.BASELINE, null, null, 0L)
+            }
+        }
     }
 }

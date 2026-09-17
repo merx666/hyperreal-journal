@@ -69,9 +69,10 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
-    // DataStore
+    // DataStore & Security
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.biometric)
 
     // Hilt
     implementation(libs.hilt.android)

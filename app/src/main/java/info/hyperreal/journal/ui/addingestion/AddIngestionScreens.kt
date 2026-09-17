@@ -181,12 +181,14 @@ fun ConfirmIngestionScreen(
     val dateFormatter = remember { SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()) }
     val timeFormatter = remember { SimpleDateFormat("HH:mm", Locale.getDefault()) }
 
+    val notes by viewModel.notes.collectAsState()
+
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Text("Potwierdzenie", style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(16.dp))
-        Text("Substancja: ${substance?.name}")
-        Text("Droga podania: ${roa?.name}")
-        Text("Dawka: $dose")
+        Text("Substancja: ${substance?.name}", style = MaterialTheme.typography.bodyLarge)
+        Text("Droga podania: ${roa?.name}", style = MaterialTheme.typography.bodyLarge)
+        Text("Dawka: $dose ${roa?.dose?.units ?: "mg"}", style = MaterialTheme.typography.bodyLarge)
         
         Spacer(modifier = Modifier.height(16.dp))
         Text("Czas przyjęcia:", style = MaterialTheme.typography.titleMedium)
@@ -202,11 +204,31 @@ fun ConfirmIngestionScreen(
             }
         }
 
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = notes,
+            onValueChange = viewModel::setNotes,
+            label = { Text("Notatki / Set & Setting (opcjonalnie)") },
+            modifier = Modifier.fillMaxWidth(),
+            maxLines = 3
+        )
+
         if (warnings.isNotEmpty()) {
             Spacer(modifier = Modifier.height(16.dp))
-            Text("⚠️ Ostrzeżenia (Interakcje)", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.error)
-            warnings.forEach { warn ->
-                Text("• Z ${warn.pastSubstanceName}: ${warn.status}", color = MaterialTheme.colorScheme.error)
+            Card(
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(12.dp)) {
+                    Text("⚠️ Ostrzeżenia o interakcjach:", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onErrorContainer)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    warnings.forEach { warn ->
+                        Text("• Z ${warn.pastSubstanceName}: ${warn.status}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onErrorContainer)
+                        warn.notes?.let { n ->
+                            Text("   $n", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.8f))
+                        }
+                    }
+                }
             }
         }
         
