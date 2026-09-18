@@ -3,9 +3,12 @@ package info.hyperreal.journal.ui.journal
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import info.hyperreal.journal.domain.model.CheckIn
 import info.hyperreal.journal.domain.model.Ingestion
+import info.hyperreal.journal.domain.model.ShulginRating
 import info.hyperreal.journal.domain.model.Substance
 import info.hyperreal.journal.domain.model.SubstanceInteraction
+import info.hyperreal.journal.domain.repository.CheckInRepository
 import info.hyperreal.journal.domain.repository.IngestionRepository
 import info.hyperreal.journal.domain.repository.InteractionRepository
 import info.hyperreal.journal.domain.repository.SubstanceRepository
@@ -37,7 +40,8 @@ data class ActiveEntryInfo(
 data class JournalEntry(
     val ingestion: Ingestion,
     val substance: Substance?,
-    val timelineStatus: TimelineStatus?
+    val timelineStatus: TimelineStatus?,
+    val checkIns: List<CheckIn> = emptyList()
 )
 
 @HiltViewModel
@@ -45,6 +49,7 @@ class JournalViewModel @Inject constructor(
     private val ingestionRepository: IngestionRepository,
     private val substanceRepository: SubstanceRepository,
     private val timelineCalculator: TimelineCalculator,
+    private val checkInRepository: CheckInRepository,
     private val interactionRepository: InteractionRepository? = null
 ) : ViewModel() {
 
@@ -56,15 +61,18 @@ class JournalViewModel @Inject constructor(
 
     private val rawEntries: StateFlow<List<JournalEntry>> = combine(
         ingestionRepository.getAllIngestions(),
-        substanceRepository.getAllSubstances()
-    ) { ingestions, substances ->
+        substanceRepository.getAllSubstances(),
+        checkInRepository.getAllCheckIns()
+    ) { ingestions, substances, checkIns ->
         val now = System.currentTimeMillis()
+        val checkInsByIngestion = checkIns.groupBy { it.ingestionId }
         ingestions.map { ingestion ->
             val sub = substances.find { it.id == ingestion.substanceId }
             val status = sub?.let { 
                 timelineCalculator.calculatePhase(it, ingestion.roa, ingestion.timestamp, now) 
             }
-            JournalEntry(ingestion, sub, status)
+            val entryCheckIns = checkInsByIngestion[ingestion.id] ?: emptyList()
+            JournalEntry(ingestion, sub, status, entryCheckIns)
         }.sortedByDescending { it.ingestion.timestamp }
     }.stateIn(
         scope = viewModelScope,
@@ -173,6 +181,32 @@ class JournalViewModel @Inject constructor(
     fun deleteIngestion(ingestion: Ingestion) {
         viewModelScope.launch {
             ingestionRepository.deleteIngestion(ingestion)
+        }
+    }
+
+    fun addCheckIn(
+        ingestionId: Long,
+        phase: TimelinePhase,
+        rating: ShulginRating,
+        notes: String?,
+        timestamp: Long = System.currentTimeMillis()
+    ) {
+        viewModelScope.launch {
+            checkInRepository.insertCheckIn(
+                CheckIn(
+                    ingestionId = ingestionId,
+                    timestamp = timestamp,
+                    phase = phase,
+                    shulginRating = rating,
+                    notes = notes
+                )
+            )
+        }
+    }
+
+    fun deleteCheckIn(id: Long) {
+        viewModelScope.launch {
+            checkInRepository.deleteCheckIn(id)
         }
     }
 }
