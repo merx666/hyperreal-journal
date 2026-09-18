@@ -7,6 +7,7 @@ sealed class Screen(val route: String) {
     data object Journal : Screen("journal")
     data object Substances : Screen("substances")
     data object MixCalculator : Screen("mix_calculator")
+    data object MatrixExplorer : Screen("matrix_explorer")
     data object Insights : Screen("insights")
     data object Settings : Screen("settings")
 
