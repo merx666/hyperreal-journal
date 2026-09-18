@@ -3,14 +3,17 @@ package info.hyperreal.journal.ui.addingestion
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import info.hyperreal.journal.data.local.datastore.UserPreferencesRepository
 import info.hyperreal.journal.domain.model.Ingestion
 import info.hyperreal.journal.domain.model.Roa
 import info.hyperreal.journal.domain.model.Substance
+import info.hyperreal.journal.domain.model.ToleranceStatus
 import info.hyperreal.journal.domain.repository.IngestionRepository
 import info.hyperreal.journal.domain.repository.InteractionRepository
 import info.hyperreal.journal.domain.repository.SubstanceRepository
 import info.hyperreal.journal.domain.usecase.InteractionChecker
 import info.hyperreal.journal.domain.usecase.InteractionWarning
+import info.hyperreal.journal.domain.usecase.ToleranceCalculator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +27,9 @@ class AddIngestionViewModel @Inject constructor(
     private val substanceRepository: SubstanceRepository,
     private val ingestionRepository: IngestionRepository,
     private val interactionRepository: InteractionRepository,
-    private val interactionChecker: InteractionChecker
+    private val interactionChecker: InteractionChecker,
+    private val toleranceCalculator: ToleranceCalculator,
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
 
     val allSubstances: StateFlow<List<Substance>> = substanceRepository.getAllSubstances()
@@ -52,10 +57,32 @@ class AddIngestionViewModel @Inject constructor(
     private val _interactionWarnings = MutableStateFlow<List<InteractionWarning>>(emptyList())
     val interactionWarnings: StateFlow<List<InteractionWarning>> = _interactionWarnings.asStateFlow()
 
+    private val _toleranceStatus = MutableStateFlow<ToleranceStatus?>(null)
+    val toleranceStatus: StateFlow<ToleranceStatus?> = _toleranceStatus.asStateFlow()
+
     fun selectSubstance(substance: Substance) {
         _selectedSubstance.value = substance
         _selectedRoa.value = null // reset subsequent steps
         _doseAmount.value = null
+        checkTolerance(substance.id)
+    }
+
+    fun checkTolerance(substanceId: String? = _selectedSubstance.value?.id) {
+        if (substanceId == null) {
+            _toleranceStatus.value = null
+            return
+        }
+        viewModelScope.launch {
+            val ingestions = ingestionRepository.getAllIngestions().first()
+            val overrides = userPreferencesRepository.toleranceOverridesFlow.first()
+            val status = toleranceCalculator.getStatusForSubstance(
+                substanceId = substanceId,
+                ingestions = ingestions,
+                manualOverrides = overrides,
+                currentTimeMs = System.currentTimeMillis()
+            )
+            _toleranceStatus.value = status
+        }
     }
 
     fun selectRoa(roa: Roa) {

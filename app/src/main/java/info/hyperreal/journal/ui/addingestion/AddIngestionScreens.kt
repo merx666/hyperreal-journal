@@ -5,17 +5,22 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import info.hyperreal.journal.domain.model.Roa
 import info.hyperreal.journal.domain.model.Substance
+import info.hyperreal.journal.domain.model.ToleranceRiskLevel
+import info.hyperreal.journal.domain.model.ToleranceStatus
 import info.hyperreal.journal.domain.usecase.DoseConverter
+import info.hyperreal.journal.ui.theme.HyperrealWarning
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -75,6 +80,7 @@ fun ChooseRoaScreen(
 fun EnterDoseScreen(
     substance: Substance? = null,
     roa: Roa,
+    toleranceStatus: ToleranceStatus? = null,
     onDoseEntered: (Float, String?) -> Unit
 ) {
     val doseConverter = remember { DoseConverter() }
@@ -106,6 +112,13 @@ fun EnterDoseScreen(
             style = MaterialTheme.typography.titleLarge
         )
         Spacer(modifier = Modifier.height(12.dp))
+
+        toleranceStatus?.let { status ->
+            if (status.resetProgressPercent < 100 || status.riskLevel != ToleranceRiskLevel.SAFE) {
+                ToleranceAlertCard(status = status)
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+        }
 
         if (isCannabis && !manualMode) {
             // THC Calculator
@@ -377,6 +390,65 @@ fun EnterDoseScreen(
                     Text("Wróć do asystenta kalkulatora")
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ToleranceAlertCard(
+    status: ToleranceStatus,
+    modifier: Modifier = Modifier
+) {
+    val containerColor = when (status.riskLevel) {
+        ToleranceRiskLevel.DANGER -> MaterialTheme.colorScheme.errorContainer
+        ToleranceRiskLevel.WARNING -> HyperrealWarning.copy(alpha = 0.2f)
+        ToleranceRiskLevel.NOTICE -> MaterialTheme.colorScheme.surfaceVariant
+        ToleranceRiskLevel.SAFE -> MaterialTheme.colorScheme.surfaceVariant
+    }
+    val contentColor = when (status.riskLevel) {
+        ToleranceRiskLevel.DANGER -> MaterialTheme.colorScheme.onErrorContainer
+        ToleranceRiskLevel.WARNING -> HyperrealWarning
+        ToleranceRiskLevel.NOTICE -> MaterialTheme.colorScheme.primary
+        ToleranceRiskLevel.SAFE -> MaterialTheme.colorScheme.primary
+    }
+
+    Card(
+        colors = CardDefaults.cardColors(containerColor = containerColor),
+        shape = RoundedCornerShape(12.dp),
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Column(modifier = Modifier.padding(12.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "⚠️ Tolerancja: ${status.group.displayName}",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = contentColor
+                )
+                Text(
+                    text = "Reset: ${status.resetProgressPercent}%",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = contentColor
+                )
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = status.statusLabel,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = contentColor
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = status.harmReductionAdvice,
+                style = MaterialTheme.typography.bodySmall,
+                color = contentColor.copy(alpha = 0.9f)
+            )
         }
     }
 }

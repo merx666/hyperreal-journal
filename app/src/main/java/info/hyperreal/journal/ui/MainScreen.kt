@@ -239,10 +239,12 @@ fun MainScreen() {
                         val viewModel: AddIngestionViewModel = hiltViewModel(parentEntry)
                         val roa by viewModel.selectedRoa.collectAsState()
                         val substance by viewModel.selectedSubstance.collectAsState()
+                        val toleranceStatus by viewModel.toleranceStatus.collectAsState()
                         roa?.let {
                             EnterDoseScreen(
                                 substance = substance,
                                 roa = it,
+                                toleranceStatus = toleranceStatus,
                                 onDoseEntered = { dose, note ->
                                     viewModel.setDoseAmount(dose, note)
                                     navController.navigate(Screen.ConfirmIngestion.route)
