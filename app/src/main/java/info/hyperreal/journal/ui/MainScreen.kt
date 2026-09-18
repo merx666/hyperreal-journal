@@ -282,7 +282,9 @@ fun MainScreen() {
                     route = Screen.SubstanceDetail.route,
                     arguments = listOf(navArgument("substanceId") { type = NavType.StringType })
                 ) {
-                    SubstanceDetailScreen()
+                    SubstanceDetailScreen(
+                        onBackClick = { navController.popBackStack() }
+                    )
                 }
                 composable(Screen.MixCalculator.route) { MixCalculatorScreen() }
                 composable(Screen.MatrixExplorer.route) { MatrixExplorerScreen() }

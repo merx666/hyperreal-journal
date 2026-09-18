@@ -3,6 +3,7 @@ package info.hyperreal.journal.ui.substances
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import info.hyperreal.journal.domain.model.DurationParameters
 import info.hyperreal.journal.domain.model.Substance
 import info.hyperreal.journal.domain.repository.SubstanceRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,11 +13,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SubstancesViewModel @Inject constructor(
-    repository: SubstanceRepository
+    private val repository: SubstanceRepository
 ) : ViewModel() {
 
     private val searchQuery = MutableStateFlow("")
@@ -57,5 +59,23 @@ class SubstancesViewModel @Inject constructor(
 
     fun onClassFilterSelected(cls: String?) {
         selectedClass.value = cls
+    }
+
+    fun addCustomSubstance(
+        name: String,
+        roaName: String,
+        duration: DurationParameters,
+        onCreated: (Substance) -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            val created = repository.addCustomSubstance(name, roaName, duration)
+            onCreated(created)
+        }
+    }
+
+    fun deleteCustomSubstance(id: String) {
+        viewModelScope.launch {
+            repository.deleteCustomSubstance(id)
+        }
     }
 }

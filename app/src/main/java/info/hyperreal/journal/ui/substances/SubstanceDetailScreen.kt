@@ -16,9 +16,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -26,9 +29,13 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,7 +50,8 @@ import info.hyperreal.journal.ui.components.TimelineChart
 
 @Composable
 fun SubstanceDetailScreen(
-    viewModel: SubstanceDetailViewModel = hiltViewModel()
+    viewModel: SubstanceDetailViewModel = hiltViewModel(),
+    onBackClick: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -255,6 +263,49 @@ fun SubstanceDetailScreen(
                     interactions.forEach { interaction ->
                         InteractionChip(interaction = interaction, currentSubstanceName = s.name)
                         Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+
+                val isCustom = s.classes.contains("Własne") || s.id.startsWith("custom_")
+                if (isCustom) {
+                    Spacer(modifier = Modifier.height(32.dp))
+                    var showDeleteConfirm by remember { mutableStateOf(false) }
+
+                    Button(
+                        onClick = { showDeleteConfirm = true },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                        shape = RoundedCornerShape(10.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(Icons.Default.Delete, contentDescription = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Usuń tę własną substancję")
+                    }
+
+                    if (showDeleteConfirm) {
+                        AlertDialog(
+                            onDismissRequest = { showDeleteConfirm = false },
+                            title = { Text("Usunąć substancję?") },
+                            text = { Text("Czy na pewno chcesz usunąć substancję \"${s.name}\"? Zostanie ona usunięta z bazy.") },
+                            confirmButton = {
+                                Button(
+                                    onClick = {
+                                        showDeleteConfirm = false
+                                        viewModel.deleteCustomSubstance {
+                                            onBackClick()
+                                        }
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                                ) {
+                                    Text("Usuń")
+                                }
+                            },
+                            dismissButton = {
+                                TextButton(onClick = { showDeleteConfirm = false }) {
+                                    Text("Anuluj")
+                                }
+                            }
+                        )
                     }
                 }
             }
