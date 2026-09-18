@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import info.hyperreal.journal.data.local.dao.CheckInDao
+import info.hyperreal.journal.data.local.dao.CustomSubstanceDao
 import info.hyperreal.journal.data.local.dao.IngestionDao
 import info.hyperreal.journal.data.local.database.AppDatabase
 import javax.inject.Singleton
@@ -23,7 +24,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             AppDatabase.DATABASE_NAME
         )
-            .addMigrations(AppDatabase.MIGRATION_1_2)
+            .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3)
             .fallbackToDestructiveMigrationOnDowngrade()
             .build()
     }
@@ -38,5 +39,11 @@ object DatabaseModule {
     @Singleton
     fun provideCheckInDao(db: AppDatabase): CheckInDao {
         return db.checkInDao
+    }
+
+    @Provides
+    @Singleton
+    fun provideCustomSubstanceDao(db: AppDatabase): CustomSubstanceDao {
+        return db.customSubstanceDao
     }
 }

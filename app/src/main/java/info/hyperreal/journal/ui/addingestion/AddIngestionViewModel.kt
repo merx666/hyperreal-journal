@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import info.hyperreal.journal.data.local.datastore.UserPreferencesRepository
+import info.hyperreal.journal.domain.model.DurationParameters
 import info.hyperreal.journal.domain.model.Ingestion
 import info.hyperreal.journal.domain.model.Roa
 import info.hyperreal.journal.domain.model.Substance
@@ -65,6 +66,22 @@ class AddIngestionViewModel @Inject constructor(
         _selectedRoa.value = null // reset subsequent steps
         _doseAmount.value = null
         checkTolerance(substance.id)
+    }
+
+    fun addCustomSubstance(
+        name: String,
+        roaName: String,
+        duration: DurationParameters,
+        onCreated: (Substance) -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            val created = substanceRepository.addCustomSubstance(name, roaName, duration)
+            selectSubstance(created)
+            if (created.roas.isNotEmpty()) {
+                selectRoa(created.roas.first())
+            }
+            onCreated(created)
+        }
     }
 
     fun checkTolerance(substanceId: String? = _selectedSubstance.value?.id) {

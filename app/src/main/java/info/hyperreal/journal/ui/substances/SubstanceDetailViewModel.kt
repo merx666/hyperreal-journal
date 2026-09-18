@@ -81,4 +81,11 @@ class SubstanceDetailViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteCustomSubstance(onComplete: () -> Unit) {
+        viewModelScope.launch {
+            repository.deleteCustomSubstance(substanceId)
+            onComplete()
+        }
+    }
 }

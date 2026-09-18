@@ -218,6 +218,11 @@ fun MainScreen() {
                             onSubstanceSelected = {
                                 viewModel.selectSubstance(it)
                                 navController.navigate(Screen.ChooseRoa.route)
+                            },
+                            onAddCustomSubstance = { name, roaName, duration ->
+                                viewModel.addCustomSubstance(name, roaName, duration) {
+                                    navController.navigate(Screen.EnterDose.route)
+                                }
                             }
                         )
                     }
@@ -282,7 +287,9 @@ fun MainScreen() {
                     route = Screen.SubstanceDetail.route,
                     arguments = listOf(navArgument("substanceId") { type = NavType.StringType })
                 ) {
-                    SubstanceDetailScreen()
+                    SubstanceDetailScreen(
+                        onBackClick = { navController.popBackStack() }
+                    )
                 }
                 composable(Screen.MixCalculator.route) { MixCalculatorScreen() }
                 composable(Screen.MatrixExplorer.route) { MatrixExplorerScreen() }
