@@ -3,14 +3,19 @@ package info.hyperreal.journal.ui.insights
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import info.hyperreal.journal.data.local.datastore.UserPreferencesRepository
+import info.hyperreal.journal.domain.model.ReceptorGroup
+import info.hyperreal.journal.domain.model.ToleranceStatus
 import info.hyperreal.journal.domain.repository.IngestionRepository
 import info.hyperreal.journal.domain.repository.SubstanceRepository
+import info.hyperreal.journal.domain.usecase.ToleranceCalculator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -46,7 +51,9 @@ data class SubstanceCount(
 @HiltViewModel
 class InsightsViewModel @Inject constructor(
     private val ingestionRepository: IngestionRepository,
-    private val substanceRepository: SubstanceRepository
+    private val substanceRepository: SubstanceRepository,
+    private val userPreferencesRepository: UserPreferencesRepository,
+    private val toleranceCalculator: ToleranceCalculator
 ) : ViewModel() {
 
     private val _timeRange = MutableStateFlow(InsightsTimeRange.DAYS_30)
@@ -127,4 +134,31 @@ class InsightsViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = InsightsData()
     )
+
+    val toleranceStatuses: StateFlow<List<ToleranceStatus>> = combine(
+        ingestionRepository.getAllIngestions(),
+        userPreferencesRepository.toleranceOverridesFlow
+    ) { ingestions, overrides ->
+        toleranceCalculator.calculateAll(
+            ingestions = ingestions,
+            manualOverrides = overrides,
+            currentTimeMs = System.currentTimeMillis()
+        ).values.toList()
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+
+    fun setToleranceOverride(group: ReceptorGroup, timestampMs: Long) {
+        viewModelScope.launch {
+            userPreferencesRepository.setToleranceOverride(group, timestampMs)
+        }
+    }
+
+    fun clearToleranceOverride(group: ReceptorGroup) {
+        viewModelScope.launch {
+            userPreferencesRepository.clearToleranceOverride(group)
+        }
+    }
 }

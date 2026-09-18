@@ -6,8 +6,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import info.hyperreal.journal.data.local.database.AppDatabase
+import info.hyperreal.journal.data.local.dao.CheckInDao
 import info.hyperreal.journal.data.local.dao.IngestionDao
+import info.hyperreal.journal.data.local.database.AppDatabase
 import javax.inject.Singleton
 
 @Module
@@ -21,12 +22,21 @@ object DatabaseModule {
             app,
             AppDatabase::class.java,
             AppDatabase.DATABASE_NAME
-        ).build()
+        )
+            .addMigrations(AppDatabase.MIGRATION_1_2)
+            .fallbackToDestructiveMigrationOnDowngrade()
+            .build()
     }
 
     @Provides
     @Singleton
     fun provideIngestionDao(db: AppDatabase): IngestionDao {
         return db.ingestionDao
+    }
+
+    @Provides
+    @Singleton
+    fun provideCheckInDao(db: AppDatabase): CheckInDao {
+        return db.checkInDao
     }
 }

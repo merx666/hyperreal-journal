@@ -1380,5 +1380,350 @@
             }
         ],
         "interactions": []
+    },
+    {
+        "id": "Kodeina",
+        "name": "Kodeina",
+        "aliases": [
+            "Codeine",
+            "Thiocodin",
+            "Antidol",
+            "Efferalgan Codeine",
+            "Metylomorfina"
+        ],
+        "summary": "Naturalny alkaloid opium, prolek metabolizowany w wątrobie przez enzym CYP2D6 do morfiny. Działa przeciwbólowo, przeciwkaszlowo i uspokajająco.",
+        "harmReduction": "Śmiertelne ryzyko paracetamolu w preparatach złożonych (np. Antidol) — bezwzględnie stosuj ekstrakcję zimną wodą (CWE), jeśli dawka paracetamolu miałaby przekroczyć 1000 mg. Nie łącz z depresantami (alkohol, benzo). Efekt sufitowy przy ~300-400 mg.",
+        "classes": [
+            "Opioid",
+            "Depresant"
+        ],
+        "roas": [
+            {
+                "name": "Oral",
+                "dose": {
+                    "units": "mg",
+                    "threshold": 15.0,
+                    "light": 30.0,
+                    "common": 60.0,
+                    "strong": 100.0,
+                    "heavy": 150.0
+                },
+                "duration": {
+                    "onset": 20.0,
+                    "comeup": 30.0,
+                    "peak": 120.0,
+                    "offset": 120.0,
+                    "afterglow": 60.0,
+                    "total": 300.0
+                }
+            }
+        ],
+        "interactions": []
+    },
+    {
+        "id": "Morfina",
+        "name": "Morfina",
+        "aliases": [
+            "Morphine",
+            "MST Continus",
+            "Sevredol",
+            "Vendal",
+            "M"
+        ],
+        "summary": "Główny alkaloid maku lekarskiego i wzorzec siły przeciwbólowej opioidów. Silny agonista receptorów mi-opioidowych wywołujący głęboką analgezję, euforię i sedację.",
+        "harmReduction": "Bardzo niska biodostępność po podaniu doustnym (~30%). Zmiana drogi podania na dożylną drastycznie zwiększa siłę działania i ryzyko zgonu. Bezwzględnie miej w pogotowiu nalokson. Nie używaj w samotności.",
+        "classes": [
+            "Opioid",
+            "Depresant"
+        ],
+        "roas": [
+            {
+                "name": "Oral",
+                "dose": {
+                    "units": "mg",
+                    "threshold": 10.0,
+                    "light": 15.0,
+                    "common": 30.0,
+                    "strong": 50.0,
+                    "heavy": 75.0
+                },
+                "duration": {
+                    "onset": 20.0,
+                    "comeup": 40.0,
+                    "peak": 120.0,
+                    "offset": 120.0,
+                    "afterglow": 60.0,
+                    "total": 300.0
+                }
+            },
+            {
+                "name": "Intravenous",
+                "dose": {
+                    "units": "mg",
+                    "threshold": 2.0,
+                    "light": 5.0,
+                    "common": 10.0,
+                    "strong": 15.0,
+                    "heavy": 25.0
+                },
+                "duration": {
+                    "onset": 0.5,
+                    "comeup": 2.0,
+                    "peak": 60.0,
+                    "offset": 90.0,
+                    "afterglow": 60.0,
+                    "total": 210.0
+                }
+            },
+            {
+                "name": "Rectal",
+                "dose": {
+                    "units": "mg",
+                    "threshold": 5.0,
+                    "light": 10.0,
+                    "common": 20.0,
+                    "strong": 35.0,
+                    "heavy": 50.0
+                },
+                "duration": {
+                    "onset": 10.0,
+                    "comeup": 20.0,
+                    "peak": 90.0,
+                    "offset": 120.0,
+                    "afterglow": 60.0,
+                    "total": 270.0
+                }
+            }
+        ],
+        "interactions": []
+    },
+    {
+        "id": "Oksykodon",
+        "name": "Oksykodon",
+        "aliases": [
+            "Oxycodone",
+            "OxyContin",
+            "Oxydolor",
+            "Reltebon",
+            "Oxy"
+        ],
+        "summary": "Półsyntetyczny opioid o wysokiej biodostępności doustnej (~60-87%), około 1.5-2x silniejszy od doustnej morfiny. Charakteryzuje się bardziej profilowaną, 'energetyczną' euforią.",
+        "harmReduction": "Uważaj na preparaty o przedłużonym uwalnianiu (CR) — ich kruszenie powoduje natychmiastowe uwolnienie całej dawki (dose dumping), co u osób bez tolerancji prowadzi do zapaści oddechowej. Nigdy nie łącz z alkoholem ani benzodiazepinami.",
+        "classes": [
+            "Opioid",
+            "Depresant"
+        ],
+        "roas": [
+            {
+                "name": "Oral",
+                "dose": {
+                    "units": "mg",
+                    "threshold": 2.5,
+                    "light": 5.0,
+                    "common": 10.0,
+                    "strong": 20.0,
+                    "heavy": 30.0
+                },
+                "duration": {
+                    "onset": 20.0,
+                    "comeup": 30.0,
+                    "peak": 90.0,
+                    "offset": 90.0,
+                    "afterglow": 60.0,
+                    "total": 240.0
+                }
+            },
+            {
+                "name": "Insufflated",
+                "dose": {
+                    "units": "mg",
+                    "threshold": 2.5,
+                    "light": 5.0,
+                    "common": 10.0,
+                    "strong": 15.0,
+                    "heavy": 25.0
+                },
+                "duration": {
+                    "onset": 5.0,
+                    "comeup": 15.0,
+                    "peak": 60.0,
+                    "offset": 60.0,
+                    "afterglow": 30.0,
+                    "total": 180.0
+                }
+            }
+        ],
+        "interactions": []
+    },
+    {
+        "id": "Fentanyl",
+        "name": "Fentanyl",
+        "aliases": [
+            "Durogesic",
+            "Matrifen",
+            "Actiq",
+            "Fenta"
+        ],
+        "summary": "Syntetyczny opioid o ultrawysokiej sile działania — 50-100 razy silniejszy od morfiny. Szybki onset, krótki czas działania przy drogach śluzówkowych i dożylnych.",
+        "harmReduction": "EKSTREMALNE RYZYKO ZGONU. Dawka śmiertelna dla osoby bez tolerancji to około 2 mg. Ryzyko zespołu sztywnej klatki piersiowej (wooden chest syndrome), uniemożliwiającego oddychanie. Zawsze posiadaj nalokson (spray donosowy Nyxoid) i używaj pasków testowych.",
+        "classes": [
+            "Opioid",
+            "Syntetyczny opioid",
+            "Depresant"
+        ],
+        "roas": [
+            {
+                "name": "Sublingual",
+                "dose": {
+                    "units": "mg",
+                    "threshold": 0.05,
+                    "light": 0.1,
+                    "common": 0.2,
+                    "strong": 0.4,
+                    "heavy": 0.8
+                },
+                "duration": {
+                    "onset": 5.0,
+                    "comeup": 10.0,
+                    "peak": 25.0,
+                    "offset": 45.0,
+                    "afterglow": 30.0,
+                    "total": 90.0
+                }
+            },
+            {
+                "name": "Intravenous",
+                "dose": {
+                    "units": "mg",
+                    "threshold": 0.02,
+                    "light": 0.05,
+                    "common": 0.1,
+                    "strong": 0.2,
+                    "heavy": 0.4
+                },
+                "duration": {
+                    "onset": 1.0,
+                    "comeup": 3.0,
+                    "peak": 15.0,
+                    "offset": 30.0,
+                    "afterglow": 30.0,
+                    "total": 60.0
+                }
+            },
+            {
+                "name": "Transdermal",
+                "dose": {
+                    "units": "mcg/h",
+                    "threshold": 12.5,
+                    "light": 25.0,
+                    "common": 50.0,
+                    "strong": 75.0,
+                    "heavy": 100.0
+                },
+                "duration": {
+                    "onset": 360.0,
+                    "comeup": 720.0,
+                    "peak": 1440.0,
+                    "offset": 1440.0,
+                    "afterglow": 720.0,
+                    "total": 4320.0
+                }
+            }
+        ],
+        "interactions": []
+    },
+    {
+        "id": "Buprenorfina",
+        "name": "Buprenorfina",
+        "aliases": [
+            "Buprenorphine",
+            "Subutex",
+            "Bunondol",
+            "Transtec"
+        ],
+        "summary": "Częściowy agonista receptora mi oraz antagonista kappa. Stosowana w leczeniu silnego bólu oraz w terapii substytucyjnej uzależnień od opioidów.",
+        "harmReduction": "Wyjątkowo silne powinowactwo do receptora — podana osobie pod wpływem pełnych agonistów (morfina, heroina) natychmiast wyprze je z receptorów, wywołując gwałtowny i ciężki zespół odstawienny (precipitated withdrawal). Posiada efekt pułapowy na depresję oddechową.",
+        "classes": [
+            "Opioid",
+            "Depresant"
+        ],
+        "roas": [
+            {
+                "name": "Sublingual",
+                "dose": {
+                    "units": "mg",
+                    "threshold": 0.2,
+                    "light": 0.5,
+                    "common": 1.5,
+                    "strong": 3.0,
+                    "heavy": 6.0
+                },
+                "duration": {
+                    "onset": 30.0,
+                    "comeup": 45.0,
+                    "peak": 150.0,
+                    "offset": 360.0,
+                    "afterglow": 120.0,
+                    "total": 720.0
+                }
+            },
+            {
+                "name": "Transdermal",
+                "dose": {
+                    "units": "mcg/h",
+                    "threshold": 17.5,
+                    "light": 35.0,
+                    "common": 52.5,
+                    "strong": 70.0,
+                    "heavy": 105.0
+                },
+                "duration": {
+                    "onset": 720.0,
+                    "comeup": 1440.0,
+                    "peak": 2880.0,
+                    "offset": 1440.0,
+                    "afterglow": 720.0,
+                    "total": 5760.0
+                }
+            }
+        ],
+        "interactions": []
+    },
+    {
+        "id": "Metadon",
+        "name": "Metadon",
+        "aliases": [
+            "Methadone",
+            "Moloid",
+            "Polterminal"
+        ],
+        "summary": "Syntetyczny, pełny agonista receptorów opioidowych o bardzo długim okresie półtrwania (24-36h) i właściwościach antagonisty NMDA. Standard w programach substytucyjnych.",
+        "harmReduction": "Ze względu na powolną eliminację metadon kumuluje się w organizmie przy codziennym przyjmowaniu. Wielu zgonów dochodzi przez zbyt szybkie zwiększanie dawek w pierwszych dniach. Nie łącz z alkoholem, benzodiazepinami ani lekami wydłużającymi odstęp QT.",
+        "classes": [
+            "Opioid",
+            "Depresant"
+        ],
+        "roas": [
+            {
+                "name": "Oral",
+                "dose": {
+                    "units": "mg",
+                    "threshold": 5.0,
+                    "light": 10.0,
+                    "common": 20.0,
+                    "strong": 40.0,
+                    "heavy": 60.0
+                },
+                "duration": {
+                    "onset": 45.0,
+                    "comeup": 60.0,
+                    "peak": 180.0,
+                    "offset": 720.0,
+                    "afterglow": 240.0,
+                    "total": 1440.0
+                }
+            }
+        ],
+        "interactions": []
     }
 ]

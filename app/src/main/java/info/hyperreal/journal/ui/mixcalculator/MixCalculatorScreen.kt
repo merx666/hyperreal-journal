@@ -22,11 +22,45 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import info.hyperreal.journal.domain.model.SubstanceInteraction
 import info.hyperreal.journal.domain.model.InteractionStatus
 import info.hyperreal.journal.domain.model.Substance
+import info.hyperreal.journal.ui.matrix.MatrixExplorerScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MixCalculatorScreen(
-    viewModel: MixCalculatorViewModel = hiltViewModel()
+    viewModel: MixCalculatorViewModel = hiltViewModel(),
+    initialTabIndex: Int = 0
+) {
+    var selectedTab by remember { mutableIntStateOf(initialTabIndex) }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        TabRow(
+            selectedTabIndex = selectedTab,
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.primary
+        ) {
+            Tab(
+                selected = selectedTab == 0,
+                onClick = { selectedTab = 0 },
+                text = { Text("Kalkulator pary", fontWeight = FontWeight.SemiBold) }
+            )
+            Tab(
+                selected = selectedTab == 1,
+                onClick = { selectedTab = 1 },
+                text = { Text("Eksplorator Macierzy SIN", fontWeight = FontWeight.SemiBold) }
+            )
+        }
+
+        when (selectedTab) {
+            0 -> PairMixCalculatorContent(viewModel = viewModel)
+            1 -> MatrixExplorerScreen()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun PairMixCalculatorContent(
+    viewModel: MixCalculatorViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
 

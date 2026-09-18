@@ -1,16 +1,22 @@
 package info.hyperreal.journal.ui.journal
 
 import app.cash.turbine.test
+import info.hyperreal.journal.domain.model.CheckIn
 import info.hyperreal.journal.domain.model.DurationParameters
 import info.hyperreal.journal.domain.model.Ingestion
 import info.hyperreal.journal.domain.model.Roa
+import info.hyperreal.journal.domain.model.ShulginRating
 import info.hyperreal.journal.domain.model.Substance
+import info.hyperreal.journal.domain.repository.CheckInRepository
 import info.hyperreal.journal.domain.repository.IngestionRepository
 import info.hyperreal.journal.domain.repository.SubstanceRepository
 import info.hyperreal.journal.domain.usecase.TimelineCalculator
 import info.hyperreal.journal.domain.usecase.TimelinePhase
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.slot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -29,6 +35,7 @@ class JournalViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
     private lateinit var ingestionRepository: IngestionRepository
     private lateinit var substanceRepository: SubstanceRepository
+    private lateinit var checkInRepository: CheckInRepository
     private lateinit var timelineCalculator: TimelineCalculator
 
     private val testSubstance = Substance(
@@ -68,7 +75,14 @@ class JournalViewModelTest {
         Dispatchers.setMain(testDispatcher)
         ingestionRepository = mockk()
         substanceRepository = mockk()
+        checkInRepository = mockk()
         timelineCalculator = TimelineCalculator() // use real calculator
+
+        every { ingestionRepository.getAllIngestions() } returns flowOf(emptyList())
+        every { substanceRepository.getAllSubstances() } returns flowOf(emptyList())
+        every { checkInRepository.getAllCheckIns() } returns flowOf(emptyList())
+        coEvery { checkInRepository.insertCheckIn(any()) } returns 1L
+        coEvery { checkInRepository.deleteCheckIn(any()) } returns Unit
     }
 
     @After
@@ -76,12 +90,19 @@ class JournalViewModelTest {
         Dispatchers.resetMain()
     }
 
+    private fun createViewModel() = JournalViewModel(
+        ingestionRepository = ingestionRepository,
+        substanceRepository = substanceRepository,
+        timelineCalculator = timelineCalculator,
+        checkInRepository = checkInRepository
+    )
+
     @Test
     fun `entries emits empty list when no ingestions`() = runTest {
         every { ingestionRepository.getAllIngestions() } returns flowOf(emptyList())
         every { substanceRepository.getAllSubstances() } returns flowOf(listOf(testSubstance))
 
-        val vm = JournalViewModel(ingestionRepository, substanceRepository, timelineCalculator)
+        val vm = createViewModel()
 
         vm.entries.test {
             val entries = awaitItem()
@@ -95,7 +116,7 @@ class JournalViewModelTest {
         every { ingestionRepository.getAllIngestions() } returns flowOf(listOf(recentIngestion))
         every { substanceRepository.getAllSubstances() } returns flowOf(listOf(testSubstance))
 
-        val vm = JournalViewModel(ingestionRepository, substanceRepository, timelineCalculator)
+        val vm = createViewModel()
 
         vm.entries.test {
             assertEquals(emptyList<JournalEntry>(), awaitItem())
@@ -114,7 +135,7 @@ class JournalViewModelTest {
         every { ingestionRepository.getAllIngestions() } returns flowOf(listOf(oldIngestion, recentIngestion))
         every { substanceRepository.getAllSubstances() } returns flowOf(listOf(testSubstance))
 
-        val vm = JournalViewModel(ingestionRepository, substanceRepository, timelineCalculator)
+        val vm = createViewModel()
 
         vm.entries.test {
             assertEquals(emptyList<JournalEntry>(), awaitItem())
@@ -130,7 +151,7 @@ class JournalViewModelTest {
         every { ingestionRepository.getAllIngestions() } returns flowOf(listOf(recentIngestion))
         every { substanceRepository.getAllSubstances() } returns flowOf(emptyList()) // no substances
 
-        val vm = JournalViewModel(ingestionRepository, substanceRepository, timelineCalculator)
+        val vm = createViewModel()
 
         vm.entries.test {
             assertEquals(emptyList<JournalEntry>(), awaitItem())
@@ -148,7 +169,7 @@ class JournalViewModelTest {
         every { ingestionRepository.getAllIngestions() } returns flowOf(listOf(entryWithNotes, oldIngestion))
         every { substanceRepository.getAllSubstances() } returns flowOf(listOf(testSubstance))
 
-        val vm = JournalViewModel(ingestionRepository, substanceRepository, timelineCalculator)
+        val vm = createViewModel()
 
         vm.setSearchQuery("party")
         vm.entries.test {
@@ -167,7 +188,7 @@ class JournalViewModelTest {
         every { ingestionRepository.getAllIngestions() } returns flowOf(listOf(recentIngestion, oldIngestion))
         every { substanceRepository.getAllSubstances() } returns flowOf(listOf(testSubstance))
 
-        val vm = JournalViewModel(ingestionRepository, substanceRepository, timelineCalculator)
+        val vm = createViewModel()
 
         vm.setFilter(JournalFilter.ACTIVE_ONLY)
         vm.entries.test {
@@ -184,7 +205,7 @@ class JournalViewModelTest {
         every { ingestionRepository.getAllIngestions() } returns flowOf(listOf(recentIngestion, oldIngestion))
         every { substanceRepository.getAllSubstances() } returns flowOf(listOf(testSubstance))
 
-        val vm = JournalViewModel(ingestionRepository, substanceRepository, timelineCalculator)
+        val vm = createViewModel()
 
         vm.activeEntries.test {
             assertEquals(emptyList<ActiveEntryInfo>(), awaitItem())
@@ -194,5 +215,83 @@ class JournalViewModelTest {
             assertNotNull(activeList[0].countdown.minutesToBaseline)
             cancelAndIgnoreRemainingEvents()
         }
+    }
+
+    @Test
+    fun `entries associates check-ins with correct ingestion`() = runTest {
+        val checkIn1 = CheckIn(
+            id = 10,
+            ingestionId = recentIngestion.id,
+            timestamp = System.currentTimeMillis() - 1800_000,
+            phase = TimelinePhase.COMEUP,
+            shulginRating = ShulginRating.PLUS_TWO,
+            notes = "Feeling energetic"
+        )
+        val checkIn2 = CheckIn(
+            id = 11,
+            ingestionId = oldIngestion.id,
+            timestamp = oldIngestion.timestamp + 3600_000,
+            phase = TimelinePhase.PEAK,
+            shulginRating = ShulginRating.PLUS_THREE,
+            notes = "Intense peak"
+        )
+
+        every { ingestionRepository.getAllIngestions() } returns flowOf(listOf(recentIngestion, oldIngestion))
+        every { substanceRepository.getAllSubstances() } returns flowOf(listOf(testSubstance))
+        every { checkInRepository.getAllCheckIns() } returns flowOf(listOf(checkIn1, checkIn2))
+
+        val vm = createViewModel()
+
+        vm.entries.test {
+            assertEquals(emptyList<JournalEntry>(), awaitItem())
+            val entries = awaitItem()
+            assertEquals(2, entries.size)
+
+            val recentEntry = entries.find { it.ingestion.id == recentIngestion.id }
+            val oldEntry = entries.find { it.ingestion.id == oldIngestion.id }
+
+            assertEquals(1, recentEntry?.checkIns?.size)
+            assertEquals(checkIn1, recentEntry?.checkIns?.first())
+
+            assertEquals(1, oldEntry?.checkIns?.size)
+            assertEquals(checkIn2, oldEntry?.checkIns?.first())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `addCheckIn calls repository insertCheckIn with correct parameters`() = runTest {
+        val capturedSlot = slot<CheckIn>()
+        coEvery { checkInRepository.insertCheckIn(capture(capturedSlot)) } returns 99L
+
+        val vm = createViewModel()
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        vm.addCheckIn(
+            ingestionId = recentIngestion.id,
+            phase = TimelinePhase.PEAK,
+            rating = ShulginRating.PLUS_THREE,
+            notes = "Very visual",
+            timestamp = 123456789L
+        )
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        coVerify(exactly = 1) { checkInRepository.insertCheckIn(any()) }
+        assertEquals(recentIngestion.id, capturedSlot.captured.ingestionId)
+        assertEquals(TimelinePhase.PEAK, capturedSlot.captured.phase)
+        assertEquals(ShulginRating.PLUS_THREE, capturedSlot.captured.shulginRating)
+        assertEquals("Very visual", capturedSlot.captured.notes)
+        assertEquals(123456789L, capturedSlot.captured.timestamp)
+    }
+
+    @Test
+    fun `deleteCheckIn calls repository deleteCheckIn`() = runTest {
+        val vm = createViewModel()
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        vm.deleteCheckIn(42L)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        coVerify(exactly = 1) { checkInRepository.deleteCheckIn(42L) }
     }
 }

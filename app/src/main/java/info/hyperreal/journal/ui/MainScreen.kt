@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -49,6 +50,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import info.hyperreal.journal.ui.addingestion.*
 import info.hyperreal.journal.ui.journal.JournalScreen
+import info.hyperreal.journal.ui.matrix.MatrixExplorerScreen
 import info.hyperreal.journal.ui.mixcalculator.MixCalculatorScreen
 import info.hyperreal.journal.ui.navigation.Screen
 import info.hyperreal.journal.ui.substances.SubstanceDetailScreen
@@ -73,12 +75,14 @@ fun MainScreen() {
 
     // Drawer items (secondary screens)
     val drawerItems = listOf(
+        Triple(Screen.MatrixExplorer, "Tabela Miksów SIN", Icons.Default.Warning),
         Triple(Screen.Insights, "Statystyki", Icons.Default.Star),
         Triple(Screen.Settings, "Ustawienia", Icons.Default.Settings)
     )
 
     ModalNavigationDrawer(
         drawerState = drawerState,
+        gesturesEnabled = drawerState.isOpen,
         drawerContent = {
             ModalDrawerSheet {
                 Spacer(modifier = Modifier.height(24.dp))
@@ -121,6 +125,7 @@ fun MainScreen() {
                                 Screen.Journal.route -> "Dziennik"
                                 Screen.Substances.route -> "Substancje"
                                 Screen.MixCalculator.route -> "Kalkulator Miksów"
+                                Screen.MatrixExplorer.route -> "Tabela Miksów SIN"
                                 Screen.Insights.route -> "Statystyki"
                                 Screen.Settings.route -> "Ustawienia"
                                 else -> "Hyperreal"
@@ -238,11 +243,15 @@ fun MainScreen() {
                         }
                         val viewModel: AddIngestionViewModel = hiltViewModel(parentEntry)
                         val roa by viewModel.selectedRoa.collectAsState()
+                        val substance by viewModel.selectedSubstance.collectAsState()
+                        val toleranceStatus by viewModel.toleranceStatus.collectAsState()
                         roa?.let {
                             EnterDoseScreen(
+                                substance = substance,
                                 roa = it,
-                                onDoseEntered = { dose ->
-                                    viewModel.setDoseAmount(dose)
+                                toleranceStatus = toleranceStatus,
+                                onDoseEntered = { dose, note ->
+                                    viewModel.setDoseAmount(dose, note)
                                     navController.navigate(Screen.ConfirmIngestion.route)
                                 }
                             )
@@ -276,6 +285,7 @@ fun MainScreen() {
                     SubstanceDetailScreen()
                 }
                 composable(Screen.MixCalculator.route) { MixCalculatorScreen() }
+                composable(Screen.MatrixExplorer.route) { MatrixExplorerScreen() }
                 composable(Screen.Insights.route) { info.hyperreal.journal.ui.insights.InsightsScreen() }
                 composable(Screen.Settings.route) { info.hyperreal.journal.ui.settings.SettingsScreen() }
             }

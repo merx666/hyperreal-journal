@@ -2,18 +2,42 @@ package info.hyperreal.journal.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
+import info.hyperreal.journal.data.local.dao.CheckInDao
 import info.hyperreal.journal.data.local.dao.IngestionDao
+import info.hyperreal.journal.data.local.entity.CheckInEntity
 import info.hyperreal.journal.data.local.entity.IngestionEntity
 
 @Database(
-    entities = [IngestionEntity::class],
-    version = 1,
+    entities = [IngestionEntity::class, CheckInEntity::class],
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract val ingestionDao: IngestionDao
+    abstract val checkInDao: CheckInDao
 
     companion object {
         const val DATABASE_NAME = "hyperreal_journal_db"
+
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS check_ins (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        ingestionId INTEGER NOT NULL,
+                        timestamp INTEGER NOT NULL,
+                        phase TEXT NOT NULL,
+                        shulginRating TEXT NOT NULL,
+                        notes TEXT,
+                        FOREIGN KEY(ingestionId) REFERENCES ingestions(id) ON DELETE CASCADE
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_check_ins_ingestionId ON check_ins(ingestionId)")
+            }
+        }
     }
 }
