@@ -1,0 +1,29 @@
+# Build outputs (166MB+ waste)
+build/
+app/build/
+.gradle/
+.kotlin/
+
+# IDE
+.idea/
+*.iml
+local.properties
+
+# Binary assets
+*.apk
+*.aab
+*.dex
+*.class
+*.jar
+*.so
+
+# Generated code (KSP/Hilt/Room)
+app/build/generated/
+app/build/ksp/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Obsidian vault (separate context)
+obsidian-vault/
