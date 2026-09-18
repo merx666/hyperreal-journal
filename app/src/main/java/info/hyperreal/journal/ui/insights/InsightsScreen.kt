@@ -17,16 +17,27 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -37,13 +48,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import info.hyperreal.journal.domain.model.ToleranceRiskLevel
+import info.hyperreal.journal.domain.model.ToleranceStatus
+import info.hyperreal.journal.ui.theme.HyperrealError
 import info.hyperreal.journal.ui.theme.HyperrealGreen
+import info.hyperreal.journal.ui.theme.HyperrealWarning
 
 @Composable
 fun InsightsScreen(
     viewModel: InsightsViewModel = hiltViewModel()
 ) {
     val data by viewModel.insights.collectAsState()
+    val toleranceStatuses by viewModel.toleranceStatuses.collectAsState()
 
     Column(
         modifier = Modifier
@@ -214,6 +230,159 @@ fun InsightsScreen(
                     Spacer(modifier = Modifier.height(6.dp))
                 }
             }
+        }
+
+        if (toleranceStatuses.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                "Stan Receptorów i Odstępy (Harm Reduction)",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+            toleranceStatuses.forEach { status ->
+                ReceptorStatusCard(
+                    status = status,
+                    onDateSelected = { selectedTime ->
+                        viewModel.setToleranceOverride(status.group, selectedTime)
+                    }
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ReceptorStatusCard(
+    status: ToleranceStatus,
+    onDateSelected: (Long) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var showDatePicker by remember { mutableStateOf(false) }
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = status.lastIngestionTime ?: System.currentTimeMillis()
+    )
+
+    if (showDatePicker) {
+        DatePickerDialog(
+            onDismissRequest = { showDatePicker = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    datePickerState.selectedDateMillis?.let { onDateSelected(it) }
+                    showDatePicker = false
+                }) {
+                    Text("Zapisz")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDatePicker = false }) {
+                    Text("Anuluj")
+                }
+            }
+        ) {
+            DatePicker(state = datePickerState)
+        }
+    }
+
+    val riskColor = when (status.riskLevel) {
+        ToleranceRiskLevel.SAFE -> HyperrealGreen
+        ToleranceRiskLevel.NOTICE -> MaterialTheme.colorScheme.primary
+        ToleranceRiskLevel.WARNING -> HyperrealWarning
+        ToleranceRiskLevel.DANGER -> HyperrealError
+    }
+
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = status.group.displayName,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        text = status.group.subtitle,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
+                    )
+                }
+
+                IconButton(onClick = { showDatePicker = true }) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Zmień datę ostatniego zażycia",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Progress Bar
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                LinearProgressIndicator(
+                    progress = { (status.resetProgressPercent / 100f).coerceIn(0f, 1f) },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(8.dp),
+                    color = riskColor,
+                    trackColor = Color.White.copy(alpha = 0.1f)
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(
+                    text = "${status.resetProgressPercent}%",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = riskColor
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Status Badge and Multiplier
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = status.statusLabel,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = riskColor
+                )
+                status.daysSinceLast?.let { days ->
+                    Text(
+                        text = "Ostatnio: %.1f dni temu".format(days),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            // Advice
+            Text(
+                text = status.harmReductionAdvice,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.9f)
+            )
         }
     }
 }
