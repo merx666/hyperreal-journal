@@ -31,7 +31,7 @@
   - `data class CheckIn(val id: Long, val ingestionId: Long, val timestamp: Long, val phase: TimelinePhase, val shulginRating: ShulginRating, val notes: String?)`
   - `interface CheckInRepository`
 
-- [ ] **Step 1: Create domain models**
+- [x] **Step 1: Create domain models**
 
 Create `app/src/main/java/info/hyperreal/journal/domain/model/CheckIn.kt`:
 ```kotlin
@@ -57,7 +57,7 @@ data class CheckIn(
 )
 ```
 
-- [ ] **Step 2: Create repository interface**
+- [x] **Step 2: Create repository interface**
 
 Create `app/src/main/java/info/hyperreal/journal/domain/repository/CheckInRepository.kt`:
 ```kotlin
@@ -74,12 +74,12 @@ interface CheckInRepository {
 }
 ```
 
-- [ ] **Step 3: Verify compilation**
+- [x] **Step 3: Verify compilation**
 
 Run: `JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradlew compileDebugKotlin`
 Expected: BUILD SUCCESSFUL
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add app/src/main/java/info/hyperreal/journal/domain/model/CheckIn.kt app/src/main/java/info/hyperreal/journal/domain/repository/CheckInRepository.kt
@@ -101,7 +101,7 @@ git commit -m "feat: add domain models and repository interface for check-ins"
 - Consumes: `CheckIn`, `ShulginRating`, `IngestionEntity`
 - Produces: `CheckInDao`, `AppDatabase.MIGRATION_1_2`
 
-- [ ] **Step 1: Create CheckInEntity**
+- [x] **Step 1: Create CheckInEntity**
 
 Create `app/src/main/java/info/hyperreal/journal/data/local/entity/CheckInEntity.kt`:
 ```kotlin
@@ -135,7 +135,7 @@ data class CheckInEntity(
 )
 ```
 
-- [ ] **Step 2: Create CheckInDao**
+- [x] **Step 2: Create CheckInDao**
 
 Create `app/src/main/java/info/hyperreal/journal/data/local/dao/CheckInDao.kt`:
 ```kotlin
@@ -164,7 +164,7 @@ interface CheckInDao {
 }
 ```
 
-- [ ] **Step 3: Create CheckInMapper**
+- [x] **Step 3: Create CheckInMapper**
 
 Create `app/src/main/java/info/hyperreal/journal/data/mapper/CheckInMapper.kt`:
 ```kotlin
@@ -200,22 +200,22 @@ fun CheckIn.toEntity(): CheckInEntity {
 }
 ```
 
-- [ ] **Step 4: Update AppDatabase with version 2 and MIGRATION_1_2**
+- [x] **Step 4: Update AppDatabase with version 2 and MIGRATION_1_2**
 
 Edit `app/src/main/java/info/hyperreal/journal/data/local/database/AppDatabase.kt`:
 Add `CheckInEntity::class`, `abstract val checkInDao: CheckInDao`, `version = 2`, and `MIGRATION_1_2`.
 
-- [ ] **Step 5: Update DatabaseModule to add migration and provide CheckInDao**
+- [x] **Step 5: Update DatabaseModule to add migration and provide CheckInDao**
 
 Edit `app/src/main/java/info/hyperreal/journal/di/DatabaseModule.kt`:
 Add `.addMigrations(AppDatabase.MIGRATION_1_2)` and `@Provides fun provideCheckInDao(db: AppDatabase): CheckInDao`.
 
-- [ ] **Step 6: Verify compilation and tests**
+- [x] **Step 6: Verify compilation and tests**
 
 Run: `JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradlew testDebugUnitTest`
 Expected: PASS
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add app/src/main/java/info/hyperreal/journal/data/local/entity/CheckInEntity.kt app/src/main/java/info/hyperreal/journal/data/local/dao/CheckInDao.kt app/src/main/java/info/hyperreal/journal/data/mapper/CheckInMapper.kt app/src/main/java/info/hyperreal/journal/data/local/database/AppDatabase.kt app/src/main/java/info/hyperreal/journal/di/DatabaseModule.kt
@@ -234,7 +234,7 @@ git commit -m "feat: add CheckInEntity, DAO, and database migration 1 to 2"
 - Consumes: `CheckInDao`, `CheckInRepository`
 - Produces: `CheckInRepositoryImpl` bound to `CheckInRepository`
 
-- [ ] **Step 1: Implement CheckInRepositoryImpl**
+- [x] **Step 1: Implement CheckInRepositoryImpl**
 
 Create `app/src/main/java/info/hyperreal/journal/data/repository/CheckInRepositoryImpl.kt`:
 ```kotlin
@@ -277,16 +277,16 @@ class CheckInRepositoryImpl @Inject constructor(
 }
 ```
 
-- [ ] **Step 2: Bind CheckInRepository in RepositoryModule**
+- [x] **Step 2: Bind CheckInRepository in RepositoryModule**
 
 Edit `app/src/main/java/info/hyperreal/journal/di/RepositoryModule.kt` to bind `CheckInRepositoryImpl` as `CheckInRepository`.
 
-- [ ] **Step 3: Verify compilation & tests**
+- [x] **Step 3: Verify compilation & tests**
 
 Run: `JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradlew testDebugUnitTest`
 Expected: PASS
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add app/src/main/java/info/hyperreal/journal/data/repository/CheckInRepositoryImpl.kt app/src/main/java/info/hyperreal/journal/di/RepositoryModule.kt
@@ -309,20 +309,20 @@ git commit -m "feat: implement CheckInRepository and bind in Hilt"
     - `fun addCheckIn(ingestionId: Long, phase: TimelinePhase, rating: ShulginRating, notes: String?)`
     - `fun deleteCheckIn(id: Long)`
 
-- [ ] **Step 1: Write test for JournalViewModel check-ins**
+- [x] **Step 1: Write test for JournalViewModel check-ins**
 
 Update `app/src/test/java/info/hyperreal/journal/ui/journal/JournalViewModelTest.kt` with tests for check-in adding and grouping into `JournalEntry`.
 
-- [ ] **Step 2: Update JournalViewModel with check-in support**
+- [x] **Step 2: Update JournalViewModel with check-in support**
 
 Inject `CheckInRepository` into `JournalViewModel`. Combine `getAllCheckIns()` into `rawEntries` so each `JournalEntry` contains its own `checkIns`. Add `addCheckIn` and `deleteCheckIn`.
 
-- [ ] **Step 3: Run unit tests to verify green**
+- [x] **Step 3: Run unit tests to verify green**
 
 Run: `JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradlew testDebugUnitTest`
 Expected: PASS
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add app/src/main/java/info/hyperreal/journal/ui/journal/JournalViewModel.kt app/src/test/java/info/hyperreal/journal/ui/journal/JournalViewModelTest.kt
@@ -342,7 +342,7 @@ git commit -m "feat: integrate check-ins into JournalViewModel with unit tests"
   - Button "Zrób Check-in (Skala Shulgina)" on active session card
   - Visual timeline displaying check-ins under journal entry card
 
-- [ ] **Step 1: Create CheckInBottomSheet composable in JournalScreen.kt**
+- [x] **Step 1: Create CheckInBottomSheet composable in JournalScreen.kt**
 
 Implement modal bottom sheet with:
 - Subtitle with substance name and time elapsed
@@ -351,16 +351,16 @@ Implement modal bottom sheet with:
 - Note OutlinedTextField
 - Save button calling `viewModel.addCheckIn`
 
-- [ ] **Step 2: Add check-in list & button to active card and entry cards**
+- [x] **Step 2: Add check-in list & button to active card and entry cards**
 
 Display check-ins inside each card with timestamp, phase badge, rating symbol, and notes.
 
-- [ ] **Step 3: Verify compilation & tests**
+- [x] **Step 3: Verify compilation & tests**
 
 Run: `JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradlew testDebugUnitTest compileDebugKotlin`
 Expected: PASS
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add app/src/main/java/info/hyperreal/journal/ui/journal/JournalScreen.kt
@@ -371,16 +371,16 @@ git commit -m "feat: add CheckInBottomSheet and timeline check-in rendering in J
 
 ### Task 6: End-to-End Verification & Full Regression
 
-- [ ] **Step 1: Run complete test suite**
+- [x] **Step 1: Run complete test suite**
 
 Run: `JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradlew testDebugUnitTest`
 Expected: All 75+ tests PASS.
 
-- [ ] **Step 2: Run assembleDebug**
+- [x] **Step 2: Run assembleDebug**
 
 Run: `JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradlew assembleDebug`
 Expected: BUILD SUCCESSFUL.
 
-- [ ] **Step 3: Update documentation and progress tracking**
+- [x] **Step 3: Update documentation and progress tracking**
 
 Update `walkthrough.md` and `.superpowers/sdd/progress.md`.
