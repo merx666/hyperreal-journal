@@ -88,4 +88,20 @@ class InteractionRepositoryTest {
         assertTrue("Metylofenidat CR should return interactions via Amfetamina alias", interactions.isNotEmpty())
         assertTrue("Should contain MAOI interaction", interactions.any { it.substanceA == "MAOI" || it.substanceB == "MAOI" })
     }
+
+    @Test
+    fun `does not treat unrelated substance name containing mph substring as Amfetamina`() = runTest {
+        val interaction = repository.getInteraction("Camphor", "MAOI")
+        assertNull("Camphor contains 'mph' but must NOT resolve to Amfetamina", interaction)
+
+        val interactions = repository.getInteractionsForSubstance("Lymph")
+        assertTrue("Lymph contains 'mph' but must NOT return Amfetamina interactions", interactions.isEmpty())
+    }
+
+    @Test
+    fun `resolves exact MPH acronym to Amfetamina interactions`() = runTest {
+        val interaction = repository.getInteraction("MPH", "MAOI")
+        assertNotNull("MPH should resolve to Amfetamina", interaction)
+        assertEquals(InteractionStatus.DANGEROUS, interaction?.status)
+    }
 }
