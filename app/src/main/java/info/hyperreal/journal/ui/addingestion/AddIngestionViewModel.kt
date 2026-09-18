@@ -62,8 +62,16 @@ class AddIngestionViewModel @Inject constructor(
         _selectedRoa.value = roa
     }
 
-    fun setDoseAmount(amount: Float) {
+    fun setDoseAmount(amount: Float, calculatorNote: String? = null) {
         _doseAmount.value = amount
+        if (!calculatorNote.isNullOrBlank()) {
+            val current = _notes.value
+            if (current.isBlank()) {
+                _notes.value = calculatorNote
+            } else if (!current.contains(calculatorNote)) {
+                _notes.value = "$current\n$calculatorNote"
+            }
+        }
     }
 
     fun setIngestionTime(timeMs: Long) {
