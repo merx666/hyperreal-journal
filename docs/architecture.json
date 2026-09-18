@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Hyperreal Journal — System Architecture",
+    "quality_profile": "showcase",
+    "viewBox": [1180, 560],
+    "views": [
+      {
+        "id": "full-flow",
+        "label": "Full Architecture Flow",
+        "focus": ["user", "ui_screens", "ui_viewmodels", "usecase_matrix", "domain_repos", "room_db"],
+        "note": "Clean Architecture flow from user interaction to local Room database."
+      },
+      {
+        "id": "domain-core",
+        "label": "Domain & Local Storage",
+        "focus": ["usecase_tolerance", "usecase_matrix", "usecase_timeline", "usecase_dose", "domain_repos", "json_assets", "room_db", "datastore"],
+        "note": "Pharmacology calculation engines and 100% offline data stores."
+      }
+    ]
+  },
+  "components": [
+    { "id": "user", "type": "external", "label": "App User", "sublabel": "Touch & Gesture Input", "pos": [50, 110], "size": [180, 64] },
+    { "id": "ui_screens", "type": "frontend", "label": "Compose Screens", "sublabel": "Journal · Matrix · Insights", "pos": [50, 240], "size": [180, 64] },
+    { "id": "ui_viewmodels", "type": "frontend", "label": "ViewModels", "sublabel": "MVI & StateFlow", "pos": [50, 370], "size": [180, 64] },
+
+    { "id": "usecase_tolerance", "type": "backend", "label": "ToleranceCalculator", "sublabel": "5-HT2A, SERT, MOR, GABA", "pos": [320, 80], "size": [210, 60] },
+    { "id": "usecase_matrix", "type": "backend", "label": "InteractionChecker", "sublabel": "333 SIN/TripSit Rules", "pos": [320, 180], "size": [210, 60] },
+    { "id": "usecase_timeline", "type": "backend", "label": "TimelineCalculator", "sublabel": "Pharmacokinetics PK", "pos": [320, 280], "size": [210, 60] },
+    { "id": "usecase_dose", "type": "backend", "label": "DoseConverter", "sublabel": "Opioids & RoA Calcs", "pos": [320, 380], "size": [210, 60] },
+
+    { "id": "hilt_di", "type": "security", "label": "Dagger Hilt DI", "sublabel": "Dependency Injection", "pos": [620, 100], "size": [200, 64] },
+    { "id": "domain_repos", "type": "backend", "label": "Repository Layer", "sublabel": "Domain Contracts & Impl", "pos": [620, 240], "size": [200, 70] },
+    { "id": "datastore", "type": "database", "label": "Jetpack DataStore", "sublabel": "Preferences & Overrides", "pos": [620, 370], "size": [200, 64] },
+
+    { "id": "json_assets", "type": "database", "label": "Bundled JSON Assets", "sublabel": "substances & mixes.json", "pos": [920, 170], "size": [190, 64] },
+    { "id": "room_db", "type": "database", "label": "Room SQLite (v2)", "sublabel": "Sessions & Check-ins", "pos": [920, 310], "size": [190, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Presentation Layer (Jetpack Compose)", "wraps": ["user", "ui_screens", "ui_viewmodels"] },
+    { "kind": "security-group", "label": "Domain Core (Harm Reduction Logic)", "wraps": ["usecase_tolerance", "usecase_matrix", "usecase_timeline", "usecase_dose"] },
+    { "kind": "region", "label": "Data & Offline Storage Layer", "wraps": ["hilt_di", "domain_repos", "datastore", "json_assets", "room_db"] }
+  ],
+  "connections": [
+    { "id": "c-user-screens", "from": "user", "to": "ui_screens", "fromSide": "bottom", "toSide": "top" },
+    { "id": "c-screens-vm", "from": "ui_screens", "to": "ui_viewmodels", "label": "StateFlow", "labelDy": 24, "variant": "emphasis", "fromSide": "bottom", "toSide": "top" },
+    { "id": "c-vm-matrix", "from": "ui_viewmodels", "to": "usecase_matrix", "variant": "emphasis", "fromSide": "right", "toSide": "left" },
+    { "id": "c-vm-tolerance", "from": "ui_viewmodels", "to": "usecase_tolerance", "fromSide": "right", "toSide": "left" },
+    { "id": "c-vm-timeline", "from": "ui_viewmodels", "to": "usecase_timeline", "fromSide": "right", "toSide": "left" },
+    { "id": "c-vm-dose", "from": "ui_viewmodels", "to": "usecase_dose", "fromSide": "right", "toSide": "left" },
+    { "id": "c-hilt-repos", "from": "hilt_di", "to": "domain_repos", "label": "inject", "labelDy": 24, "variant": "dashed", "fromSide": "bottom", "toSide": "top" },
+    { "id": "c-usecase-repos", "from": "usecase_matrix", "to": "domain_repos", "label": "query", "variant": "emphasis", "fromSide": "right", "toSide": "left" },
+    { "id": "c-repos-datastore", "from": "domain_repos", "to": "datastore", "label": "overrides", "labelDy": 24, "fromSide": "bottom", "toSide": "top" },
+    { "id": "c-repos-json", "from": "domain_repos", "to": "json_assets", "label": "read assets", "fromSide": "right", "toSide": "left" },
+    { "id": "c-repos-room", "from": "domain_repos", "to": "room_db", "label": "Room DAO", "variant": "emphasis", "fromSide": "right", "toSide": "left" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "Presentation Layer (Jetpack Compose)", "items": ["Material 3 UI with Edge-to-Edge and deep dark theme", "Reactivity driven by Kotlin StateFlow in MVI/MVVM pattern", "Active session timelines with Shulgin rating check-ins"] },
+    { "dot": "cyan", "title": "Domain Layer (Harm Reduction Engines)", "items": ["Receptor reset & cross-tolerance calculator (5-HT2A, SERT, MOR, GABA)", "Full offline SIN / TripSit matrix explorer with 333 interaction rules", "Equianalgesic opioid dose converter & pharmacokinetic curves"] },
+    { "dot": "violet", "title": "Data Layer (100% Offline Persistence)", "items": ["Room SQLite (v2) with foreign-key cascade for timeline check-ins", "Jetpack DataStore for biometric lock and receptor reset overrides", "Bundled static JSON datasets for offline substance & mix lookups"] }
+  ]
+}

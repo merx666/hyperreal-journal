@@ -62,7 +62,11 @@ To build from the command line:
 
 ## Architecture
 
-The project follows a standard Clean Architecture approach combined with MVVM.
+The project follows an offline-first **Clean Architecture** approach combined with **MVVM / MVI** and reactive Kotlin Coroutines / `StateFlow`.
+
+![Hyperreal Journal Architecture](docs/architecture.svg)
+
+> 💡 **Interactive Architecture Map:** An interactive version with dependency inspection, focus trails, and semantic search is available at [docs/architecture.html](docs/architecture.html).
 
 ### Directory Structure
 
