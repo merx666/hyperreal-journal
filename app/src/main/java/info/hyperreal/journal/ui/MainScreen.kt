@@ -218,6 +218,11 @@ fun MainScreen() {
                             onSubstanceSelected = {
                                 viewModel.selectSubstance(it)
                                 navController.navigate(Screen.ChooseRoa.route)
+                            },
+                            onAddCustomSubstance = { name, roaName, duration ->
+                                viewModel.addCustomSubstance(name, roaName, duration) {
+                                    navController.navigate(Screen.EnterDose.route)
+                                }
                             }
                         )
                     }

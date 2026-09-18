@@ -1,5 +1,6 @@
 package info.hyperreal.journal.ui.addingestion
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,6 +9,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,11 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import info.hyperreal.journal.domain.model.DurationParameters
 import info.hyperreal.journal.domain.model.Roa
 import info.hyperreal.journal.domain.model.Substance
 import info.hyperreal.journal.domain.model.ToleranceRiskLevel
 import info.hyperreal.journal.domain.model.ToleranceStatus
 import info.hyperreal.journal.domain.usecase.DoseConverter
+import info.hyperreal.journal.ui.substances.AddCustomSubstanceDialog
 import info.hyperreal.journal.ui.theme.HyperrealWarning
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -30,9 +36,12 @@ import kotlin.math.roundToInt
 @Composable
 fun ChooseSubstanceScreen(
     substances: List<Substance>,
-    onSubstanceSelected: (Substance) -> Unit
+    onSubstanceSelected: (Substance) -> Unit,
+    onAddCustomSubstance: ((name: String, roaName: String, duration: DurationParameters) -> Unit)? = null
 ) {
     var query by remember { mutableStateOf("") }
+    var showAddDialog by remember { mutableStateOf(false) }
+
     val filtered = if (query.isBlank()) substances else substances.filter {
         it.name.contains(query, ignoreCase = true) || it.aliases.any { alias -> alias.contains(query, ignoreCase = true) }
     }
@@ -42,17 +51,111 @@ fun ChooseSubstanceScreen(
             value = query,
             onValueChange = { query = it },
             label = { Text("Wybierz substancję") },
-            modifier = Modifier.fillMaxWidth().padding(16.dp)
+            placeholder = { Text("Szukaj substancji...") },
+            trailingIcon = {
+                if (query.isNotEmpty()) {
+                    IconButton(onClick = { query = "" }) {
+                        Icon(Icons.Default.Clear, contentDescription = "Wyczyść")
+                    }
+                }
+            },
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            singleLine = true
         )
-        LazyColumn {
-            items(filtered, key = { it.id }) { substance ->
-                ListItem(
-                    headlineContent = { Text(substance.name) },
-                    modifier = Modifier.clickable { onSubstanceSelected(substance) }
-                )
-                HorizontalDivider()
+
+        if (filtered.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "Nie znaleziono substancji \"$query\"",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    if (onAddCustomSubstance != null) {
+                        Button(
+                            onClick = { showAddDialog = true }
+                        ) {
+                            Icon(Icons.Default.Add, contentDescription = null)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(if (query.isNotBlank()) "Dodaj własną: \"$query\"" else "Dodaj własną substancję")
+                        }
+                    }
+                }
+            }
+        } else {
+            LazyColumn(modifier = Modifier.weight(1f)) {
+                items(filtered, key = { it.id }) { substance ->
+                    val isCustom = substance.classes.contains("Własne") || substance.id.startsWith("custom_")
+                    ListItem(
+                        headlineContent = {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(substance.name)
+                                if (isCustom) {
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Box(
+                                        modifier = Modifier
+                                            .background(
+                                                MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f),
+                                                RoundedCornerShape(4.dp)
+                                            )
+                                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                                    ) {
+                                        Text(
+                                            text = "Własna",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.secondary,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    }
+                                }
+                            }
+                        },
+                        supportingContent = if (substance.aliases.isNotEmpty() && !isCustom) {
+                            { Text(substance.aliases.joinToString(", ")) }
+                        } else null,
+                        modifier = Modifier.clickable { onSubstanceSelected(substance) }
+                    )
+                    HorizontalDivider()
+                }
+
+                if (onAddCustomSubstance != null) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            OutlinedButton(
+                                onClick = { showAddDialog = true },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Icon(Icons.Default.Add, contentDescription = null)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("Nie ma Twojej substancji? Dodaj własną")
+                            }
+                        }
+                    }
+                }
             }
         }
+    }
+
+    if (showAddDialog && onAddCustomSubstance != null) {
+        AddCustomSubstanceDialog(
+            initialName = query,
+            onDismiss = { showAddDialog = false },
+            onConfirm = { name, roaName, duration ->
+                showAddDialog = false
+                onAddCustomSubstance(name, roaName, duration)
+            }
+        )
     }
 }
 
