@@ -31,4 +31,10 @@ abstract class RepositoryModule {
     abstract fun bindInteractionRepository(
         interactionRepositoryImpl: info.hyperreal.journal.data.repository.InteractionRepositoryImpl
     ): info.hyperreal.journal.domain.repository.InteractionRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindCheckInRepository(
+        checkInRepositoryImpl: info.hyperreal.journal.data.repository.CheckInRepositoryImpl
+    ): info.hyperreal.journal.domain.repository.CheckInRepository
 }
