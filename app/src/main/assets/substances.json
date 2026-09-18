@@ -1725,5 +1725,163 @@
             }
         ],
         "interactions": []
+    },
+    {
+        "id": "Metylofenidat IR",
+        "name": "Metylofenidat IR",
+        "aliases": [
+            "Medikinet",
+            "Medikinet IR",
+            "Ritalin",
+            "MPH",
+            "Methylphenidate",
+            "Metylofenidat"
+        ],
+        "summary": "Ośrodkowy stymulant o działaniu hamującym wychwyt zwrotny dopaminy i noradrenaliny (NDRI). Postać o natychmiastowym uwalnianiu (np. Medikinet tabletki). Stosowany w leczeniu ADHD i narkolepsji; charakteryzuje się szybkim początkiem działania i relatywnie krótkim profilem (ok. 3-4h).",
+        "harmReduction": "Unikaj bezwzględnie łączenia z inhibitorami MAO (zagrożenie przełomem nadciśnieniowym). Jednoczesne spożywanie alkoholu prowadzi w wątrobie do transestryfikacji do etylofenidatu, potęgując kardiotoksyczność i euforię. W przypadku podania donosowego lub dożylnego z tabletek: nierozpuszczalne wypełniacze (talk, mikrokrystaliczna celuloza, stearynian magnezu) niszczą nabłonek i naczynia krwionośne; iniekcja i.v. bez filtra strzykawkowego 0.22 µm grozi zatorowością płucną (talcosis) oraz martwicą. Zadbaj o nawodnienie, regularne posiłki i regenerację snem.",
+        "classes": [
+            "Stymulant",
+            "Fenidat",
+            "NDRI"
+        ],
+        "roas": [
+            {
+                "name": "Oral",
+                "dose": {
+                    "units": "mg",
+                    "threshold": 5.0,
+                    "light": 10.0,
+                    "common": 20.0,
+                    "strong": 40.0,
+                    "heavy": 60.0
+                },
+                "duration": {
+                    "onset": 30.0,
+                    "comeup": 30.0,
+                    "peak": 75.0,
+                    "offset": 60.0,
+                    "afterglow": 180.0,
+                    "total": 240.0
+                }
+            },
+            {
+                "name": "Insufflated",
+                "dose": {
+                    "units": "mg",
+                    "threshold": 2.0,
+                    "light": 5.0,
+                    "common": 15.0,
+                    "strong": 30.0,
+                    "heavy": 50.0
+                },
+                "duration": {
+                    "onset": 10.0,
+                    "comeup": 20.0,
+                    "peak": 45.0,
+                    "offset": 60.0,
+                    "afterglow": 120.0,
+                    "total": 180.0
+                }
+            },
+            {
+                "name": "Sublingual",
+                "dose": {
+                    "units": "mg",
+                    "threshold": 2.5,
+                    "light": 5.0,
+                    "common": 15.0,
+                    "strong": 25.0,
+                    "heavy": 40.0
+                },
+                "duration": {
+                    "onset": 15.0,
+                    "comeup": 20.0,
+                    "peak": 60.0,
+                    "offset": 60.0,
+                    "afterglow": 120.0,
+                    "total": 210.0
+                }
+            },
+            {
+                "name": "Rectal",
+                "dose": {
+                    "units": "mg",
+                    "threshold": 2.5,
+                    "light": 5.0,
+                    "common": 15.0,
+                    "strong": 30.0,
+                    "heavy": 50.0
+                },
+                "duration": {
+                    "onset": 10.0,
+                    "comeup": 20.0,
+                    "peak": 60.0,
+                    "offset": 60.0,
+                    "afterglow": 120.0,
+                    "total": 210.0
+                }
+            },
+            {
+                "name": "Intravenous",
+                "dose": {
+                    "units": "mg",
+                    "threshold": 1.0,
+                    "light": 2.5,
+                    "common": 7.5,
+                    "strong": 15.0,
+                    "heavy": 30.0
+                },
+                "duration": {
+                    "onset": 0.5,
+                    "comeup": 2.0,
+                    "peak": 30.0,
+                    "offset": 60.0,
+                    "afterglow": 90.0,
+                    "total": 120.0
+                }
+            }
+        ],
+        "interactions": []
+    },
+    {
+        "id": "Metylofenidat CR",
+        "name": "Metylofenidat CR",
+        "aliases": [
+            "Medikinet CR",
+            "Concerta",
+            "Ritalin LA",
+            "MPH CR",
+            "Metylofenidat o zmodyfikowanym uwalnianiu",
+            "Metylofenidat o przedłużonym uwalnianiu"
+        ],
+        "summary": "Metylofenidat w postaci kapsułek o zmodyfikowanym uwalnianiu (np. Medikinet CR). Zawiera 50% peletek o natychmiastowym uwalnianiu (IR) oraz 50% peletek powlekanych polimerem opornym na kwas żołądkowy, uwalniających drugą porcję leku w jelicie cienkim po 3-4 godzinach. Łączny czas działania wynosi ok. 8 godzin.",
+        "harmReduction": "Medikinet CR MUSI być przyjmowany w trakcie lub bezpośrednio po posiłku (najlepiej bogatym w tłuszcze/białko), aby zachować prawidłowy dwufazowy profil uwalniania. Przyjęcie na czczo przyspiesza opróżnianie żołądka i zaburza farmakokinetykę. NIE WOLNO kruszyć ani żuć peletek — zniszczenie otoczki powoduje nagłe uwolnienie całej dawki na raz ('dose dumping'). Nie łącz z MAOI ani alkoholem.",
+        "classes": [
+            "Stymulant",
+            "Fenidat",
+            "NDRI"
+        ],
+        "roas": [
+            {
+                "name": "Oral",
+                "dose": {
+                    "units": "mg",
+                    "threshold": 5.0,
+                    "light": 10.0,
+                    "common": 20.0,
+                    "strong": 40.0,
+                    "heavy": 60.0
+                },
+                "duration": {
+                    "onset": 30.0,
+                    "comeup": 60.0,
+                    "peak": 240.0,
+                    "offset": 120.0,
+                    "afterglow": 180.0,
+                    "total": 480.0
+                }
+            }
+        ],
+        "interactions": []
     }
 ]

@@ -74,4 +74,18 @@ class InteractionRepositoryTest {
         assertEquals(InteractionStatus.DANGEROUS, forward?.status)
         assertEquals(InteractionStatus.DANGEROUS, backward?.status)
     }
+
+    @Test
+    fun `getInteraction resolves Metylofenidat IR to Amfetamina category interactions`() = runTest {
+        val interaction = repository.getInteraction("Metylofenidat IR", "MAOI")
+        assertNotNull("Metylofenidat IR + MAOI should resolve to Amfetamina + MAOI interaction", interaction)
+        assertEquals(InteractionStatus.DANGEROUS, interaction?.status)
+    }
+
+    @Test
+    fun `getInteractionsForSubstance resolves Metylofenidat to Amfetamina interactions`() = runTest {
+        val interactions = repository.getInteractionsForSubstance("Metylofenidat CR")
+        assertTrue("Metylofenidat CR should return interactions via Amfetamina alias", interactions.isNotEmpty())
+        assertTrue("Should contain MAOI interaction", interactions.any { it.substanceA == "MAOI" || it.substanceB == "MAOI" })
+    }
 }

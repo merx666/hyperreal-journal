@@ -33,9 +33,21 @@ class InteractionRepositoryImpl @Inject constructor(
 
     override suspend fun getInteraction(substanceA: String, substanceB: String): SubstanceInteraction? {
         val interactions = getAllInteractions()
-        return interactions.find { 
+        val direct = interactions.find { 
             (it.substanceA.equals(substanceA, ignoreCase = true) && it.substanceB.equals(substanceB, ignoreCase = true)) ||
             (it.substanceA.equals(substanceB, ignoreCase = true) && it.substanceB.equals(substanceA, ignoreCase = true))
+        }
+        if (direct != null) return direct
+
+        val candidatesA = resolveCategoryAliases(substanceA)
+        val candidatesB = resolveCategoryAliases(substanceB)
+
+        return interactions.find { sin ->
+            val matchForward = candidatesA.any { sin.substanceA.equals(it, ignoreCase = true) } &&
+                    candidatesB.any { sin.substanceB.equals(it, ignoreCase = true) }
+            val matchReverse = candidatesA.any { sin.substanceB.equals(it, ignoreCase = true) } &&
+                    candidatesB.any { sin.substanceA.equals(it, ignoreCase = true) }
+            matchForward || matchReverse
         }
     }
 
@@ -78,13 +90,33 @@ class InteractionRepositoryImpl @Inject constructor(
 
     override suspend fun getInteractionsForSubstance(substance: String): List<SubstanceInteraction> {
         val interactions = getAllInteractions()
-        return interactions.filter {
-            it.substanceA.equals(substance, ignoreCase = true) ||
-            it.substanceB.equals(substance, ignoreCase = true)
+        val candidates = resolveCategoryAliases(substance)
+        return interactions.filter { sin ->
+            candidates.any { it.equals(sin.substanceA, ignoreCase = true) || it.equals(sin.substanceB, ignoreCase = true) }
         }.sortedWith(compareBy(
             { getSeverityRank(it.status) },
-            { if (it.substanceA.equals(substance, ignoreCase = true)) it.substanceB else it.substanceA }
+            { if (candidates.any { c -> c.equals(it.substanceA, ignoreCase = true) }) it.substanceB else it.substanceA }
         ))
+    }
+
+    private fun resolveCategoryAliases(name: String): Set<String> {
+        val set = mutableSetOf(name)
+        val lower = name.lowercase().trim()
+        if (lower.contains("metylofenidat") || lower.contains("medikinet") || lower.contains("ritalin") || lower.contains("mph")) {
+            set.add("Amfetamina")
+        }
+        if (lower in listOf("kodeina", "morfina", "oksykodon", "fentanyl", "buprenorfina", "metadon", "tramadol", "heroina") ||
+            lower.contains("opioid")
+        ) {
+            set.add("Opioidy")
+        }
+        if (lower.contains("benzo") || lower.contains("alprazolam") || lower.contains("klonazepam") || lower.contains("diazepam")) {
+            set.add("Benzodiazepiny")
+        }
+        if (lower.contains("thc") || lower.contains("marihuana") || lower.contains("cannabis") || lower.contains("kannabinoid")) {
+            set.add("Cannabinoidy")
+        }
+        return set
     }
 
     private fun getSeverityRank(status: InteractionStatus): Int {

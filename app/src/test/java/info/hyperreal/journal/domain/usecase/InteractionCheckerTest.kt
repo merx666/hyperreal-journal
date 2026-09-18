@@ -333,4 +333,42 @@ class InteractionCheckerTest {
 
         assertTrue("Old ingestion (>24h) should not trigger active warning", result.isEmpty())
     }
+
+    @Test
+    fun `detects SIN interaction for Metylofenidat against MAOI as Dangerous`() {
+        val mph = Substance(
+            id = "Metylofenidat IR",
+            name = "Metylofenidat IR",
+            classes = listOf("Stymulant", "Fenidat", "NDRI"),
+            aliases = listOf("Medikinet", "Ritalin")
+        )
+        val maoi = Substance(
+            id = "MAOI",
+            name = "MAOI",
+            classes = listOf("Lek"),
+            aliases = listOf("Inhibitory MAO")
+        )
+        val pastMaoi = makeIngestion("MAOI")
+
+        val sinInteractions = listOf(
+            info.hyperreal.journal.domain.model.SubstanceInteraction(
+                substanceA = "Amfetamina",
+                substanceB = "MAOI",
+                status = info.hyperreal.journal.domain.model.InteractionStatus.DANGEROUS,
+                note = "Krytyczne ryzyko przełomu nadciśnieniowego i zawału"
+            )
+        )
+
+        val result = checker.checkInteractions(
+            newSubstance = mph,
+            recentIngestions = listOf(pastMaoi),
+            knownSubstances = listOf(maoi, mph),
+            sinInteractions = sinInteractions
+        )
+
+        assertEquals(1, result.size)
+        assertEquals("Dangerous", result[0].status)
+        assertEquals("MAOI", result[0].pastSubstanceName)
+        assertEquals("Krytyczne ryzyko przełomu nadciśnieniowego i zawału", result[0].notes)
+    }
 }
