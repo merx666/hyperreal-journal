@@ -30,26 +30,26 @@
   - `suspend fun getMatrixSubstances(): List<String>`
   - `suspend fun getInteractionsForSubstance(substance: String): List<SubstanceInteraction>`
 
-- [ ] **Step 1: Write unit tests for expanded InteractionRepository**
+- [x] **Step 1: Write unit tests for expanded InteractionRepository**
 
 Create `app/src/test/java/info/hyperreal/journal/data/repository/InteractionRepositoryTest.kt` testing that:
 - `getMatrixSubstances()` returns distinct sorted list of substances.
 - `getInteractionsForSubstance(substance)` returns all interactions where the substance is A or B, sorted by severity.
 
-- [ ] **Step 2: Update InteractionRepository interface**
+- [x] **Step 2: Update InteractionRepository interface**
 
 Update `InteractionRepository.kt` with the new signatures.
 
-- [ ] **Step 3: Implement new methods in InteractionRepositoryImpl**
+- [x] **Step 3: Implement new methods in InteractionRepositoryImpl**
 
 Update `InteractionRepositoryImpl.kt` to extract unique substances and filter by substance.
 
-- [ ] **Step 4: Run unit tests to verify green**
+- [x] **Step 4: Run unit tests to verify green**
 
 Run: `JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradlew testDebugUnitTest`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/src/main/java/info/hyperreal/journal/domain/repository/InteractionRepository.kt app/src/main/java/info/hyperreal/journal/data/repository/InteractionRepositoryImpl.kt app/src/test/java/info/hyperreal/journal/data/repository/InteractionRepositoryTest.kt
@@ -74,7 +74,7 @@ git commit -m "feat: add getMatrixSubstances and getInteractionsForSubstance to 
     - `fun showInteractionDetail(interaction: SubstanceInteraction?)`
     - `fun resetFilters()`
 
-- [ ] **Step 1: Write unit tests for MatrixExplorerViewModel**
+- [x] **Step 1: Write unit tests for MatrixExplorerViewModel**
 
 Create `app/src/test/java/info/hyperreal/journal/ui/matrix/MatrixExplorerViewModelTest.kt` testing:
 - Initial state loads all interactions, unique substances, and calculates correct status counts.
@@ -83,16 +83,16 @@ Create `app/src/test/java/info/hyperreal/journal/ui/matrix/MatrixExplorerViewMod
 - Typing a search query filters by substance names or notes.
 - Combining substance + status + search query works correctly.
 
-- [ ] **Step 2: Implement MatrixExplorerViewModel**
+- [x] **Step 2: Implement MatrixExplorerViewModel**
 
 Create `app/src/main/java/info/hyperreal/journal/ui/matrix/MatrixExplorerViewModel.kt`.
 
-- [ ] **Step 3: Run unit tests to verify green**
+- [x] **Step 3: Run unit tests to verify green**
 
 Run: `JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradlew testDebugUnitTest`
 Expected: PASS
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add app/src/main/java/info/hyperreal/journal/ui/matrix/MatrixExplorerViewModel.kt app/src/test/java/info/hyperreal/journal/ui/matrix/MatrixExplorerViewModelTest.kt
@@ -112,7 +112,7 @@ git commit -m "feat: implement MatrixExplorerViewModel with comprehensive unit t
   - `InteractionDetailBottomSheet` composable
   - Harm Reduction first aid protocols helper
 
-- [ ] **Step 1: Implement MatrixExplorerScreen and sub-components**
+- [x] **Step 1: Implement MatrixExplorerScreen and sub-components**
 
 Create `app/src/main/java/info/hyperreal/journal/ui/matrix/MatrixExplorerScreen.kt` including:
 - Search text field (`OutlinedTextField`)
@@ -121,12 +121,12 @@ Create `app/src/main/java/info/hyperreal/journal/ui/matrix/MatrixExplorerScreen.
 - `LazyColumn` of interaction cards with severity color indicators
 - `InteractionDetailBottomSheet` modal with pharmacological mechanism and first aid harm reduction guidance.
 
-- [ ] **Step 2: Verify compilation & tests**
+- [x] **Step 2: Verify compilation & tests**
 
 Run: `JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradlew compileDebugKotlin`
 Expected: BUILD SUCCESSFUL
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add app/src/main/java/info/hyperreal/journal/ui/matrix/MatrixExplorerScreen.kt
@@ -148,26 +148,26 @@ git commit -m "feat: add MatrixExplorerScreen UI with detail bottom sheet and ha
   - `PrimaryTabRow` in `MixCalculatorScreen` switching between "Kalkulator Pary" and "Eksplorator Macierzy"
   - Drawer item "Tabela Miksów SIN" in `MainScreen`
 
-- [ ] **Step 1: Add Screen.MatrixExplorer**
+- [x] **Step 1: Add Screen.MatrixExplorer**
 
 Edit `Screen.kt` to add `data object MatrixExplorer : Screen("matrix_explorer")`.
 
-- [ ] **Step 2: Add tabs to MixCalculatorScreen**
+- [x] **Step 2: Add tabs to MixCalculatorScreen**
 
-Add `PrimaryTabRow` with tabs:
+Add `TabRow` with tabs:
 - "Kalkulator pary" (existing pairwise calculator)
 - "Eksplorator Macierzy SIN" (embedding `MatrixExplorerContent`)
 
-- [ ] **Step 3: Add Drawer item and NavHost destination in MainScreen**
+- [x] **Step 3: Add Drawer item and NavHost destination in MainScreen**
 
 Add "Tabela Miksów SIN" in `ModalDrawerSheet` and composable destination in `NavHost`.
 
-- [ ] **Step 4: Verify compilation & tests**
+- [x] **Step 4: Verify compilation & tests**
 
 Run: `JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradlew testDebugUnitTest compileDebugKotlin`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/src/main/java/info/hyperreal/journal/ui/navigation/Screen.kt app/src/main/java/info/hyperreal/journal/ui/mixcalculator/MixCalculatorScreen.kt app/src/main/java/info/hyperreal/journal/ui/MainScreen.kt
@@ -178,16 +178,16 @@ git commit -m "feat: integrate Matrix Explorer into tabs and drawer navigation"
 
 ### Task 5: End-to-End Verification & Full Regression
 
-- [ ] **Step 1: Run complete test suite**
+- [x] **Step 1: Run complete test suite**
 
 Run: `JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradlew testDebugUnitTest`
-Expected: All 85+ tests PASS.
+Expected: All 85+ tests PASS (90/90 pass).
 
-- [ ] **Step 2: Run assembleDebug**
+- [x] **Step 2: Run assembleDebug**
 
 Run: `JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradlew assembleDebug`
 Expected: BUILD SUCCESSFUL.
 
-- [ ] **Step 3: Update documentation and progress tracking**
+- [x] **Step 3: Update documentation and progress tracking**
 
 Update `walkthrough.md` and `.superpowers/sdd/progress.md`.

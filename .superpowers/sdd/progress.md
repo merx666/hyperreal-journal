@@ -26,3 +26,11 @@ Plan: `docs/superpowers/plans/2026-09-18-live-session-checkins-shulgin.md`
 - [x] Task 4: JournalViewModel Integration & Unit Tests (commit bce544d, review clean)
 - [x] Task 5: UI: CheckInBottomSheet & Timeline in JournalScreen (commit d153339, review clean)
 - [x] Task 6: End-to-End Verification & Full Regression (80/80 unit tests green, assembleDebug verified)
+
+## Project 4: Pełna Interaktywna Macierz Interakcji SIN (Matrix Explorer) (Completed)
+Plan: `docs/superpowers/plans/2026-09-18-matrix-explorer-sin.md`
+- [x] Task 1: Repository Interface & Implementation Expansion (commit 484324c, review clean)
+- [x] Task 2: MatrixExplorerViewModel with TDD Unit Tests (commit 3801461, review clean)
+- [x] Task 3: Compose UI Components for Matrix Explorer (commit ae68010, review clean)
+- [x] Task 4: Main Navigation & MixCalculatorScreen Tab Integration (commit aa6f69a, review clean)
+- [x] Task 5: End-to-End Verification & Full Regression (90/90 unit tests green, assembleDebug verified)
