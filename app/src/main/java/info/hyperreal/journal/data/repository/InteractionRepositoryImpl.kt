@@ -102,7 +102,8 @@ class InteractionRepositoryImpl @Inject constructor(
     private fun resolveCategoryAliases(name: String): Set<String> {
         val set = mutableSetOf(name)
         val lower = name.lowercase().trim()
-        if (lower.contains("metylofenidat") || lower.contains("medikinet") || lower.contains("ritalin") || lower.contains("mph")) {
+        val words = lower.split(Regex("[\\s\\-_,./]+"))
+        if (lower.contains("metylofenidat") || lower.contains("medikinet") || lower.contains("ritalin") || "mph" in words) {
             set.add("Amfetamina")
         }
         if (lower in listOf("kodeina", "morfina", "oksykodon", "fentanyl", "buprenorfina", "metadon", "tramadol", "heroina") ||
