@@ -35,18 +35,16 @@ class InteractionChecker @Inject constructor() {
             val pastSubstance = knownSubstances.find { it.id == pastIngestion.substanceId } ?: continue
 
             // 1. Check against the comprehensive SIN database
+            val namesNew = getCandidateNames(newSubstance)
+            val namesPast = getCandidateNames(pastSubstance)
+
             val sinMatch = sinInteractions.find { sin ->
-                val matchA = sin.substanceA.equals(newSubstance.name, ignoreCase = true) ||
-                        newSubstance.aliases.any { sin.substanceA.equals(it, ignoreCase = true) }
-                val matchB = sin.substanceB.equals(pastSubstance.name, ignoreCase = true) ||
-                        pastSubstance.aliases.any { sin.substanceB.equals(it, ignoreCase = true) }
+                val forwardMatch = namesNew.any { sin.substanceA.equals(it, ignoreCase = true) } &&
+                        namesPast.any { sin.substanceB.equals(it, ignoreCase = true) }
+                val reverseMatch = namesPast.any { sin.substanceA.equals(it, ignoreCase = true) } &&
+                        namesNew.any { sin.substanceB.equals(it, ignoreCase = true) }
 
-                val revA = sin.substanceA.equals(pastSubstance.name, ignoreCase = true) ||
-                        pastSubstance.aliases.any { sin.substanceA.equals(it, ignoreCase = true) }
-                val revB = sin.substanceB.equals(newSubstance.name, ignoreCase = true) ||
-                        newSubstance.aliases.any { sin.substanceB.equals(it, ignoreCase = true) }
-
-                (matchA && matchB) || (revA && revB)
+                forwardMatch || reverseMatch
             }
 
             if (sinMatch != null) {
@@ -116,5 +114,27 @@ class InteractionChecker @Inject constructor() {
             lower.contains("caution") || lower.contains("ostroż") -> 1
             else -> 0
         }
+    }
+
+    private fun getCandidateNames(substance: Substance): Set<String> {
+        val names = mutableSetOf(substance.name, substance.id)
+        names.addAll(substance.aliases)
+        names.addAll(substance.classes)
+        if (substance.classes.any { it.contains("Opioid", ignoreCase = true) } ||
+            substance.id in listOf("Kodeina", "Morfina", "Oksykodon", "Fentanyl", "Buprenorfina", "Metadon", "Tramadol")
+        ) {
+            names.add("Opioidy")
+            names.add("Opioids")
+        }
+        if (substance.classes.any { it.contains("Benzo", ignoreCase = true) }) {
+            names.add("Benzodiazepiny")
+            names.add("Benzodiazepines")
+        }
+        if (substance.classes.any { it.contains("Kannabinoid", ignoreCase = true) } || substance.id == "Cannabinoidy") {
+            names.add("Cannabinoidy")
+            names.add("Cannabis")
+            names.add("THC")
+        }
+        return names
     }
 }

@@ -269,6 +269,45 @@ class InteractionCheckerTest {
     }
 
     @Test
+    fun `detects SIN interaction for specific opioid like Oksykodon against Alkohol`() {
+        val oxy = Substance(
+            id = "Oksykodon",
+            name = "Oksykodon",
+            classes = listOf("Opioid", "Depresant"),
+            aliases = listOf("Oxycodone", "OxyContin")
+        )
+        val alcohol = Substance(
+            id = "Alkohol",
+            name = "Alkohol",
+            classes = listOf("Depresant"),
+            aliases = listOf("Etanol")
+        )
+        val ingestion = makeIngestion("Alkohol")
+
+        val sinInteractions = listOf(
+            info.hyperreal.journal.domain.model.SubstanceInteraction(
+                substanceA = "Alkohol",
+                substanceB = "Opioidy",
+                status = info.hyperreal.journal.domain.model.InteractionStatus.DANGEROUS,
+                note = "Ciężka depresja oddechowa"
+            )
+        )
+
+        val result = checker.checkInteractions(
+            newSubstance = oxy,
+            recentIngestions = listOf(ingestion),
+            knownSubstances = listOf(alcohol, oxy),
+            sinInteractions = sinInteractions
+        )
+
+        assertEquals(1, result.size)
+        assertEquals("Dangerous", result[0].status)
+        assertEquals("Alkohol", result[0].pastSubstanceName)
+        assertEquals("Ciężka depresja oddechowa", result[0].notes)
+    }
+
+
+    @Test
     fun `ignores past ingestions outside max window`() {
         val alcohol = makeSubstance("alcohol", "Alkohol")
         val ghb = makeSubstance("ghb", "GHB/GBL")
