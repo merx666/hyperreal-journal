@@ -371,4 +371,39 @@ class InteractionCheckerTest {
         assertEquals("MAOI", result[0].pastSubstanceName)
         assertEquals("Krytyczne ryzyko przełomu nadciśnieniowego i zawału", result[0].notes)
     }
+
+    @Test
+    fun `does not map non-methylphenidate NDRI such as bupropion to Amphetamine`() {
+        val bupropion = Substance(
+            id = "bupropion",
+            name = "Bupropion",
+            classes = listOf("Antydepresant", "NDRI"),
+            aliases = listOf("Wellbutrin", "Zyban")
+        )
+        val maoi = Substance(
+            id = "MAOI",
+            name = "MAOI",
+            classes = listOf("Lek"),
+            aliases = listOf("Inhibitory MAO")
+        )
+        val pastMaoi = makeIngestion("MAOI")
+
+        val sinInteractions = listOf(
+            info.hyperreal.journal.domain.model.SubstanceInteraction(
+                substanceA = "Amfetamina",
+                substanceB = "MAOI",
+                status = info.hyperreal.journal.domain.model.InteractionStatus.DANGEROUS,
+                note = "Krytyczne ryzyko przełomu nadciśnieniowego i zawału"
+            )
+        )
+
+        val result = checker.checkInteractions(
+            newSubstance = bupropion,
+            recentIngestions = listOf(pastMaoi),
+            knownSubstances = listOf(maoi, bupropion),
+            sinInteractions = sinInteractions
+        )
+
+        assertTrue("Bupropion is an NDRI but NOT methylphenidate, so it must not inherit Amphetamine interactions", result.isEmpty())
+    }
 }

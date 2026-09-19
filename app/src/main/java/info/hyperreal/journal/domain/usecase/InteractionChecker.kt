@@ -135,9 +135,14 @@ class InteractionChecker @Inject constructor() {
             names.add("Cannabis")
             names.add("THC")
         }
-        if (substance.classes.any { it.contains("Fenidat", ignoreCase = true) } ||
-            substance.id.contains("Metylofenidat", ignoreCase = true) ||
-            substance.aliases.any { it.contains("Medikinet", ignoreCase = true) || it.contains("Ritalin", ignoreCase = true) }
+        if (substance.id.contains("Metylofenidat", ignoreCase = true) ||
+            substance.name.contains("Metylofenidat", ignoreCase = true) ||
+            substance.aliases.any {
+                it.contains("Medikinet", ignoreCase = true) ||
+                it.contains("Ritalin", ignoreCase = true) ||
+                it.contains("Concerta", ignoreCase = true) ||
+                it.equals("MPH", ignoreCase = true)
+            }
         ) {
             names.add("Amfetamina")
             names.add("Amphetamine")
