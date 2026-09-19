@@ -35,7 +35,7 @@
     { "id": "datastore", "type": "database", "label": "Jetpack DataStore", "sublabel": "Preferences & Overrides", "pos": [620, 370], "size": [200, 64] },
 
     { "id": "json_assets", "type": "database", "label": "Bundled JSON Assets", "sublabel": "substances & mixes.json", "pos": [920, 170], "size": [190, 64] },
-    { "id": "room_db", "type": "database", "label": "Room SQLite (v2)", "sublabel": "Sessions & Check-ins", "pos": [920, 310], "size": [190, 64] }
+    { "id": "room_db", "type": "database", "label": "Room SQLite (v3)", "sublabel": "Custom substances & logs", "pos": [920, 310], "size": [190, 64] }
   ],
   "boundaries": [
     { "kind": "region", "label": "Presentation Layer (Jetpack Compose)", "wraps": ["user", "ui_screens", "ui_viewmodels"] },
@@ -58,6 +58,6 @@
   "cards": [
     { "dot": "emerald", "title": "Presentation Layer (Jetpack Compose)", "items": ["Material 3 UI with Edge-to-Edge and deep dark theme", "Reactivity driven by Kotlin StateFlow in MVI/MVVM pattern", "Active session timelines with Shulgin rating check-ins"] },
     { "dot": "cyan", "title": "Domain Layer (Harm Reduction Engines)", "items": ["Receptor reset & cross-tolerance calculator (5-HT2A, SERT, MOR, GABA)", "Full offline SIN / TripSit matrix explorer with 333 interaction rules", "Equianalgesic opioid dose converter & pharmacokinetic curves"] },
-    { "dot": "violet", "title": "Data Layer (100% Offline Persistence)", "items": ["Room SQLite (v2) with foreign-key cascade for timeline check-ins", "Jetpack DataStore for biometric lock and receptor reset overrides", "Bundled static JSON datasets for offline substance & mix lookups"] }
+    { "dot": "violet", "title": "Data Layer (100% Offline Persistence)", "items": ["Room SQLite (v3) with custom substances and timeline check-ins", "Jetpack DataStore for biometric lock and receptor reset overrides", "Bundled static JSON datasets for offline substance & mix lookups"] }
   ]
 }

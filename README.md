@@ -2,6 +2,10 @@
 
 A privacy-focused, offline-first Android application designed for harm reduction, substance tracking, and interaction analysis. Developed entirely with local storage in mind, it utilizes the reliable SIN (Społeczna Inicjatywa Narkopolityki) and TripSit interaction matrices to ensure the safety of its users.
 
+> 📖 **Dokumentacja i Wiki (PL):** Pełna polska wikipedia projektu, architektura oraz instrukcja użytkownika znajdują się w katalogu [**wiki/**](wiki/Home.md).  
+> 🗺️ **Interaktywna Architektura (Archify):** Dostępna w [**docs/architecture.html**](docs/architecture.html) oraz jako wektorowy [**docs/architecture.svg**](docs/architecture.svg).  
+> 📲 **Pobierz APK (Beta):** Najnowsza wersja instalacyjna dostępna w zakładce [**Releases**](https://github.com/merx666/hyperreal-journal/releases).
+
 ## Key Features
 
 - 📝 **Ingestion Journal:** Track dates, times, doses, and routes of administration (RoA) with automatic threshold categorization (Threshold, Light, Common, Strong, Heavy).
