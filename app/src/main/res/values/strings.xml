@@ -67,7 +67,7 @@
     <string name="notification_channel_name">Inteligentne Przypomnienia</string>
     <string name="notification_channel_desc">Przypomnienia o hydratacji i przerwach w trakcie sesji</string>
     <string name="notification_peak_title">🌊 Szczyt – dbaj o siebie</string>
-    <string name="notification_peak_body">Jesteś na szczycie działania %1$s. Wypi wodę i zrób chwilę przerwy.</string>
+    <string name="notification_peak_body">Jesteś na szczycie działania %1$s. Wypij wodę i zrób chwilę przerwy.</string>
     <string name="notification_hydration_title">💧 Czas na wodę</string>
     <string name="notification_hydration_body">Mija %1$s od przyjęcia. Pamiętaj o nawodnieniu i odpoczynku.</string>
 </resources>

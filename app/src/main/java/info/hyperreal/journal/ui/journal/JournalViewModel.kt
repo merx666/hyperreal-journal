@@ -62,6 +62,8 @@ class JournalViewModel @Inject constructor(
     private val _filter = MutableStateFlow(JournalFilter.ALL)
     val filter: StateFlow<JournalFilter> = _filter.asStateFlow()
 
+    private val scheduledReminderIds = mutableSetOf<Long>()
+
     private val rawEntries: StateFlow<List<JournalEntry>> = combine(
         ingestionRepository.getAllIngestions(),
         substanceRepository.getAllSubstances(),
@@ -174,18 +176,31 @@ class JournalViewModel @Inject constructor(
      * For each active ingestion that is currently in ONSET or COMEUP,
      * schedules a WorkManager notification to fire 80% into the Peak phase.
      * Already-past or already-PEAK entries are ignored to avoid duplicate spamming.
+     * Cancels reminders for entries that are no longer active.
      */
     private fun schedulePeakReminders(activeList: List<ActiveEntryInfo>) {
+        val currentActiveIds = activeList.map { it.entry.ingestion.id }.toSet()
+        val removedIds = (scheduledReminderIds - currentActiveIds).toList()
+        removedIds.forEach { id ->
+            reminderScheduler.cancelReminder(id)
+            scheduledReminderIds.remove(id)
+        }
+
         val now = System.currentTimeMillis()
         activeList.forEach { info ->
+            val phase = info.entry.timelineStatus?.phase ?: return@forEach
+            if (phase != TimelinePhase.ONSET && phase != TimelinePhase.COMEUP) {
+                return@forEach
+            }
+
             val sub = info.entry.substance ?: return@forEach
             val ingestion = info.entry.ingestion
             val roa = sub.roas.find { it.name.equals(ingestion.roa, ignoreCase = true) }
             val duration = roa?.duration ?: return@forEach
 
-            val onset = ((duration.onset ?: 0f).toLong()) * 60_000L
-            val comeup = ((duration.comeup ?: 0f).toLong()) * 60_000L
-            val peak = ((duration.peak ?: 0f).toLong()) * 60_000L
+            val onset = ((duration.onset ?: 0f) * 60_000L).toLong()
+            val comeup = ((duration.comeup ?: 0f) * 60_000L).toLong()
+            val peak = ((duration.peak ?: 0f) * 60_000L).toLong()
 
             // Peak starts at: ingestionTime + onset + comeup
             val peakStartMs = ingestion.timestamp + onset + comeup
@@ -200,6 +215,7 @@ class JournalViewModel @Inject constructor(
                     phaseLabel = PhaseReminderWorker.PHASE_PEAK,
                     triggerAtMs = reminderMs
                 )
+                scheduledReminderIds.add(ingestion.id)
             }
         }
     }
@@ -220,6 +236,8 @@ class JournalViewModel @Inject constructor(
 
     fun deleteIngestion(ingestion: Ingestion) {
         viewModelScope.launch {
+            reminderScheduler.cancelReminder(ingestion.id)
+            scheduledReminderIds.remove(ingestion.id)
             ingestionRepository.deleteIngestion(ingestion)
         }
     }

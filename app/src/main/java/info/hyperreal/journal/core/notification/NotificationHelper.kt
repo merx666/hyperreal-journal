@@ -1,15 +1,19 @@
 package info.hyperreal.journal.core.notification
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import info.hyperreal.journal.MainActivity
 import info.hyperreal.journal.R
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -40,6 +44,22 @@ class NotificationHelper @Inject constructor() {
                 notificationManager.createNotificationChannel(channel)
             }
         }
+
+        /**
+         * Checks whether notification permission is granted.
+         * On Android 13+ (TIRAMISU), checks POST_NOTIFICATIONS runtime permission.
+         * On earlier versions, checks if notifications are enabled via NotificationManagerCompat.
+         */
+        fun hasNotificationPermission(context: Context): Boolean {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            } else {
+                NotificationManagerCompat.from(context).areNotificationsEnabled()
+            }
+        }
     }
 
     /**
@@ -51,6 +71,11 @@ class NotificationHelper @Inject constructor() {
      * @param body        Notification body text
      */
     fun sendReminder(context: Context, notifId: Int, title: String, body: String) {
+        if (!hasNotificationPermission(context)) {
+            Timber.w("Cannot send reminder: POST_NOTIFICATIONS permission not granted (notifId=$notifId)")
+            return
+        }
+
         // Tap-to-open intent → brings user back to the journal
         val tapIntent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -74,8 +99,11 @@ class NotificationHelper @Inject constructor() {
 
         try {
             NotificationManagerCompat.from(context).notify(notifId, notification)
+            Timber.i("Sent reminder notification successfully (notifId=$notifId)")
         } catch (e: SecurityException) {
-            // POST_NOTIFICATIONS permission not granted yet — silently swallow
+            Timber.e(e, "SecurityException: permission denied while posting notification (notifId=$notifId)")
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to send reminder notification (notifId=$notifId)")
         }
     }
 }
