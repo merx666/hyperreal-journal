@@ -1,6 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- App -->
     <string name="app_name">Hyperreal Journal</string>
     <string name="widget_name">Hyperreal Timeline</string>
     <string name="widget_description">Pokazuje aktywną substancję i aktualną fazę działania.</string>
+
+    <!-- Settings sections -->
+    <string name="settings_section_appearance">Wygląd</string>
+    <string name="settings_dark_mode">Tryb ciemny</string>
+    <string name="settings_section_security">Bezpieczeństwo i Prywatność</string>
+    <string name="settings_security_lock">Blokada aplikacji (PIN / Biometria)</string>
+    <string name="settings_security_lock_desc">Wymagaj uwierzytelnienia przy otwarciu</string>
+    <string name="settings_change_pin">Zmień kod PIN</string>
+    <string name="settings_section_widget">Personalizacja Widgetu</string>
+    <string name="settings_widget_discrete">Tryb dyskretny widgetu</string>
+    <string name="settings_widget_discrete_desc">Ukrywa nazwę substancji na ekranie głównym</string>
+    <string name="settings_widget_countdown">Odliczanie czasu sesji</string>
+    <string name="settings_widget_countdown_desc">Pokazuj czas od przyjęcia i do zakończenia</string>
+    <string name="settings_section_data">Zarządzanie Danymi</string>
+    <string name="settings_export">Eksportuj dane do JSON</string>
+    <string name="settings_delete_all">Wyczyść wszystkie dane</string>
+    <string name="settings_delete_complete">Wszystkie dane zostały usunięte</string>
+    <string name="settings_section_about">O aplikacji</string>
+    <string name="settings_version">Wersja 1.1.0</string>
+    <string name="settings_about_desc">Aplikacja harm reduction. Wszystkie dane są przechowywane lokalnie na urządzeniu.</string>
+
+    <!-- PIN dialogs -->
+    <string name="pin_set_title">Ustaw 4-cyfrowy kod PIN</string>
+    <string name="pin_set_desc">Kod PIN będzie wymagany przy otwieraniu aplikacji.</string>
+    <string name="pin_new">Nowy PIN (4 cyfry)</string>
+    <string name="pin_confirm">Powtórz PIN</string>
+    <string name="pin_error_length">PIN musi mieć dokładnie 4 cyfry</string>
+    <string name="pin_error_mismatch">Podane kody PIN nie są identyczne</string>
+    <string name="pin_save">Zapisz</string>
+    <string name="pin_cancel">Anuluj</string>
+    <string name="pin_disable_title">Podaj aktualny PIN</string>
+    <string name="pin_disable_desc">Wprowadź kod PIN, aby wyłączyć blokadę aplikacji.</string>
+    <string name="pin_current">Aktualny PIN</string>
+    <string name="pin_error_invalid">Nieprawidłowy kod PIN</string>
+    <string name="pin_disable_action">Wyłącz blokadę</string>
+
+    <!-- Delete dialog -->
+    <string name="delete_dialog_title">Wyczyść dane</string>
+    <string name="delete_dialog_body">Czy na pewno chcesz usunąć WSZYSTKIE wpisy z dziennika? Tej operacji nie można cofnąć.</string>
+    <string name="delete_confirm">Usuń wszystko</string>
+    <string name="action_ok">OK</string>
+
+    <!-- Export -->
+    <string name="export_share_title">Eksportuj dziennik</string>
+
+    <!-- Phase names -->
+    <string name="phase_onset">Wejście (Onset)</string>
+    <string name="phase_comeup">Wzrost (Comeup)</string>
+    <string name="phase_peak">Szczyt (Peak)</string>
+    <string name="phase_offset">Zejście (Offset)</string>
+    <string name="phase_afterglow">Powrót (Afterglow)</string>
+    <string name="phase_baseline">Koniec działania (Baseline)</string>
+
+    <!-- Sponsorship -->
+    <string name="sponsor_title">Sponsoruj projekt</string>
+    <string name="sponsor_desc">Jeśli aplikacja ci pomaga, postaw kawę – wszelka pomoc jest ceniona 🙏</string>
+    <string name="sponsor_button">☕ Sponsoring</string>
+    <string name="sponsor_url">https://www.buymeacoffee.com/merx666</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">Inteligentne Przypomnienia</string>
+    <string name="notification_channel_desc">Przypomnienia o hydratacji i przerwach w trakcie sesji</string>
+    <string name="notification_peak_title">🌊 Szczyt – dbaj o siebie</string>
+    <string name="notification_peak_body">Jesteś na szczycie działania %1$s. Wypij wodę i zrób chwilę przerwy.</string>
+    <string name="notification_hydration_title">💧 Czas na wodę</string>
+    <string name="notification_hydration_body">Mija %1$s od przyjęcia. Pamiętaj o nawodnieniu i odpoczynku.</string>
 </resources>

@@ -12,11 +12,13 @@ import info.hyperreal.journal.domain.repository.IngestionRepository
 import info.hyperreal.journal.domain.repository.SubstanceRepository
 import info.hyperreal.journal.domain.usecase.TimelineCalculator
 import info.hyperreal.journal.domain.usecase.TimelinePhase
+import info.hyperreal.journal.core.worker.ReminderScheduler
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -37,6 +39,7 @@ class JournalViewModelTest {
     private lateinit var substanceRepository: SubstanceRepository
     private lateinit var checkInRepository: CheckInRepository
     private lateinit var timelineCalculator: TimelineCalculator
+    private lateinit var reminderScheduler: ReminderScheduler
 
     private val testSubstance = Substance(
         id = "mdma",
@@ -76,9 +79,11 @@ class JournalViewModelTest {
         ingestionRepository = mockk()
         substanceRepository = mockk()
         checkInRepository = mockk()
+        reminderScheduler = mockk(relaxed = true)
         timelineCalculator = TimelineCalculator() // use real calculator
 
         every { ingestionRepository.getAllIngestions() } returns flowOf(emptyList())
+        coEvery { ingestionRepository.deleteIngestion(any()) } returns Unit
         every { substanceRepository.getAllSubstances() } returns flowOf(emptyList())
         every { checkInRepository.getAllCheckIns() } returns flowOf(emptyList())
         coEvery { checkInRepository.insertCheckIn(any()) } returns 1L
@@ -94,7 +99,8 @@ class JournalViewModelTest {
         ingestionRepository = ingestionRepository,
         substanceRepository = substanceRepository,
         timelineCalculator = timelineCalculator,
-        checkInRepository = checkInRepository
+        checkInRepository = checkInRepository,
+        reminderScheduler = reminderScheduler
     )
 
     @Test
@@ -293,5 +299,102 @@ class JournalViewModelTest {
         testDispatcher.scheduler.advanceUntilIdle()
 
         coVerify(exactly = 1) { checkInRepository.deleteCheckIn(42L) }
+    }
+
+    @Test
+    fun `deleteIngestion cancels scheduled reminder and calls repository deleteIngestion`() = runTest {
+        val vm = createViewModel()
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        vm.deleteIngestion(recentIngestion)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        verify(exactly = 1) { reminderScheduler.cancelReminder(recentIngestion.id) }
+        coVerify(exactly = 1) { ingestionRepository.deleteIngestion(recentIngestion) }
+    }
+
+    @Test
+    fun `schedulePeakReminders schedules only for ONSET or COMEUP and calculates with fractional minutes`() = runTest {
+        val now = System.currentTimeMillis()
+        // Ingestion that started 5 minutes ago (300_000ms ago)
+        val ingestionOnset = Ingestion(
+            id = 10,
+            substanceId = "mdma",
+            roa = "Oral",
+            doseAmount = 100f,
+            doseUnit = "mg",
+            timestamp = now - 5 * 60_000L
+        )
+
+        // Substance with fractional onset 0.5f minutes
+        val substanceWithFractionalDuration = Substance(
+            id = "mdma",
+            name = "MDMA",
+            roas = listOf(
+                Roa(
+                    name = "Oral",
+                    duration = DurationParameters(
+                        onset = 0.5f,
+                        comeup = 20f,
+                        peak = 60f,
+                        offset = 60f,
+                        afterglow = 60f,
+                        total = 200.5f
+                    )
+                )
+            )
+        )
+
+        every { ingestionRepository.getAllIngestions() } returns flowOf(listOf(ingestionOnset))
+        every { substanceRepository.getAllSubstances() } returns flowOf(listOf(substanceWithFractionalDuration))
+
+        val vm = createViewModel()
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        // Verify reminder was scheduled with expected trigger timestamp
+        // onset = 0.5 * 60_000 = 30_000L
+        // comeup = 20 * 60_000 = 1_200_000L
+        // peak = 60 * 60_000 = 3_600_000L
+        // peakStart = timestamp + 1_230_000L
+        // reminderMs = peakStart + (3_600_000 * 80 / 100) = peakStart + 2_880_000L
+        val expectedPeakStart = ingestionOnset.timestamp + 30_000L + 1_200_000L
+        val expectedReminderMs = expectedPeakStart + (3_600_000L * 80L / 100L)
+
+        verify(atLeast = 1) {
+            reminderScheduler.scheduleReminder(
+                ingestionId = 10L,
+                substanceName = "MDMA",
+                phaseLabel = any(),
+                triggerAtMs = expectedReminderMs
+            )
+        }
+    }
+
+    @Test
+    fun `schedulePeakReminders cancels reminder when ingestion leaves active list`() = runTest {
+        val now = System.currentTimeMillis()
+        val activeIngestion = Ingestion(
+            id = 20,
+            substanceId = "mdma",
+            roa = "Oral",
+            doseAmount = 100f,
+            doseUnit = "mg",
+            timestamp = now - 5 * 60_000L
+        )
+
+        val ingestionsFlow = kotlinx.coroutines.flow.MutableStateFlow(listOf(activeIngestion))
+        every { ingestionRepository.getAllIngestions() } returns ingestionsFlow
+        every { substanceRepository.getAllSubstances() } returns flowOf(listOf(testSubstance))
+
+        val vm = createViewModel()
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        verify(atLeast = 1) { reminderScheduler.scheduleReminder(ingestionId = 20L, any(), any(), any()) }
+
+        // Remove from active ingestions
+        ingestionsFlow.value = emptyList()
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        verify(atLeast = 1) { reminderScheduler.cancelReminder(20L) }
     }
 }

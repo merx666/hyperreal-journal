@@ -1,5 +1,6 @@
 package info.hyperreal.journal.ui.settings
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,12 +9,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -30,11 +37,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import info.hyperreal.journal.R
+import info.hyperreal.journal.ui.theme.HyperrealTokens
 
 @Composable
 fun SettingsScreen(
@@ -47,6 +58,8 @@ fun SettingsScreen(
     val showDeleteConfirm by viewModel.showDeleteConfirm.collectAsState()
     val deleteComplete by viewModel.deleteComplete.collectAsState()
     val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
+    val sponsorUrl = stringResource(R.string.sponsor_url)
 
     var showSetPinDialog by remember { mutableStateOf(false) }
     var showDisablePinDialog by remember { mutableStateOf(false) }
@@ -63,15 +76,15 @@ fun SettingsScreen(
                 pinConfirmInput = ""
                 pinError = null
             },
-            title = { Text("Ustaw 4-cyfrowy kod PIN") },
+            title = { Text(stringResource(R.string.pin_set_title)) },
             text = {
                 Column {
-                    Text("Kod PIN będzie wymagany przy otwieraniu aplikacji.", style = MaterialTheme.typography.bodySmall)
+                    Text(stringResource(R.string.pin_set_desc), style = MaterialTheme.typography.bodySmall)
                     Spacer(modifier = Modifier.height(12.dp))
                     OutlinedTextField(
                         value = pinInput,
                         onValueChange = { if (it.length <= 4 && it.all { char -> char.isDigit() }) pinInput = it },
-                        label = { Text("Nowy PIN (4 cyfry)") },
+                        label = { Text(stringResource(R.string.pin_new)) },
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                         singleLine = true,
@@ -81,7 +94,7 @@ fun SettingsScreen(
                     OutlinedTextField(
                         value = pinConfirmInput,
                         onValueChange = { if (it.length <= 4 && it.all { char -> char.isDigit() }) pinConfirmInput = it },
-                        label = { Text("Powtórz PIN") },
+                        label = { Text(stringResource(R.string.pin_confirm)) },
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                         singleLine = true,
@@ -97,9 +110,9 @@ fun SettingsScreen(
                 TextButton(
                     onClick = {
                         if (pinInput.length != 4) {
-                            pinError = "PIN musi mieć dokładnie 4 cyfry"
+                            pinError = context.getString(R.string.pin_error_length)
                         } else if (pinInput != pinConfirmInput) {
-                            pinError = "Podane kody PIN nie są identyczne"
+                            pinError = context.getString(R.string.pin_error_mismatch)
                         } else {
                             viewModel.setPin(pinInput)
                             showSetPinDialog = false
@@ -109,7 +122,7 @@ fun SettingsScreen(
                         }
                     }
                 ) {
-                    Text("Zapisz")
+                    Text(stringResource(R.string.pin_save))
                 }
             },
             dismissButton = {
@@ -119,7 +132,7 @@ fun SettingsScreen(
                     pinConfirmInput = ""
                     pinError = null
                 }) {
-                    Text("Anuluj")
+                    Text(stringResource(R.string.pin_cancel))
                 }
             }
         )
@@ -133,15 +146,15 @@ fun SettingsScreen(
                 pinInput = ""
                 pinError = null
             },
-            title = { Text("Podaj aktualny PIN") },
+            title = { Text(stringResource(R.string.pin_disable_title)) },
             text = {
                 Column {
-                    Text("Wprowadź kod PIN, aby wyłączyć blokadę aplikacji.", style = MaterialTheme.typography.bodySmall)
+                    Text(stringResource(R.string.pin_disable_desc), style = MaterialTheme.typography.bodySmall)
                     Spacer(modifier = Modifier.height(12.dp))
                     OutlinedTextField(
                         value = pinInput,
                         onValueChange = { if (it.length <= 4 && it.all { char -> char.isDigit() }) pinInput = it },
-                        label = { Text("Aktualny PIN") },
+                        label = { Text(stringResource(R.string.pin_current)) },
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                         singleLine = true,
@@ -162,11 +175,11 @@ fun SettingsScreen(
                             pinInput = ""
                             pinError = null
                         } else {
-                            pinError = "Nieprawidłowy kod PIN"
+                            pinError = context.getString(R.string.pin_error_invalid)
                         }
                     }
                 ) {
-                    Text("Wyłącz blokadę", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.pin_disable_action), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
@@ -175,7 +188,7 @@ fun SettingsScreen(
                     pinInput = ""
                     pinError = null
                 }) {
-                    Text("Anuluj")
+                    Text(stringResource(R.string.pin_cancel))
                 }
             }
         )
@@ -184,8 +197,8 @@ fun SettingsScreen(
     if (showDeleteConfirm) {
         AlertDialog(
             onDismissRequest = { viewModel.cancelDelete() },
-            title = { Text("Wyczyść dane") },
-            text = { Text("Czy na pewno chcesz usunąć WSZYSTKIE wpisy z dziennika? Tej operacji nie można cofnąć.") },
+            title = { Text(stringResource(R.string.delete_dialog_title)) },
+            text = { Text(stringResource(R.string.delete_dialog_body)) },
             confirmButton = {
                 TextButton(
                     onClick = { viewModel.confirmDeleteAll() },
@@ -193,12 +206,12 @@ fun SettingsScreen(
                         contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Text("Usuń wszystko")
+                    Text(stringResource(R.string.delete_confirm))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { viewModel.cancelDelete() }) {
-                    Text("Anuluj")
+                    Text(stringResource(R.string.pin_cancel))
                 }
             }
         )
@@ -210,7 +223,7 @@ fun SettingsScreen(
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
-        Text("Wygląd", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.settings_section_appearance), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(12.dp))
 
         // Dark mode toggle
@@ -218,7 +231,7 @@ fun SettingsScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Tryb ciemny", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+            Text(stringResource(R.string.settings_dark_mode), modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
             Switch(
                 checked = isDarkMode,
                 onCheckedChange = { viewModel.toggleDarkMode(it) }
@@ -230,7 +243,7 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         // Security
-        Text("Bezpieczeństwo i Prywatność", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.settings_section_security), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(12.dp))
 
         Row(
@@ -238,9 +251,9 @@ fun SettingsScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("Blokada aplikacji (PIN / Biometria)", style = MaterialTheme.typography.bodyLarge)
+                Text(stringResource(R.string.settings_security_lock), style = MaterialTheme.typography.bodyLarge)
                 Text(
-                    "Wymagaj uwierzytelnienia przy otwarciu",
+                    stringResource(R.string.settings_security_lock_desc),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -263,7 +276,7 @@ fun SettingsScreen(
                 onClick = { showSetPinDialog = true },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Zmień kod PIN")
+                Text(stringResource(R.string.settings_change_pin))
             }
         }
 
@@ -272,7 +285,7 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         // Widget Personalization
-        Text("Personalizacja Widgetu", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.settings_section_widget), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(12.dp))
 
         Row(
@@ -280,9 +293,9 @@ fun SettingsScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("Tryb dyskretny widgetu", style = MaterialTheme.typography.bodyLarge)
+                Text(stringResource(R.string.settings_widget_discrete), style = MaterialTheme.typography.bodyLarge)
                 Text(
-                    "Ukrywa nazwę substancji na ekranie głównym",
+                    stringResource(R.string.settings_widget_discrete_desc),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -300,9 +313,9 @@ fun SettingsScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("Odliczanie czasu sesji", style = MaterialTheme.typography.bodyLarge)
+                Text(stringResource(R.string.settings_widget_countdown), style = MaterialTheme.typography.bodyLarge)
                 Text(
-                    "Pokazuj czas od przyjęcia i do zakończenia",
+                    stringResource(R.string.settings_widget_countdown_desc),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -317,15 +330,15 @@ fun SettingsScreen(
         HorizontalDivider()
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Export
-        Text("Zarządzanie Danymi", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        // Export / Data
+        Text(stringResource(R.string.settings_section_data), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(12.dp))
 
         Button(
             onClick = { viewModel.exportData(context) },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Eksportuj dane do JSON")
+            Text(stringResource(R.string.settings_export))
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -338,7 +351,7 @@ fun SettingsScreen(
                 contentColor = MaterialTheme.colorScheme.error
             )
         ) {
-            Text("Wyczyść wszystkie dane")
+            Text(stringResource(R.string.settings_delete_all))
         }
 
         if (deleteComplete) {
@@ -346,11 +359,11 @@ fun SettingsScreen(
             Snackbar(
                 action = {
                     TextButton(onClick = { viewModel.dismissDeleteComplete() }) {
-                        Text("OK")
+                        Text(stringResource(R.string.action_ok))
                     }
                 }
             ) {
-                Text("Wszystkie dane zostały usunięte")
+                Text(stringResource(R.string.settings_delete_complete))
             }
         }
 
@@ -358,24 +371,24 @@ fun SettingsScreen(
         HorizontalDivider()
         Spacer(modifier = Modifier.height(24.dp))
 
-        // App info
-        Text("O aplikacji", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        // About
+        Text(stringResource(R.string.settings_section_about), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(12.dp))
         Text(
-            text = "Hyperreal Journal",
+            text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "Wersja 1.1.0",
+            text = stringResource(R.string.settings_version),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "Aplikacja harm reduction. Wszystkie dane są przechowywane lokalnie na urządzeniu.",
+            text = stringResource(R.string.settings_about_desc),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -385,5 +398,63 @@ fun SettingsScreen(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.primary
         )
+
+        Spacer(modifier = Modifier.height(24.dp))
+        HorizontalDivider()
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // ── Sponsorship Card ──────────────────────────────────────────────
+        SponsorCard(onSponsorClick = { uriHandler.openUri(sponsorUrl) })
+
+        Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+@Composable
+private fun SponsorCard(onSponsorClick: () -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = HyperrealTokens.SurfaceRaised
+        ),
+        border = BorderStroke(1.dp, HyperrealTokens.BorderHighlight)
+    ) {
+        Column(modifier = Modifier.padding(20.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Filled.Favorite,
+                    contentDescription = null,
+                    tint = HyperrealTokens.TelemetryDanger,
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+                Text(
+                    text = stringResource(R.string.sponsor_title),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = stringResource(R.string.sponsor_desc),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = onSponsorClick,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = HyperrealTokens.TelemetrySafe
+                ),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.sponsor_button),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
     }
 }
