@@ -13,35 +13,39 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = HyperrealGreen,
-    secondary = HyperrealDarkGreen,
-    tertiary = HyperrealGreen,
-    background = HyperrealBackground,
-    surface = HyperrealSurface,
-    surfaceVariant = HyperrealSurfaceVariant,
-    onPrimary = Color.Black,
+    primary = HyperrealTokens.BrandGreen,
+    secondary = HyperrealTokens.BrandGreenDark,
+    tertiary = HyperrealTokens.TelemetryNotice,
+    background = HyperrealTokens.Canvas,
+    surface = HyperrealTokens.SurfaceDark,
+    surfaceVariant = HyperrealTokens.SurfaceRaised,
+    onPrimary = Color(0xFF07080B),
     onSecondary = Color.White,
-    onTertiary = Color.Black,
-    onBackground = HyperrealTextPrimary,
-    onSurface = HyperrealTextPrimary,
-    onSurfaceVariant = HyperrealTextSecondary,
-    error = HyperrealError,
-    onError = Color.Black
+    onTertiary = Color(0xFF07080B),
+    onBackground = HyperrealTokens.TextPrimary,
+    onSurface = HyperrealTokens.TextPrimary,
+    onSurfaceVariant = HyperrealTokens.TextSecondary,
+    outline = HyperrealTokens.BorderSubtle,
+    outlineVariant = HyperrealTokens.BorderHighlight,
+    error = HyperrealTokens.TelemetryDanger,
+    onError = Color.White
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = HyperrealDarkGreen,
     secondary = HyperrealGreen,
     tertiary = HyperrealDarkGreen,
-    background = Color(0xFFF5F5F5),
-    surface = Color.White,
-    surfaceVariant = Color(0xFFE8E8E8),
+    background = HyperrealTokens.CanvasLight,
+    surface = HyperrealTokens.SurfaceLight,
+    surfaceVariant = HyperrealTokens.SurfaceRaisedLight,
     onPrimary = Color.White,
     onSecondary = Color.Black,
     onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    onSurfaceVariant = Color(0xFF49454F),
+    onBackground = Color(0xFF0F172A),
+    onSurface = Color(0xFF0F172A),
+    onSurfaceVariant = Color(0xFF475569),
+    outline = HyperrealTokens.BorderSubtleLight,
+    outlineVariant = HyperrealTokens.BorderHighlightLight,
     error = HyperrealError,
     onError = Color.White
 )
@@ -56,7 +60,9 @@ fun HyperrealTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !isDarkMode
+            val insetsController = WindowCompat.getInsetsController(window, view)
+            insetsController.isAppearanceLightStatusBars = !isDarkMode
+            insetsController.isAppearanceLightNavigationBars = !isDarkMode
         }
     }
 

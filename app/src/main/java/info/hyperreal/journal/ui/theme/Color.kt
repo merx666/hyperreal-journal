@@ -2,17 +2,65 @@ package info.hyperreal.journal.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val HyperrealGreen = Color(0xFF00E676)
-val HyperrealDarkGreen = Color(0xFF008F11)
-val HyperrealBackground = Color(0xFF080808)
-val HyperrealSurface = Color(0xFF121212)
-val HyperrealSurfaceVariant = Color(0xFF1E1E1E)
-val HyperrealTextPrimary = Color(0xFFE0E0E0)
-val HyperrealTextSecondary = Color(0xFFA0A0A0)
-val HyperrealError = Color(0xFFCF6679)
-val HyperrealWarning = Color(0xFFFFB300)
+/**
+ * Certified Design Tokens for Hyperreal Journal.
+ * Follows Obsidian & Bio-Telemetry aesthetic guidelines.
+ */
+object HyperrealTokens {
+    // Canvas & Layered Obsidian Surfaces (Dark / AMOLED)
+    val Canvas = Color(0xFF07080B)         // Deepest background
+    val SurfaceDark = Color(0xFF0E1017)    // Card surface
+    val SurfaceRaised = Color(0xFF151824)  // Modals / Floating sheets
+    val SurfaceElevated = Color(0xFF1D2232)// Active state / Hover
 
-val DoseLight = Color(0xFF4CAF50)
-val DoseCommon = Color(0xFFFFEB3B)
-val DoseStrong = Color(0xFFFF9800)
-val DoseHeavy = Color(0xFFF44336)
+    // Light Theme Surfaces
+    val CanvasLight = Color(0xFFF8FAFC)        // Slate 50
+    val SurfaceLight = Color.White             // Pure white card surface
+    val SurfaceRaisedLight = Color(0xFFF1F5F9) // Slate 100
+    val SurfaceElevatedLight = Color(0xFFE2E8F0)// Slate 200
+
+    // Specular Highlight Borders (Dark mode: light-source simulation)
+    val BorderSubtle = Color(0x14FFFFFF)     // 8% white
+    val BorderHighlight = Color(0x24FFFFFF)  // 14% white
+    val BorderActiveGreen = Color(0x4000E676)// 25% green highlight
+
+    // Light Theme Borders
+    val BorderSubtleLight = Color(0x1F0F172A)    // 12% slate 900
+    val BorderHighlightLight = Color(0x330F172A) // 20% slate 900
+    val BorderActiveGreenLight = Color(0x6000B359)// Green highlight for light mode
+
+    // Brand Colors
+    val BrandGreen = Color(0xFF00E676)
+    val BrandGreenDark = Color(0xFF00B359)
+    val BrandGreenGlow = Color(0x2600E676)
+
+    // Bio-Telemetry Dose & Risk Palette
+    val TelemetrySafe = Color(0xFF10B981)    // Emerald (Synergy / Safe)
+    val TelemetryNotice = Color(0xFF38BDF8)  // Sky (Informational / Comeup)
+    val TelemetryWarning = Color(0xFFF59E0B) // Amber (Caution / Peak)
+    val TelemetryDanger = Color(0xFFF43F5E)  // Coral Crimson (Unsafe / Dangerous)
+    val TelemetrySevere = Color(0xFFA855F7)  // Ultraviolet (Fatal risk / Serotonin)
+
+    // Typography Tones
+    val TextPrimary = Color(0xFFF1F5F9)     // Slate 100
+    val TextSecondary = Color(0xFF94A3B8)   // Slate 400
+    val TextMuted = Color(0xFF64748B)       // Slate 500
+}
+
+// Backward-compatible aliases mapped to certified tokens
+val HyperrealGreen = HyperrealTokens.BrandGreen
+val HyperrealDarkGreen = HyperrealTokens.BrandGreenDark
+val HyperrealBackground = HyperrealTokens.Canvas
+val HyperrealSurface = HyperrealTokens.SurfaceDark
+val HyperrealSurfaceVariant = HyperrealTokens.SurfaceRaised
+val HyperrealTextPrimary = HyperrealTokens.TextPrimary
+val HyperrealTextSecondary = HyperrealTokens.TextSecondary
+val HyperrealError = HyperrealTokens.TelemetryDanger
+val HyperrealWarning = HyperrealTokens.TelemetryWarning
+
+// Dose levels mapped to certified telemetry palette
+val DoseLight = HyperrealTokens.TelemetrySafe
+val DoseCommon = HyperrealTokens.TelemetryWarning
+val DoseStrong = HyperrealTokens.TelemetryDanger
+val DoseHeavy = HyperrealTokens.TelemetrySevere
+

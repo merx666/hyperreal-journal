@@ -30,7 +30,11 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import info.hyperreal.journal.ui.theme.HyperrealTokens
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -100,12 +104,12 @@ private fun getPhaseLabel(phase: TimelinePhase?): String {
 
 private fun getPhaseColor(phase: TimelinePhase?): Color {
     return when (phase) {
-        TimelinePhase.ONSET -> Color(0xFF38BDF8)
-        TimelinePhase.COMEUP -> Color(0xFFFBBF24)
-        TimelinePhase.PEAK -> Color(0xFFF43F5E)
-        TimelinePhase.OFFSET -> Color(0xFFA855F7)
-        TimelinePhase.AFTERGLOW -> Color(0xFF34D399)
-        TimelinePhase.BASELINE, TimelinePhase.NOT_STARTED, null -> Color(0xFF94A3B8)
+        TimelinePhase.ONSET -> HyperrealTokens.TelemetryNotice
+        TimelinePhase.COMEUP -> HyperrealTokens.TelemetryWarning
+        TimelinePhase.PEAK -> HyperrealTokens.TelemetryDanger
+        TimelinePhase.OFFSET -> HyperrealTokens.TelemetrySevere
+        TimelinePhase.AFTERGLOW -> HyperrealTokens.TelemetrySafe
+        TimelinePhase.BASELINE, TimelinePhase.NOT_STARTED, null -> HyperrealTokens.TextMuted
     }
 }
 
@@ -118,13 +122,13 @@ private fun formatMinutes(minutes: Long?): String {
 
 private fun getSeverityColor(status: InteractionStatus): Color {
     return when (status) {
-        InteractionStatus.DANGEROUS -> Color(0xFFEF4444)
-        InteractionStatus.UNSAFE -> Color(0xFFF97316)
-        InteractionStatus.CAUTION -> Color(0xFFEAB308)
-        InteractionStatus.LOW_RISK_DECREASE -> Color(0xFF3B82F6)
-        InteractionStatus.LOW_RISK_NO_SYNERGY -> Color(0xFF64748B)
-        InteractionStatus.LOW_RISK_SYNERGY -> Color(0xFF10B981)
-        InteractionStatus.UNKNOWN -> Color(0xFF94A3B8)
+        InteractionStatus.DANGEROUS -> HyperrealTokens.TelemetryDanger
+        InteractionStatus.UNSAFE -> HyperrealTokens.TelemetryWarning
+        InteractionStatus.CAUTION -> HyperrealTokens.TelemetryNotice
+        InteractionStatus.LOW_RISK_DECREASE -> HyperrealTokens.TelemetryNotice
+        InteractionStatus.LOW_RISK_NO_SYNERGY -> HyperrealTokens.TextMuted
+        InteractionStatus.LOW_RISK_SYNERGY -> HyperrealTokens.TelemetrySafe
+        InteractionStatus.UNKNOWN -> HyperrealTokens.TextMuted
     }
 }
 
@@ -138,6 +142,7 @@ fun JournalScreen(
     val activeMixInteractions by viewModel.activeMixInteractions.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
     val currentFilter by viewModel.filter.collectAsState()
+    val haptic = LocalHapticFeedback.current
 
     val dateFormat = remember { SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault()) }
 
@@ -322,8 +327,9 @@ fun JournalScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 12.dp, vertical = 6.dp),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)),
-                        shape = RoundedCornerShape(12.dp)
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                        shape = RoundedCornerShape(14.dp)
                     ) {
                         Column(modifier = Modifier.padding(14.dp)) {
                             Row(
@@ -335,7 +341,8 @@ fun JournalScreen(
                                     Text(
                                         text = entry.substance?.name ?: entry.ingestion.substanceId,
                                         style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Bold
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onSurface
                                     )
                                     val timeStr = dateFormat.format(Date(entry.ingestion.timestamp))
                                     Text(
@@ -347,24 +354,30 @@ fun JournalScreen(
 
                                 Row {
                                     IconButton(
-                                        onClick = { ingestionToEdit = entry.ingestion },
+                                        onClick = {
+                                            haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                            ingestionToEdit = entry.ingestion
+                                        },
                                         modifier = Modifier.size(36.dp)
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Edit,
                                             contentDescription = "Edytuj",
-                                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
                                             modifier = Modifier.size(18.dp)
                                         )
                                     }
                                     IconButton(
-                                        onClick = { ingestionToDelete = entry.ingestion },
+                                        onClick = {
+                                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                            ingestionToDelete = entry.ingestion
+                                        },
                                         modifier = Modifier.size(36.dp)
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Delete,
                                             contentDescription = "Usuń",
-                                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                                            tint = MaterialTheme.colorScheme.error.copy(alpha = 0.8f),
                                             modifier = Modifier.size(18.dp)
                                         )
                                     }
@@ -531,15 +544,16 @@ private fun ActiveSessionsDashboardCard(
     activeInteractions: List<info.hyperreal.journal.domain.model.SubstanceInteraction>,
     onCheckInClick: (JournalEntry) -> Unit
 ) {
+    val haptic = LocalHapticFeedback.current
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.35f)
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(16.dp),
-        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.4f))
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.35f))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -551,7 +565,7 @@ private fun ActiveSessionsDashboardCard(
                     Box(
                         modifier = Modifier
                             .size(10.dp)
-                            .background(Color(0xFF22C55E), CircleShape)
+                            .background(MaterialTheme.colorScheme.primary, CircleShape)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -564,7 +578,7 @@ private fun ActiveSessionsDashboardCard(
                 Text(
                     text = "Na żywo",
                     style = MaterialTheme.typography.labelSmall,
-                    color = Color(0xFF22C55E),
+                    color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -635,7 +649,7 @@ private fun ActiveSessionsDashboardCard(
                         progress = { active.progressPercent },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(4.dp),
+                            .height(6.dp),
                         color = getPhaseColor(phase),
                         trackColor = MaterialTheme.colorScheme.surfaceVariant
                     )
@@ -680,7 +694,10 @@ private fun ActiveSessionsDashboardCard(
                         }
 
                         Button(
-                            onClick = { onCheckInClick(active.entry) },
+                            onClick = {
+                                haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                onCheckInClick(active.entry)
+                            },
                             shape = RoundedCornerShape(8.dp),
                             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                             modifier = Modifier.height(32.dp)

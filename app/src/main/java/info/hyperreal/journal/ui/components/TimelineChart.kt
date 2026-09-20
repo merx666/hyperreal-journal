@@ -1,5 +1,6 @@
 package info.hyperreal.journal.ui.components
 
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -33,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -53,11 +55,20 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.cos
 import kotlin.math.sin
 
-private val OnsetColor = Color(0xFF38BDF8)   // Sky Blue
-private val ComeupColor = Color(0xFFFBBF24)  // Warm Amber
-private val PeakColor = Color(0xFFF43F5E)    // Vibrant Red/Rose
-private val OffsetColor = Color(0xFFA855F7)  // Purple
-private val AfterglowColor = Color(0xFF34D399) // Emerald Green
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import info.hyperreal.journal.ui.theme.HyperrealTokens
+
+private val OnsetColor = HyperrealTokens.TelemetryNotice   // Sky Blue
+private val ComeupColor = HyperrealTokens.TelemetryWarning  // Warm Amber
+private val PeakColor = HyperrealTokens.TelemetryDanger    // Vibrant Coral / Crimson
+private val OffsetColor = HyperrealTokens.TelemetrySevere  // Ultraviolet
+private val AfterglowColor = HyperrealTokens.TelemetrySafe // Emerald Green
 
 private data class ResolvedPhases(
     val onset: Float,
@@ -222,10 +233,37 @@ fun TimelineChart(
         label = "timeline_progress"
     )
 
+    val haptic = LocalHapticFeedback.current
+    var lastScrubbedPhase by remember { mutableStateOf<String?>(null) }
+
+    // Pulsating beacon animation
+    val infiniteTransition = rememberInfiniteTransition(label = "beacon_transition")
+    val beaconPulseScale by infiniteTransition.animateFloat(
+        initialValue = 0.85f,
+        targetValue = 1.35f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1200),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "beacon_pulse"
+    )
+    val beaconPulseAlpha by infiniteTransition.animateFloat(
+        initialValue = 0.40f,
+        targetValue = 0.10f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1200),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "beacon_alpha"
+    )
+
     var touchX by remember { mutableStateOf<Float?>(null) }
     var chartWidth by remember { mutableFloatStateOf(0f) }
 
     val primaryColor = MaterialTheme.colorScheme.primary
+    val outlineColor = MaterialTheme.colorScheme.outline
+    val outlineVariantColor = MaterialTheme.colorScheme.outlineVariant
+    val surfaceVariantColor = MaterialTheme.colorScheme.surfaceVariant
 
     Box(
         modifier = modifier
@@ -233,176 +271,213 @@ fun TimelineChart(
             .height(130.dp)
             .onSizeChanged { chartWidth = it.width.toFloat() }
     ) {
-        Canvas(
+        Spacer(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(105.dp)
                 .align(Alignment.BottomCenter)
-                .pointerInput(totalDurationMin) {
+                .pointerInput(totalDurationMin, phases) {
                     awaitEachGesture {
                         val down = awaitFirstDown(requireUnconsumed = false)
-                        touchX = down.position.x.coerceIn(0f, size.width.toFloat())
+                        val downX = down.position.x.coerceIn(0f, size.width.toFloat())
+                        touchX = downX
+                        val currentPhase = getPhaseName((downX / size.width.toFloat()) * totalDurationMin, phases)
+                        if (currentPhase != lastScrubbedPhase) {
+                            lastScrubbedPhase = currentPhase
+                            haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                        }
 
                         do {
                             val event = awaitPointerEvent()
                             val move = event.changes.firstOrNull()
                             if (move != null && move.pressed) {
-                                touchX = move.position.x.coerceIn(0f, size.width.toFloat())
+                                val moveX = move.position.x.coerceIn(0f, size.width.toFloat())
+                                touchX = moveX
+                                val phaseNow = getPhaseName((moveX / size.width.toFloat()) * totalDurationMin, phases)
+                                if (phaseNow != lastScrubbedPhase) {
+                                    lastScrubbedPhase = phaseNow
+                                    haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                }
                             }
                         } while (event.changes.any { it.pressed })
 
                         touchX = null
+                        lastScrubbedPhase = null
                     }
                 }
-        ) {
-            val width = size.width
-            val height = size.height
-            if (width <= 0f || height <= 0f) return@Canvas
-
-            val topMargin = 12.dp.toPx()
-            val bottomMargin = 16.dp.toPx()
-            val chartDrawHeight = height - topMargin - bottomMargin
-
-            // Sample points along the width for a smooth curve
-            val sampleCount = 80
-            val curvePoints = ArrayList<Offset>(sampleCount + 1)
-            for (i in 0..sampleCount) {
-                val ratio = i.toFloat() / sampleCount
-                val t = ratio * totalDurationMin
-                val intensity = calculateIntensity(t, phases)
-                val x = ratio * width
-                val y = height - bottomMargin - (intensity * chartDrawHeight)
-                curvePoints.add(Offset(x, y))
-            }
-
-            // Build fill path & stroke path
-            val path = Path().apply {
-                if (curvePoints.isNotEmpty()) {
-                    moveTo(curvePoints[0].x, curvePoints[0].y)
-                    for (i in 1 until curvePoints.size) {
-                        val p0 = curvePoints[i - 1]
-                        val p1 = curvePoints[i]
-                        val midX = (p0.x + p1.x) / 2f
-                        cubicTo(midX, p0.y, midX, p1.y, p1.x, p1.y)
+                .drawWithCache {
+                    val width = size.width
+                    val height = size.height
+                    if (width <= 0f || height <= 0f) {
+                        return@drawWithCache onDrawBehind { }
                     }
-                }
-            }
 
-            val fillPath = Path().apply {
-                addPath(path)
-                lineTo(width, height - bottomMargin)
-                lineTo(0f, height - bottomMargin)
-                close()
-            }
+                    val topMargin = 12.dp.toPx()
+                    val bottomMargin = 16.dp.toPx()
+                    val chartDrawHeight = height - topMargin - bottomMargin
 
-            // Phase intervals for colored segments
-            val phaseSegments = listOf(
-                Triple(OnsetColor, 0f, phases.tOnset / totalDurationMin),
-                Triple(ComeupColor, phases.tOnset / totalDurationMin, phases.tComeup / totalDurationMin),
-                Triple(PeakColor, phases.tComeup / totalDurationMin, phases.tPeak / totalDurationMin),
-                Triple(OffsetColor, phases.tPeak / totalDurationMin, phases.tOffset / totalDurationMin),
-                Triple(AfterglowColor, phases.tOffset / totalDurationMin, 1f)
-            )
+                    // Sample points along the width for a smooth curve (Computed ONCE per size/phase)
+                    val sampleCount = 80
+                    val curvePoints = ArrayList<Offset>(sampleCount + 1)
+                    for (i in 0..sampleCount) {
+                        val ratio = i.toFloat() / sampleCount
+                        val t = ratio * totalDurationMin
+                        val intensity = calculateIntensity(t, phases)
+                        val x = ratio * width
+                        val y = height - bottomMargin - (intensity * chartDrawHeight)
+                        curvePoints.add(Offset(x, y))
+                    }
 
-            // Draw segmented gradients and glow lines
-            for ((color, startR, endR) in phaseSegments) {
-                if (startR >= endR) continue
-                val startX = startR * width
-                val endX = endR * width
+                    // Build fill path & stroke path
+                    val curvePath = Path().apply {
+                        if (curvePoints.isNotEmpty()) {
+                            moveTo(curvePoints[0].x, curvePoints[0].y)
+                            for (i in 1 until curvePoints.size) {
+                                val p0 = curvePoints[i - 1]
+                                val p1 = curvePoints[i]
+                                val midX = (p0.x + p1.x) / 2f
+                                cubicTo(midX, p0.y, midX, p1.y, p1.x, p1.y)
+                            }
+                        }
+                    }
 
-                clipRect(left = startX, right = endX, top = 0f, bottom = height) {
-                    // Subtle vertical gradient fill
-                    drawPath(
-                        path = fillPath,
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                color.copy(alpha = 0.35f),
-                                color.copy(alpha = 0.03f)
-                            ),
-                            startY = topMargin,
-                            endY = height - bottomMargin
+                    val fillPath = Path().apply {
+                        addPath(curvePath)
+                        lineTo(width, height - bottomMargin)
+                        lineTo(0f, height - bottomMargin)
+                        close()
+                    }
+
+                    // Phase intervals for colored segments
+                    val phaseSpecs = listOf(
+                        Triple(OnsetColor, 0f, phases.tOnset / totalDurationMin),
+                        Triple(ComeupColor, phases.tOnset / totalDurationMin, phases.tComeup / totalDurationMin),
+                        Triple(PeakColor, phases.tComeup / totalDurationMin, phases.tPeak / totalDurationMin),
+                        Triple(OffsetColor, phases.tPeak / totalDurationMin, phases.tOffset / totalDurationMin),
+                        Triple(AfterglowColor, phases.tOffset / totalDurationMin, 1f)
+                    )
+
+                    class CachedPhaseSegment(
+                        val color: Color,
+                        val glowColor: Color,
+                        val startX: Float,
+                        val endX: Float,
+                        val brush: Brush
+                    )
+
+                    val cachedSegments = phaseSpecs.mapNotNull { (color, startR, endR) ->
+                        if (startR >= endR) null
+                        else {
+                            CachedPhaseSegment(
+                                color = color,
+                                glowColor = color.copy(alpha = 0.30f),
+                                startX = startR * width,
+                                endX = endR * width,
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        color.copy(alpha = 0.35f),
+                                        color.copy(alpha = 0.03f)
+                                    ),
+                                    startY = topMargin,
+                                    endY = height - bottomMargin
+                                )
+                            )
+                        }
+                    }
+
+                    val outerGlowStroke = Stroke(width = 8.dp.toPx())
+                    val innerStroke = Stroke(width = 2.5.dp.toPx())
+                    val baselineStrokeWidth = 1.dp.toPx()
+                    val indicatorStrokeWidth = 1.5.dp.toPx()
+                    val baseBeaconRadius = 12.dp.toPx()
+                    val beaconMidRadius = 7.dp.toPx()
+                    val beaconCoreRadius = 3.5.dp.toPx()
+                    val scrubberRadius = 10.dp.toPx()
+                    val scrubberCoreRadius = 5.dp.toPx()
+                    val dashPathEffect = PathEffect.dashPathEffect(floatArrayOf(12f, 10f), 0f)
+
+                    onDrawBehind {
+                        // Draw segmented gradients and glow lines (Zero allocations during animation!)
+                        for (segment in cachedSegments) {
+                            clipRect(left = segment.startX, right = segment.endX, top = 0f, bottom = height) {
+                                drawPath(path = fillPath, brush = segment.brush)
+                                drawPath(path = curvePath, color = segment.glowColor, style = outerGlowStroke)
+                                drawPath(path = curvePath, color = segment.color, style = innerStroke)
+                            }
+                        }
+
+                        // Draw baseline line at bottom
+                        drawLine(
+                            color = outlineColor,
+                            start = Offset(0f, height - bottomMargin),
+                            end = Offset(width, height - bottomMargin),
+                            strokeWidth = baselineStrokeWidth
                         )
-                    )
-                    // Outer glow stroke
-                    drawPath(
-                        path = path,
-                        color = color.copy(alpha = 0.30f),
-                        style = Stroke(width = 8.dp.toPx())
-                    )
-                    // Inner sharp stroke
-                    drawPath(
-                        path = path,
-                        color = color,
-                        style = Stroke(width = 2.5.dp.toPx())
-                    )
+
+                        // Current progress indicator (if ingestion started)
+                        if (timeSinceIngestionMs > 0 && animatedProgress in 0f..1f) {
+                            val progressX = animatedProgress * width
+                            val progressT = animatedProgress * totalDurationMin
+                            val progressIntensity = calculateIntensity(progressT, phases)
+                            val progressY = height - bottomMargin - (progressIntensity * chartDrawHeight)
+
+                            // Vertical indicator line
+                            drawLine(
+                                color = primaryColor.copy(alpha = 0.6f),
+                                start = Offset(progressX, topMargin),
+                                end = Offset(progressX, height - bottomMargin),
+                                strokeWidth = indicatorStrokeWidth
+                            )
+
+                            // Breathing glowing beacon on curve
+                            drawCircle(
+                                color = primaryColor.copy(alpha = beaconPulseAlpha),
+                                radius = baseBeaconRadius * beaconPulseScale,
+                                center = Offset(progressX, progressY)
+                            )
+                            drawCircle(
+                                color = primaryColor.copy(alpha = 0.55f),
+                                radius = beaconMidRadius,
+                                center = Offset(progressX, progressY)
+                            )
+                            drawCircle(
+                                color = Color.White,
+                                radius = beaconCoreRadius,
+                                center = Offset(progressX, progressY)
+                            )
+                        }
+
+                        // Touch scrubber indicator
+                        touchX?.let { tx ->
+                            val touchRatio = (tx / width).coerceIn(0f, 1f)
+                            val touchT = touchRatio * totalDurationMin
+                            val touchIntensity = calculateIntensity(touchT, phases)
+                            val touchY = height - bottomMargin - (touchIntensity * chartDrawHeight)
+
+                            // Dashed vertical scrubber line
+                            drawLine(
+                                color = Color.White.copy(alpha = 0.7f),
+                                start = Offset(tx, 0f),
+                                end = Offset(tx, height - bottomMargin),
+                                strokeWidth = indicatorStrokeWidth,
+                                pathEffect = dashPathEffect
+                            )
+
+                            // Scrubber handle circle on curve
+                            drawCircle(
+                                color = Color.White.copy(alpha = 0.35f),
+                                radius = scrubberRadius,
+                                center = Offset(tx, touchY)
+                            )
+                            drawCircle(
+                                color = Color.White,
+                                radius = scrubberCoreRadius,
+                                center = Offset(tx, touchY)
+                            )
+                        }
+                    }
                 }
-            }
-
-            // Draw baseline line at bottom
-            drawLine(
-                color = Color.White.copy(alpha = 0.15f),
-                start = Offset(0f, height - bottomMargin),
-                end = Offset(width, height - bottomMargin),
-                strokeWidth = 1.dp.toPx()
-            )
-
-            // Current progress indicator (if ingestion started)
-            if (timeSinceIngestionMs > 0 && animatedProgress in 0f..1f) {
-                val progressX = animatedProgress * width
-                val progressT = animatedProgress * totalDurationMin
-                val progressIntensity = calculateIntensity(progressT, phases)
-                val progressY = height - bottomMargin - (progressIntensity * chartDrawHeight)
-
-                // Vertical indicator line
-                drawLine(
-                    color = primaryColor.copy(alpha = 0.6f),
-                    start = Offset(progressX, topMargin),
-                    end = Offset(progressX, height - bottomMargin),
-                    strokeWidth = 1.5.dp.toPx()
-                )
-
-                // Glowing point on curve
-                drawCircle(
-                    color = primaryColor.copy(alpha = 0.35f),
-                    radius = 9.dp.toPx(),
-                    center = Offset(progressX, progressY)
-                )
-                drawCircle(
-                    color = Color.White,
-                    radius = 4.dp.toPx(),
-                    center = Offset(progressX, progressY)
-                )
-            }
-
-            // Touch scrubber indicator
-            touchX?.let { tx ->
-                val touchRatio = (tx / width).coerceIn(0f, 1f)
-                val touchT = touchRatio * totalDurationMin
-                val touchIntensity = calculateIntensity(touchT, phases)
-                val touchY = height - bottomMargin - (touchIntensity * chartDrawHeight)
-
-                // Dashed vertical scrubber line
-                drawLine(
-                    color = Color.White.copy(alpha = 0.7f),
-                    start = Offset(tx, 0f),
-                    end = Offset(tx, height - bottomMargin),
-                    strokeWidth = 1.5.dp.toPx(),
-                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(12f, 10f), 0f)
-                )
-
-                // Scrubber handle circle on curve
-                drawCircle(
-                    color = Color.White.copy(alpha = 0.35f),
-                    radius = 10.dp.toPx(),
-                    center = Offset(tx, touchY)
-                )
-                drawCircle(
-                    color = Color.White,
-                    radius = 5.dp.toPx(),
-                    center = Offset(tx, touchY)
-                )
-            }
-        }
+        )
 
         // Floating interactive tooltip
         touchX?.let { tx ->
@@ -422,11 +497,12 @@ fun TimelineChart(
             Surface(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .padding(top = 2.dp),
+                    .padding(top = 2.dp)
+                    .border(BorderStroke(1.dp, outlineVariantColor), RoundedCornerShape(8.dp)),
                 shape = RoundedCornerShape(8.dp),
-                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.94f),
-                shadowElevation = 6.dp,
-                tonalElevation = 4.dp
+                color = surfaceVariantColor.copy(alpha = 0.95f),
+                shadowElevation = 8.dp,
+                tonalElevation = 6.dp
             ) {
                 Row(
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
