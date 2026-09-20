@@ -25,3 +25,4 @@ grok_durations.json
 build/
 app/build/
 .idea/
+.kotlin/
