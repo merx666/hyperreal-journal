@@ -48,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.hyperreal.journal.domain.model.DurationParameters
+import info.hyperreal.journal.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -167,14 +168,17 @@ private fun calculateIntensity(t: Float, p: ResolvedPhases): Float {
     }
 }
 
-private fun getPhaseName(t: Float, p: ResolvedPhases): String {
+/**
+ * Returns the localized phase name string resource ID for a given time position.
+ */
+private fun getPhaseStringRes(t: Float, p: ResolvedPhases): Int {
     return when {
-        t < p.tOnset -> "Wejście (Onset)"
-        t < p.tComeup -> "Wzrost (Comeup)"
-        t < p.tPeak -> "Szczyt (Peak)"
-        t < p.tOffset -> "Zejście (Offset)"
-        t < p.total -> "Powrót (Afterglow)"
-        else -> "Koniec działania (Baseline)"
+        t < p.tOnset   -> R.string.phase_onset
+        t < p.tComeup  -> R.string.phase_comeup
+        t < p.tPeak    -> R.string.phase_peak
+        t < p.tOffset  -> R.string.phase_offset
+        t < p.total    -> R.string.phase_afterglow
+        else           -> R.string.phase_baseline
     }
 }
 
@@ -281,7 +285,8 @@ fun TimelineChart(
                         val down = awaitFirstDown(requireUnconsumed = false)
                         val downX = down.position.x.coerceIn(0f, size.width.toFloat())
                         touchX = downX
-                        val currentPhase = getPhaseName((downX / size.width.toFloat()) * totalDurationMin, phases)
+                        val currentPhaseRes = getPhaseStringRes((downX / size.width.toFloat()) * totalDurationMin, phases)
+                        val currentPhase = currentPhaseRes.toString()
                         if (currentPhase != lastScrubbedPhase) {
                             lastScrubbedPhase = currentPhase
                             haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
@@ -293,7 +298,8 @@ fun TimelineChart(
                             if (move != null && move.pressed) {
                                 val moveX = move.position.x.coerceIn(0f, size.width.toFloat())
                                 touchX = moveX
-                                val phaseNow = getPhaseName((moveX / size.width.toFloat()) * totalDurationMin, phases)
+                                val phaseResNow = getPhaseStringRes((moveX / size.width.toFloat()) * totalDurationMin, phases)
+                                val phaseNow = phaseResNow.toString()
                                 if (phaseNow != lastScrubbedPhase) {
                                     lastScrubbedPhase = phaseNow
                                     haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
@@ -484,7 +490,7 @@ fun TimelineChart(
             val effectiveWidth = if (chartWidth > 0f) chartWidth else 1f
             val touchRatio = (tx / effectiveWidth).coerceIn(0f, 1f)
             val touchMin = touchRatio * totalDurationMin
-            val phaseName = getPhaseName(touchMin, phases)
+            val phaseName = androidx.compose.ui.res.stringResource(getPhaseStringRes(touchMin, phases))
 
             val timeLabel = if (ingestionTimeMs != null) {
                 val absoluteTime = ingestionTimeMs + (touchMin * 60 * 1000).toLong()

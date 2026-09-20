@@ -16,6 +16,8 @@ import info.hyperreal.journal.domain.usecase.PhaseCountdown
 import info.hyperreal.journal.domain.usecase.TimelineCalculator
 import info.hyperreal.journal.domain.usecase.TimelinePhase
 import info.hyperreal.journal.domain.usecase.TimelineStatus
+import info.hyperreal.journal.core.worker.PhaseReminderWorker
+import info.hyperreal.journal.core.worker.ReminderScheduler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -50,6 +52,7 @@ class JournalViewModel @Inject constructor(
     private val substanceRepository: SubstanceRepository,
     private val timelineCalculator: TimelineCalculator,
     private val checkInRepository: CheckInRepository,
+    private val reminderScheduler: ReminderScheduler,
     private val interactionRepository: InteractionRepository? = null
 ) : ViewModel() {
 
@@ -160,6 +163,43 @@ class JournalViewModel @Inject constructor(
                 } else {
                     _activeMixInteractions.value = emptyList()
                 }
+
+                // Schedule peak reminders for active ingestions
+                schedulePeakReminders(activeList)
+            }
+        }
+    }
+
+    /**
+     * For each active ingestion that is currently in ONSET or COMEUP,
+     * schedules a WorkManager notification to fire 80% into the Peak phase.
+     * Already-past or already-PEAK entries are ignored to avoid duplicate spamming.
+     */
+    private fun schedulePeakReminders(activeList: List<ActiveEntryInfo>) {
+        val now = System.currentTimeMillis()
+        activeList.forEach { info ->
+            val sub = info.entry.substance ?: return@forEach
+            val ingestion = info.entry.ingestion
+            val roa = sub.roas.find { it.name.equals(ingestion.roa, ignoreCase = true) }
+            val duration = roa?.duration ?: return@forEach
+
+            val onset = ((duration.onset ?: 0f).toLong()) * 60_000L
+            val comeup = ((duration.comeup ?: 0f).toLong()) * 60_000L
+            val peak = ((duration.peak ?: 0f).toLong()) * 60_000L
+
+            // Peak starts at: ingestionTime + onset + comeup
+            val peakStartMs = ingestion.timestamp + onset + comeup
+            // Fire reminder 80% into peak
+            val reminderMs = peakStartMs + (peak * 80L / 100L)
+
+            // Only schedule if the reminder hasn't already passed
+            if (reminderMs > now) {
+                reminderScheduler.scheduleReminder(
+                    ingestionId = ingestion.id,
+                    substanceName = sub.name,
+                    phaseLabel = PhaseReminderWorker.PHASE_PEAK,
+                    triggerAtMs = reminderMs
+                )
             }
         }
     }
