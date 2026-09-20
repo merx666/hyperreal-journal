@@ -19,10 +19,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.unit.sp
 import info.hyperreal.journal.domain.model.SubstanceInteraction
 import info.hyperreal.journal.domain.model.InteractionStatus
 import info.hyperreal.journal.domain.model.Substance
 import info.hyperreal.journal.ui.matrix.MatrixExplorerScreen
+import info.hyperreal.journal.ui.theme.HyperrealTokens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,10 +69,11 @@ private fun PairMixCalculatorContent(
     viewModel: MixCalculatorViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val haptic = LocalHapticFeedback.current
 
     if (uiState.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
+            CircularProgressIndicator(color = HyperrealTokens.BrandGreen)
         }
     } else {
         Column(
@@ -78,7 +85,7 @@ private fun PairMixCalculatorContent(
             Text(
                 text = "Sprawdź bezpieczeństwo połączenia dwóch substancji",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = HyperrealTokens.TextSecondary,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
@@ -91,7 +98,10 @@ private fun PairMixCalculatorContent(
             )
 
             IconButton(
-                onClick = { viewModel.swapSubstances() },
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    viewModel.swapSubstances()
+                },
                 modifier = Modifier.padding(vertical = 8.dp)
             ) {
                 Icon(
@@ -108,7 +118,7 @@ private fun PairMixCalculatorContent(
                 onSubstanceSelected = viewModel::selectSubstanceB
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
             if (uiState.substanceA != null && uiState.substanceB != null) {
                 InteractionResultCard(
@@ -172,67 +182,96 @@ fun InteractionResultCard(interaction: SubstanceInteraction?, subA: String, subB
     if (interaction == null) {
         Card(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+            colors = CardDefaults.cardColors(containerColor = HyperrealTokens.SurfaceDark),
+            border = BorderStroke(1.dp, HyperrealTokens.BorderSubtle),
+            shape = RoundedCornerShape(16.dp)
         ) {
             Column(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(
                     imageVector = Icons.Default.Info,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(48.dp)
+                    tint = HyperrealTokens.TelemetryNotice,
+                    modifier = Modifier.size(36.dp)
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "Brak Danych",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
+                    text = "Brak Danych w Bazie",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = HyperrealTokens.TextPrimary
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 Text(
                     text = "Nie mamy danych o interakcji $subA z $subB. Zachowaj szczególną ostrożność!",
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = HyperrealTokens.TextSecondary
                 )
             }
         }
         return
     }
 
-    val (bgColor, textColor) = when (interaction.status) {
-        InteractionStatus.LOW_RISK_SYNERGY -> Color(0xFF00C853) to Color.White
-        InteractionStatus.LOW_RISK_NO_SYNERGY -> Color(0xFF64DD17) to Color.Black
-        InteractionStatus.LOW_RISK_DECREASE -> Color(0xFF2962FF) to Color.White
-        InteractionStatus.CAUTION -> Color(0xFFFFAB00) to Color.Black
-        InteractionStatus.UNSAFE -> Color(0xFFFF3D00) to Color.White
-        InteractionStatus.DANGEROUS -> Color(0xFFD50000) to Color.White
-        InteractionStatus.UNKNOWN -> MaterialTheme.colorScheme.surfaceVariant to MaterialTheme.colorScheme.onSurfaceVariant
+    val statusColor = when (interaction.status) {
+        InteractionStatus.LOW_RISK_SYNERGY -> HyperrealTokens.TelemetrySafe
+        InteractionStatus.LOW_RISK_NO_SYNERGY -> HyperrealTokens.TelemetryNotice
+        InteractionStatus.LOW_RISK_DECREASE -> HyperrealTokens.TelemetryNotice
+        InteractionStatus.CAUTION -> HyperrealTokens.TelemetryWarning
+        InteractionStatus.UNSAFE -> HyperrealTokens.TelemetryDanger
+        InteractionStatus.DANGEROUS -> HyperrealTokens.TelemetrySevere
+        InteractionStatus.UNKNOWN -> HyperrealTokens.TextMuted
     }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = bgColor)
+        colors = CardDefaults.cardColors(containerColor = HyperrealTokens.SurfaceDark),
+        border = BorderStroke(1.dp, statusColor.copy(alpha = 0.45f)),
+        shape = RoundedCornerShape(16.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        Column(modifier = Modifier.padding(20.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(10.dp)
+                        .background(statusColor, CircleShape)
+                )
+                Text(
+                    text = interaction.status.displayName.uppercase(),
+                    style = MaterialTheme.typography.labelMedium.copy(
+                        letterSpacing = 0.08.sp,
+                        fontWeight = FontWeight.ExtraBold
+                    ),
+                    color = statusColor
+                )
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
             Text(
-                text = interaction.status.displayName,
-                style = MaterialTheme.typography.titleLarge,
+                text = "$subA + $subB",
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = textColor
+                color = HyperrealTokens.TextPrimary
             )
 
             if (!interaction.note.isNullOrBlank()) {
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(10.dp))
+                HorizontalDivider(
+                    color = HyperrealTokens.BorderSubtle,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+                Spacer(modifier = Modifier.height(6.dp))
                 Text(
                     text = interaction.note,
-                    textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = textColor
+                    color = HyperrealTokens.TextSecondary,
+                    lineHeight = 22.sp
                 )
             }
         }

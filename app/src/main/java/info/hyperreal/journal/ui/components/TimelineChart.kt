@@ -1,5 +1,6 @@
 package info.hyperreal.journal.ui.components
 
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -53,11 +54,20 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.cos
 import kotlin.math.sin
 
-private val OnsetColor = Color(0xFF38BDF8)   // Sky Blue
-private val ComeupColor = Color(0xFFFBBF24)  // Warm Amber
-private val PeakColor = Color(0xFFF43F5E)    // Vibrant Red/Rose
-private val OffsetColor = Color(0xFFA855F7)  // Purple
-private val AfterglowColor = Color(0xFF34D399) // Emerald Green
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import info.hyperreal.journal.ui.theme.HyperrealTokens
+
+private val OnsetColor = HyperrealTokens.TelemetryNotice   // Sky Blue
+private val ComeupColor = HyperrealTokens.TelemetryWarning  // Warm Amber
+private val PeakColor = HyperrealTokens.TelemetryDanger    // Vibrant Coral / Crimson
+private val OffsetColor = HyperrealTokens.TelemetrySevere  // Ultraviolet
+private val AfterglowColor = HyperrealTokens.TelemetrySafe // Emerald Green
 
 private data class ResolvedPhases(
     val onset: Float,
@@ -222,6 +232,30 @@ fun TimelineChart(
         label = "timeline_progress"
     )
 
+    val haptic = LocalHapticFeedback.current
+    var lastScrubbedPhase by remember { mutableStateOf<String?>(null) }
+
+    // Pulsating beacon animation
+    val infiniteTransition = rememberInfiniteTransition(label = "beacon_transition")
+    val beaconPulseScale by infiniteTransition.animateFloat(
+        initialValue = 0.85f,
+        targetValue = 1.35f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1200),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "beacon_pulse"
+    )
+    val beaconPulseAlpha by infiniteTransition.animateFloat(
+        initialValue = 0.40f,
+        targetValue = 0.10f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1200),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "beacon_alpha"
+    )
+
     var touchX by remember { mutableStateOf<Float?>(null) }
     var chartWidth by remember { mutableFloatStateOf(0f) }
 
@@ -241,17 +275,30 @@ fun TimelineChart(
                 .pointerInput(totalDurationMin) {
                     awaitEachGesture {
                         val down = awaitFirstDown(requireUnconsumed = false)
-                        touchX = down.position.x.coerceIn(0f, size.width.toFloat())
+                        val downX = down.position.x.coerceIn(0f, size.width.toFloat())
+                        touchX = downX
+                        val currentPhase = getPhaseName((downX / size.width.toFloat()) * totalDurationMin, phases)
+                        if (currentPhase != lastScrubbedPhase) {
+                            lastScrubbedPhase = currentPhase
+                            haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                        }
 
                         do {
                             val event = awaitPointerEvent()
                             val move = event.changes.firstOrNull()
                             if (move != null && move.pressed) {
-                                touchX = move.position.x.coerceIn(0f, size.width.toFloat())
+                                val moveX = move.position.x.coerceIn(0f, size.width.toFloat())
+                                touchX = moveX
+                                val phaseNow = getPhaseName((moveX / size.width.toFloat()) * totalDurationMin, phases)
+                                if (phaseNow != lastScrubbedPhase) {
+                                    lastScrubbedPhase = phaseNow
+                                    haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                }
                             }
                         } while (event.changes.any { it.pressed })
 
                         touchX = null
+                        lastScrubbedPhase = null
                     }
                 }
         ) {
@@ -340,7 +387,7 @@ fun TimelineChart(
 
             // Draw baseline line at bottom
             drawLine(
-                color = Color.White.copy(alpha = 0.15f),
+                color = HyperrealTokens.BorderSubtle,
                 start = Offset(0f, height - bottomMargin),
                 end = Offset(width, height - bottomMargin),
                 strokeWidth = 1.dp.toPx()
@@ -361,15 +408,21 @@ fun TimelineChart(
                     strokeWidth = 1.5.dp.toPx()
                 )
 
-                // Glowing point on curve
+                // Breathing glowing beacon on curve
+                val baseRadius = 12.dp.toPx()
                 drawCircle(
-                    color = primaryColor.copy(alpha = 0.35f),
-                    radius = 9.dp.toPx(),
+                    color = primaryColor.copy(alpha = beaconPulseAlpha),
+                    radius = baseRadius * beaconPulseScale,
+                    center = Offset(progressX, progressY)
+                )
+                drawCircle(
+                    color = primaryColor.copy(alpha = 0.55f),
+                    radius = 7.dp.toPx(),
                     center = Offset(progressX, progressY)
                 )
                 drawCircle(
                     color = Color.White,
-                    radius = 4.dp.toPx(),
+                    radius = 3.5.dp.toPx(),
                     center = Offset(progressX, progressY)
                 )
             }
@@ -422,11 +475,12 @@ fun TimelineChart(
             Surface(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .padding(top = 2.dp),
+                    .padding(top = 2.dp)
+                    .border(BorderStroke(1.dp, HyperrealTokens.BorderHighlight), RoundedCornerShape(8.dp)),
                 shape = RoundedCornerShape(8.dp),
-                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.94f),
-                shadowElevation = 6.dp,
-                tonalElevation = 4.dp
+                color = HyperrealTokens.SurfaceRaised.copy(alpha = 0.95f),
+                shadowElevation = 8.dp,
+                tonalElevation = 6.dp
             ) {
                 Row(
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
