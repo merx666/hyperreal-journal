@@ -4,7 +4,8 @@ A privacy-focused, offline-first Android application designed for harm reduction
 
 > 📖 **Dokumentacja i Wiki (PL):** Pełna polska wikipedia projektu, architektura oraz instrukcja użytkownika znajdują się w katalogu [**wiki/**](wiki/Home.md).  
 > 🗺️ **Interaktywna Architektura (Archify):** Dostępna w [**docs/architecture.html**](docs/architecture.html) oraz jako wektorowy [**docs/architecture.svg**](docs/architecture.svg).  
-> 📲 **Pobierz APK (Beta):** Najnowsza wersja instalacyjna dostępna w zakładce [**Releases**](https://github.com/merx666/hyperreal-journal/releases).
+> 📲 **Pobierz APK (v0.4.1):** Najnowsza wersja instalacyjna dostępna w zakładce [**Releases**](https://github.com/merx666/hyperreal-journal/releases/latest).  
+> 🏬 **Sklepy i Dystrybucja:** Instrukcja instalacji przez **Obtainium, F-Droid, IzzyOnDroid, Amazon** znajduje się w [**docs/ALTERNATIVE_APP_STORES.md**](docs/ALTERNATIVE_APP_STORES.md).
 
 ## Key Features
 
