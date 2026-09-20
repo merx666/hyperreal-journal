@@ -7,16 +7,27 @@ import androidx.compose.ui.graphics.Color
  * Follows Obsidian & Bio-Telemetry aesthetic guidelines.
  */
 object HyperrealTokens {
-    // Canvas & Layered Obsidian Surfaces
+    // Canvas & Layered Obsidian Surfaces (Dark / AMOLED)
     val Canvas = Color(0xFF07080B)         // Deepest background
     val SurfaceDark = Color(0xFF0E1017)    // Card surface
     val SurfaceRaised = Color(0xFF151824)  // Modals / Floating sheets
     val SurfaceElevated = Color(0xFF1D2232)// Active state / Hover
 
-    // Specular Highlight Borders (1px light-source simulation)
+    // Light Theme Surfaces
+    val CanvasLight = Color(0xFFF8FAFC)        // Slate 50
+    val SurfaceLight = Color.White             // Pure white card surface
+    val SurfaceRaisedLight = Color(0xFFF1F5F9) // Slate 100
+    val SurfaceElevatedLight = Color(0xFFE2E8F0)// Slate 200
+
+    // Specular Highlight Borders (Dark mode: light-source simulation)
     val BorderSubtle = Color(0x14FFFFFF)     // 8% white
     val BorderHighlight = Color(0x24FFFFFF)  // 14% white
     val BorderActiveGreen = Color(0x4000E676)// 25% green highlight
+
+    // Light Theme Borders
+    val BorderSubtleLight = Color(0x1F0F172A)    // 12% slate 900
+    val BorderHighlightLight = Color(0x330F172A) // 20% slate 900
+    val BorderActiveGreenLight = Color(0x6000B359)// Green highlight for light mode
 
     // Brand Colors
     val BrandGreen = Color(0xFF00E676)

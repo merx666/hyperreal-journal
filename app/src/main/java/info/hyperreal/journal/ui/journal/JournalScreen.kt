@@ -327,8 +327,8 @@ fun JournalScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 12.dp, vertical = 6.dp),
-                        colors = CardDefaults.cardColors(containerColor = HyperrealTokens.SurfaceDark),
-                        border = BorderStroke(1.dp, HyperrealTokens.BorderSubtle),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
                         shape = RoundedCornerShape(14.dp)
                     ) {
                         Column(modifier = Modifier.padding(14.dp)) {
@@ -342,13 +342,13 @@ fun JournalScreen(
                                         text = entry.substance?.name ?: entry.ingestion.substanceId,
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.Bold,
-                                        color = HyperrealTokens.TextPrimary
+                                        color = MaterialTheme.colorScheme.onSurface
                                     )
                                     val timeStr = dateFormat.format(Date(entry.ingestion.timestamp))
                                     Text(
                                         text = "${entry.ingestion.doseAmount} ${entry.ingestion.doseUnit} • ${entry.ingestion.roa} • $timeStr",
                                         style = MaterialTheme.typography.bodySmall,
-                                        color = HyperrealTokens.TextSecondary
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
 
@@ -363,7 +363,7 @@ fun JournalScreen(
                                         Icon(
                                             imageVector = Icons.Default.Edit,
                                             contentDescription = "Edytuj",
-                                            tint = HyperrealTokens.TextSecondary.copy(alpha = 0.8f),
+                                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
                                             modifier = Modifier.size(18.dp)
                                         )
                                     }
@@ -377,7 +377,7 @@ fun JournalScreen(
                                         Icon(
                                             imageVector = Icons.Default.Delete,
                                             contentDescription = "Usuń",
-                                            tint = HyperrealTokens.TelemetryDanger.copy(alpha = 0.8f),
+                                            tint = MaterialTheme.colorScheme.error.copy(alpha = 0.8f),
                                             modifier = Modifier.size(18.dp)
                                         )
                                     }
@@ -550,10 +550,10 @@ private fun ActiveSessionsDashboardCard(
             .fillMaxWidth()
             .padding(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = HyperrealTokens.SurfaceDark
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(1.dp, HyperrealTokens.BorderActiveGreen)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.35f))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -565,20 +565,20 @@ private fun ActiveSessionsDashboardCard(
                     Box(
                         modifier = Modifier
                             .size(10.dp)
-                            .background(HyperrealTokens.BrandGreen, CircleShape)
+                            .background(MaterialTheme.colorScheme.primary, CircleShape)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Aktywne sesje (${activeEntries.size})",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = HyperrealTokens.TextPrimary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
                 Text(
                     text = "Na żywo",
                     style = MaterialTheme.typography.labelSmall,
-                    color = HyperrealTokens.BrandGreen,
+                    color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -651,7 +651,7 @@ private fun ActiveSessionsDashboardCard(
                             .fillMaxWidth()
                             .height(6.dp),
                         color = getPhaseColor(phase),
-                        trackColor = HyperrealTokens.SurfaceRaised
+                        trackColor = MaterialTheme.colorScheme.surfaceVariant
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))

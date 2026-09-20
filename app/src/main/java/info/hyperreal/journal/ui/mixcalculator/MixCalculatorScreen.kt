@@ -73,7 +73,7 @@ private fun PairMixCalculatorContent(
 
     if (uiState.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator(color = HyperrealTokens.BrandGreen)
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         }
     } else {
         Column(
@@ -85,7 +85,7 @@ private fun PairMixCalculatorContent(
             Text(
                 text = "Sprawdź bezpieczeństwo połączenia dwóch substancji",
                 style = MaterialTheme.typography.bodyMedium,
-                color = HyperrealTokens.TextSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
@@ -182,8 +182,8 @@ fun InteractionResultCard(interaction: SubstanceInteraction?, subA: String, subB
     if (interaction == null) {
         Card(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = HyperrealTokens.SurfaceDark),
-            border = BorderStroke(1.dp, HyperrealTokens.BorderSubtle),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
             shape = RoundedCornerShape(16.dp)
         ) {
             Column(
@@ -201,14 +201,14 @@ fun InteractionResultCard(interaction: SubstanceInteraction?, subA: String, subB
                     text = "Brak Danych w Bazie",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = HyperrealTokens.TextPrimary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
                     text = "Nie mamy danych o interakcji $subA z $subB. Zachowaj szczególną ostrożność!",
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = HyperrealTokens.TextSecondary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -227,7 +227,7 @@ fun InteractionResultCard(interaction: SubstanceInteraction?, subA: String, subB
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = HyperrealTokens.SurfaceDark),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         border = BorderStroke(1.dp, statusColor.copy(alpha = 0.45f)),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -257,20 +257,20 @@ fun InteractionResultCard(interaction: SubstanceInteraction?, subA: String, subB
                 text = "$subA + $subB",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = HyperrealTokens.TextPrimary
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             if (!interaction.note.isNullOrBlank()) {
                 Spacer(modifier = Modifier.height(10.dp))
                 HorizontalDivider(
-                    color = HyperrealTokens.BorderSubtle,
+                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
                     modifier = Modifier.padding(vertical = 4.dp)
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
                     text = interaction.note,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = HyperrealTokens.TextSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = 22.sp
                 )
             }
