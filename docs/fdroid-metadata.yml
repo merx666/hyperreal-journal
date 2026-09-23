@@ -1,0 +1,40 @@
+# F-Droid metadata for Hyperreal Journal
+# Package: info.hyperreal.journal
+
+Categories:
+  - Health & Fitness
+  - Science & Education
+License: Apache-2.0
+AuthorName: Marcin Mermela
+SourceCode: https://github.com/merx666/hyperreal-journal
+IssueTracker: https://github.com/merx666/hyperreal-journal/issues
+Changelog: https://github.com/merx666/hyperreal-journal/releases
+Donate: https://www.buymeacoffee.com/merx666
+
+Summary: Offline harm-reduction journal & bio-telemetry tracker
+Description: |-
+    Hyperreal Journal to otwartoźródłowa (100% offline) aplikacja służąca edukacji,
+    monitorowaniu parametrów bio-telemetrycznych oraz redukcji szkód (harm reduction).
+
+    Główne funkcje:
+    * 100% Prywatności Offline — brak serwera, brak analityki, brak usług Google (GMS)
+    * Dziennik sesji i kalkulator dawek ze statusem faz (Onset, Peak, Offset)
+    * Macierz interakcji i miksów bazująca na danych SIN (Społecznej Inicjatywy Narkopolityki)
+    * Szybki moduł pomocy kryzysowej 24H z numerem ratunkowym 112 i liniami wsparcia
+
+RepoType: git
+Repo: https://github.com/merx666/hyperreal-journal.git
+Binaries: https://github.com/merx666/hyperreal-journal/releases/download/v0.4.3/hyperreal-journal-v0.4.3-beta.apk
+
+Builds:
+  - versionName: '0.4.3'
+    versionCode: 4
+    commit: 3fb6fdd33af74a89be130f00789e359eb50551ed
+    subdir: app
+    gradle:
+      - yes
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: '0.4.3'
+CurrentVersionCode: 4
