@@ -4,21 +4,22 @@ A privacy-focused, offline-first Android application designed for harm reduction
 
 > 📖 **Dokumentacja i Wiki (PL):** Pełna polska wikipedia projektu, architektura oraz instrukcja użytkownika znajdują się w katalogu [**wiki/**](wiki/Home.md).  
 > 🗺️ **Interaktywna Architektura (Archify):** Dostępna w [**docs/architecture.html**](docs/architecture.html) oraz jako wektorowy [**docs/architecture.svg**](docs/architecture.svg).  
-> 📲 **Pobierz APK (v0.4.2):** Najnowsza wersja instalacyjna dostępna w zakładce [**Releases**](https://github.com/merx666/hyperreal-journal/releases/latest).  
+> 📲 **Pobierz APK (v0.4.3):** Najnowsza wersja instalacyjna dostępna w zakładce [**Releases**](https://github.com/merx666/hyperreal-journal/releases/latest).  
 > 🏬 **Sklepy i Dystrybucja:** Instrukcja instalacji przez **Obtainium, F-Droid, IzzyOnDroid, Amazon** znajduje się w [**docs/ALTERNATIVE_APP_STORES.md**](docs/ALTERNATIVE_APP_STORES.md).
 
 ## Key Features
 
+- 🚨 **NAGŁA POMOC 24H (Emergency Assistance):** Błyskawiczny dostęp do wsparcia kryzysowego bezpośrednio z górnego paska aplikacji. Dedykowany modal z numerem ratunkowym 112 (Pogotowie ratunkowe / ZRM) oraz liniami kryzysowymi (Interwencja kryzysowa `514 202 619`, Kryzys samobójczy dorosłych `511 200 200`, Telefon Zaufania `116 123`, Dla dzieci i młodzieży `116 111`) z obowiązkowym dialogiem potwierdzenia przed połączeniem.
+- 🌟 **Nowy Ekran Powitalny & Oświadczenie (18+):** Nowoczesny ekran powitalny Stitch z oficjalnym logo aplikacji, podsumowaniem filarów prywatności i harm reduction oraz pełnym oświadczeniem prawnym. Dostępny także w każdej chwili z menu bocznego.
 - ⏱️ **Ekran Główny: Wyłącznie Aktywne Sesje:** Domyślny ekran prezentuje wyłącznie trwające sesje substancji z odliczaniem na żywo, fazami farmakokinetyki i wykresem Béziera.
-- 🗄️ **Automatyczna i Manualna Archiwizacja:** Zakończone sesje (po upływie czasu działania substancji) automatycznie znikają z ekranu głównego i trafiają do archiwum. Dodatkowo każdą sesję można zakończyć i zarchiwizować manualnie w dowolnym momencie (oraz w razie potrzeby przywrócić).
+- 🗄️ **Automatyczna i Manualna Archiwizacja:** Zakończone sesje automatycznie trafiają do archiwum. Dodatkowo każdą sesję można zakończyć i zarchiwizować manualnie w dowolnym momencie.
 - 📑 **Dedykowany Pasek Zakładek:** Błyskawiczny podgląd: *Aktywne (X)* z pulsującym wskaźnikiem na żywo, *Zakończone (Y)* oraz *Wszystkie (Z)* z pełną historią wpisów.
-- 💎 **Oficjalne Logo i Motyw Stitch:** Nowa identyfikacja wizualna oparta o system Stitch, adaptacyjne ikony we wszystkich gęstościach mipmap, odświeżony ekran powitalny (Splash) i ciemny motyw Obsidian (`#07080B`).
-- 📝 **Ingestion Journal:** Track dates, times, doses, and routes of administration (RoA) with automatic threshold categorization (Threshold, Light, Common, Strong, Heavy).
-- 📈 **Interactive Pharmacokinetics Chart:** A unique `TimelineChart` module that visually maps the duration phases (Onset, Comeup, Peak, Offset, Afterglow) in real-time.
-- ⚠️ **Harm Reduction & Interactions:** Dynamic mix warning system based on the full SIN/TripSit matrix. Includes a risk degree calculator (Low Risk, Caution, Unsafe, Dangerous) to prevent adverse reactions.
-- 📊 **Insights & Statistics:** Comprehensive analytics covering 30-day usage frequency, average intervals between ingestions, and activity histograms.
+- 💎 **Certyfikowany Motyw Stitch Obsidian:** Czysta czerń AMOLED (`#07080B`), brak domyślnych fioletowych odcieni M3, szmaragdowe wskaźniki (`#00E676`), subtelne obrysy i adaptacyjny splash screen.
+- 📝 **Ingestion Journal:** Track dates, times, doses, and routes of administration (RoA) with automatic threshold categorization.
+- 📈 **Interactive Pharmacokinetics Chart:** A unique `TimelineChart` module that visually maps duration phases (Onset, Comeup, Peak, Offset, Afterglow).
+- ⚠️ **Harm Reduction & Interactions:** Dynamic mix warning system based on the full SIN/TripSit matrix (Low Risk, Caution, Unsafe, Dangerous).
+- 📊 **Insights & Statistics:** Comprehensive analytics covering 30-day usage frequency, average intervals, and tolerance resets.
 - 🛡️ **Zero-Cloud Privacy:** All data is strictly stored locally using Room (SQLite). Manual exports to encrypted `.json` files are supported.
-- 🌙 **Deep Dark Theme:** Optimized for AMOLED screens with Edge-to-Edge support and neon accents (HyperrealGreen).
 
 ## Tech Stack
 

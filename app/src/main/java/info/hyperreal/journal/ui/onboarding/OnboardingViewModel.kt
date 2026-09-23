@@ -26,6 +26,7 @@ class OnboardingViewModel @Inject constructor(
     fun acceptDisclaimer() {
         viewModelScope.launch {
             userPreferencesRepository.updateHasAcceptedDisclaimer(true)
+            userPreferencesRepository.updateHasSeenWelcomeV2(true)
         }
     }
 }

@@ -40,6 +40,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -49,6 +50,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -243,6 +245,7 @@ fun JournalScreen(
     }
 
     Scaffold(
+        containerColor = HyperrealTokens.Canvas,
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onAddClick,
@@ -269,19 +272,28 @@ fun JournalScreen(
                         value = searchQuery,
                         onValueChange = viewModel::setSearchQuery,
                         modifier = Modifier.fillMaxWidth(),
-                        placeholder = { Text("Szukaj w dzienniku...") },
+                        placeholder = { Text("Szukaj w dzienniku...", color = HyperrealTokens.TextMuted) },
                         leadingIcon = {
-                            Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Icon(Icons.Default.Search, contentDescription = null, tint = HyperrealTokens.TextSecondary)
                         },
                         trailingIcon = {
                             if (searchQuery.isNotEmpty()) {
                                 IconButton(onClick = { viewModel.setSearchQuery("") }) {
-                                    Icon(Icons.Default.Clear, contentDescription = "Wyczyść")
+                                    Icon(Icons.Default.Clear, contentDescription = "Wyczyść", tint = HyperrealTokens.TextSecondary)
                                 }
                             }
                         },
                         singleLine = true,
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(12.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = HyperrealTokens.SurfaceDark,
+                            unfocusedContainerColor = HyperrealTokens.SurfaceDark,
+                            focusedBorderColor = HyperrealTokens.BrandGreen,
+                            unfocusedBorderColor = HyperrealTokens.BorderSubtle,
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color.White,
+                            cursorColor = HyperrealTokens.BrandGreen
+                        )
                     )
 
                     Spacer(modifier = Modifier.height(10.dp))
@@ -297,6 +309,16 @@ fun JournalScreen(
                                 haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                                 viewModel.setFilter(JournalFilter.ACTIVE_ONLY)
                             },
+                            colors = FilterChipDefaults.filterChipColors(
+                                containerColor = HyperrealTokens.SurfaceDark,
+                                selectedContainerColor = HyperrealTokens.SurfaceRaised,
+                                labelColor = HyperrealTokens.TextSecondary,
+                                selectedLabelColor = Color.White
+                            ),
+                            border = BorderStroke(
+                                1.dp,
+                                if (currentFilter == JournalFilter.ACTIVE_ONLY) HyperrealTokens.BrandGreen else HyperrealTokens.BorderSubtle
+                            ),
                             label = {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     if (counts.active > 0) {
@@ -317,6 +339,16 @@ fun JournalScreen(
                                 haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                                 viewModel.setFilter(JournalFilter.COMPLETED_ONLY)
                             },
+                            colors = FilterChipDefaults.filterChipColors(
+                                containerColor = HyperrealTokens.SurfaceDark,
+                                selectedContainerColor = HyperrealTokens.SurfaceRaised,
+                                labelColor = HyperrealTokens.TextSecondary,
+                                selectedLabelColor = Color.White
+                            ),
+                            border = BorderStroke(
+                                1.dp,
+                                if (currentFilter == JournalFilter.COMPLETED_ONLY) HyperrealTokens.BrandGreen else HyperrealTokens.BorderSubtle
+                            ),
                             label = {
                                 Text("Zakończone (${counts.completed})", fontWeight = FontWeight.SemiBold)
                             }
@@ -327,6 +359,16 @@ fun JournalScreen(
                                 haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                                 viewModel.setFilter(JournalFilter.ALL)
                             },
+                            colors = FilterChipDefaults.filterChipColors(
+                                containerColor = HyperrealTokens.SurfaceDark,
+                                selectedContainerColor = HyperrealTokens.SurfaceRaised,
+                                labelColor = HyperrealTokens.TextSecondary,
+                                selectedLabelColor = Color.White
+                            ),
+                            border = BorderStroke(
+                                1.dp,
+                                if (currentFilter == JournalFilter.ALL) HyperrealTokens.BrandGreen else HyperrealTokens.BorderSubtle
+                            ),
                             label = {
                                 Text("Wszystkie (${counts.all})", fontWeight = FontWeight.SemiBold)
                             }
@@ -511,12 +553,12 @@ fun JournalScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 6.dp),
                         colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surface
+                            containerColor = HyperrealTokens.SurfaceDark
                         ),
                         border = BorderStroke(
                             1.dp,
-                            if (isActive) MaterialTheme.colorScheme.primary.copy(alpha = 0.45f)
-                            else MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                            if (isActive) HyperrealTokens.BrandGreen.copy(alpha = 0.5f)
+                            else HyperrealTokens.BorderSubtle
                         ),
                         shape = RoundedCornerShape(16.dp)
                     ) {

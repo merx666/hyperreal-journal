@@ -20,6 +20,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import info.hyperreal.journal.data.local.datastore.UserPreferencesRepository
 import info.hyperreal.journal.ui.theme.HyperrealTheme
 import timber.log.Timber
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -38,7 +41,13 @@ class MainActivity : FragmentActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
+        val splashScreen = installSplashScreen()
+        var keepSplash = true
+        splashScreen.setKeepOnScreenCondition { keepSplash }
+        lifecycleScope.launch {
+            delay(1100L)
+            keepSplash = false
+        }
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
