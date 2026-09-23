@@ -38,11 +38,15 @@ fun MixCalculatorScreen(
 ) {
     var selectedTab by remember { mutableIntStateOf(initialTabIndex) }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(HyperrealTokens.Canvas)
+    ) {
         TabRow(
             selectedTabIndex = selectedTab,
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.primary
+            containerColor = HyperrealTokens.SurfaceDark,
+            contentColor = HyperrealTokens.BrandGreen
         ) {
             Tab(
                 selected = selectedTab == 0,

@@ -29,6 +29,7 @@ class UserPreferencesRepository @Inject constructor(
 
     private object PreferencesKeys {
         val HAS_ACCEPTED_DISCLAIMER = booleanPreferencesKey("has_accepted_disclaimer")
+        val HAS_SEEN_WELCOME_V2 = booleanPreferencesKey("has_seen_welcome_v2")
         val IS_DARK_MODE = booleanPreferencesKey("is_dark_mode")
         val IS_SECURITY_LOCK_ENABLED = booleanPreferencesKey("is_security_lock_enabled")
         val PIN_HASH = stringPreferencesKey("pin_hash")
@@ -53,6 +54,7 @@ class UserPreferencesRepository @Inject constructor(
         }
         .map { preferences ->
             val hasAcceptedDisclaimer = preferences[PreferencesKeys.HAS_ACCEPTED_DISCLAIMER] ?: false
+            val hasSeenWelcomeV2 = preferences[PreferencesKeys.HAS_SEEN_WELCOME_V2] ?: false
             val isDarkMode = preferences[PreferencesKeys.IS_DARK_MODE] ?: true
             val isSecurityLockEnabled = preferences[PreferencesKeys.IS_SECURITY_LOCK_ENABLED] ?: false
             val pinHash = preferences[PreferencesKeys.PIN_HASH]
@@ -61,6 +63,7 @@ class UserPreferencesRepository @Inject constructor(
             val widgetShowCountdown = preferences[PreferencesKeys.WIDGET_SHOW_COUNTDOWN] ?: true
             UserPreferences(
                 hasAcceptedDisclaimer = hasAcceptedDisclaimer,
+                hasSeenWelcomeV2 = hasSeenWelcomeV2,
                 isDarkMode = isDarkMode,
                 isSecurityLockEnabled = isSecurityLockEnabled,
                 pinHash = pinHash,
@@ -73,6 +76,12 @@ class UserPreferencesRepository @Inject constructor(
     suspend fun updateHasAcceptedDisclaimer(hasAccepted: Boolean) {
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.HAS_ACCEPTED_DISCLAIMER] = hasAccepted
+        }
+    }
+
+    suspend fun updateHasSeenWelcomeV2(seen: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.HAS_SEEN_WELCOME_V2] = seen
         }
     }
 

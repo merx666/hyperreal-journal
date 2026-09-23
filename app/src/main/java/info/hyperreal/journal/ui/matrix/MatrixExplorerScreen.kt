@@ -91,6 +91,7 @@ fun MatrixExplorerContent(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(info.hyperreal.journal.ui.theme.HyperrealTokens.Canvas)
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         // 1. Search Bar

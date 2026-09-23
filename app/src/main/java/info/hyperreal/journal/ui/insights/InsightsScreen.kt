@@ -1,6 +1,7 @@
 package info.hyperreal.journal.ui.insights
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -64,6 +65,7 @@ fun InsightsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(info.hyperreal.journal.ui.theme.HyperrealTokens.Canvas)
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {

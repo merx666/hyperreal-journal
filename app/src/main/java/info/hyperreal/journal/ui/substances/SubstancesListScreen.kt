@@ -68,6 +68,7 @@ fun SubstancesListScreen(
     var substanceToDelete by remember { mutableStateOf<Substance?>(null) }
 
     Scaffold(
+        containerColor = info.hyperreal.journal.ui.theme.HyperrealTokens.Canvas,
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { showAddDialog = true },

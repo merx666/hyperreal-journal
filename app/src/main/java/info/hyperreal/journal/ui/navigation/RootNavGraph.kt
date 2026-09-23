@@ -26,7 +26,7 @@ fun RootNavGraph() {
     val prefs = userPreferences ?: return
 
     val startDestination = when {
-        !prefs.hasAcceptedDisclaimer -> Screen.Onboarding.route
+        !prefs.hasAcceptedDisclaimer || !prefs.hasSeenWelcomeV2 -> Screen.Onboarding.route
         prefs.isSecurityLockEnabled && !isSessionUnlocked -> Screen.SecurityLock.route
         else -> Screen.Main.route
     }
