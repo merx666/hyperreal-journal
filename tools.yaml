@@ -1,0 +1,162 @@
+# MCP Toolbox for Databases - Configuration for Hyperreal Journal Android App
+# Documentation: https://mcp-toolbox.dev/documentation/configuration/
+
+kind: source
+name: hyperreal-journal-db
+type: sqlite
+database: "${SQLITE_DATABASE:/Users/merx/hyperrealandroidapp/hyperreal_journal.db}"
+
+---
+kind: tool
+name: execute_sql
+type: sqlite-execute-sql
+source: hyperreal-journal-db
+description: "Execute arbitrary SQL statements (SELECT, INSERT, UPDATE, etc.) on the Hyperreal Journal SQLite database."
+
+---
+kind: tool
+name: list_tables
+type: sqlite-sql
+source: hyperreal-journal-db
+description: "List all user tables and views in the database."
+statement: "SELECT name, type FROM sqlite_master WHERE type IN ('table', 'view') AND name NOT LIKE 'sqlite_%' ORDER BY name;"
+
+---
+kind: tool
+name: get_recent_ingestions
+type: sqlite-sql
+source: hyperreal-journal-db
+description: "Retrieve recent substance ingestion records from the user journal."
+parameters:
+  - name: limit
+    type: integer
+    description: "Maximum number of ingestion records to return (e.g. 10 or 20)"
+statement: "SELECT i.id, i.substanceId, coalesce(s.name, i.substanceId) as substanceName, i.roa, i.doseAmount, i.doseUnit, datetime(i.timestamp/1000, 'unixepoch', 'localtime') as date, i.notes, i.experienceId FROM ingestions i LEFT JOIN substances s ON i.substanceId = s.id ORDER BY i.timestamp DESC LIMIT ?;"
+
+---
+kind: tool
+name: search_substances
+type: sqlite-sql
+source: hyperreal-journal-db
+description: "Search substances by name, alias, or class in the harm reduction database."
+parameters:
+  - name: query
+    type: string
+    description: "Substance name, alias, or ID keyword to search for"
+statement: "SELECT id, name, aliases, summary, harmReduction, classes FROM substances WHERE name LIKE '%' || ?1 || '%' OR aliases LIKE '%' || ?1 || '%' OR id LIKE '%' || ?1 || '%' LIMIT 15;"
+
+---
+kind: tool
+name: check_interaction
+type: sqlite-sql
+source: hyperreal-journal-db
+description: "Check harm reduction interaction status and warnings between two substances (e.g., Alkohol, MDMA, Ketamina, Benzodiazepiny)."
+parameters:
+  - name: substance_a
+    type: string
+    description: "First substance name or alias (e.g. Alkohol)"
+  - name: substance_b
+    type: string
+    description: "Second substance name or alias (e.g. GHB)"
+statement: "SELECT substance_a, substance_b, status, note FROM interactions WHERE (substance_a LIKE '%' || ?1 || '%' AND substance_b LIKE '%' || ?2 || '%') OR (substance_a LIKE '%' || ?2 || '%' AND substance_b LIKE '%' || ?1 || '%');"
+
+---
+kind: tool
+name: get_check_ins
+type: sqlite-sql
+source: hyperreal-journal-db
+description: "Get timeline check-ins and subjective evaluations for a specific ingestion."
+parameters:
+  - name: ingestion_id
+    type: integer
+    description: "The ID of the ingestion record"
+statement: "SELECT id, ingestionId, datetime(timestamp/1000, 'unixepoch', 'localtime') as time, phase, shulginRating, notes FROM check_ins WHERE ingestionId = ? ORDER BY timestamp ASC;"
+
+---
+kind: tool
+name: list_custom_substances
+type: sqlite-sql
+source: hyperreal-journal-db
+description: "List all user-defined custom substances with pharmacokinetics (onset, comeup, peak, total duration)."
+statement: "SELECT id, name, roaName, onsetMinutes, comeupMinutes, peakMinutes, offsetMinutes, afterglowMinutes, totalMinutes, datetime(createdAt/1000, 'unixepoch', 'localtime') as createdDate FROM custom_substances ORDER BY createdAt DESC;"
+
+---
+kind: toolset
+name: hyperreal-journal
+tools:
+  - execute_sql
+  - list_tables
+  - get_recent_ingestions
+  - search_substances
+  - check_interaction
+  - get_check_ins
+  - list_custom_substances
+
+---
+kind: resource
+name: database_schema
+type: text
+description: "Hyperreal Journal Room SQLite Database Schema (DDL)"
+mimeType: "text/x-sql"
+text: |
+  CREATE TABLE ingestions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      substanceId TEXT NOT NULL,
+      roa TEXT NOT NULL,
+      doseAmount REAL NOT NULL,
+      doseUnit TEXT NOT NULL,
+      timestamp INTEGER NOT NULL,
+      notes TEXT,
+      experienceId TEXT
+  );
+
+  CREATE TABLE check_ins (
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      ingestionId INTEGER NOT NULL,
+      timestamp INTEGER NOT NULL,
+      phase TEXT NOT NULL,
+      shulginRating TEXT NOT NULL,
+      notes TEXT,
+      FOREIGN KEY(ingestionId) REFERENCES ingestions(id) ON DELETE CASCADE
+  );
+
+  CREATE TABLE custom_substances (
+      id TEXT PRIMARY KEY NOT NULL,
+      name TEXT NOT NULL,
+      roaName TEXT NOT NULL,
+      onsetMinutes REAL,
+      comeupMinutes REAL,
+      peakMinutes REAL,
+      offsetMinutes REAL,
+      afterglowMinutes REAL,
+      totalMinutes REAL,
+      createdAt INTEGER NOT NULL
+  );
+
+  CREATE TABLE substances (
+      id TEXT PRIMARY KEY NOT NULL,
+      name TEXT NOT NULL,
+      aliases TEXT,
+      summary TEXT,
+      harmReduction TEXT,
+      classes TEXT,
+      roas_json TEXT
+  );
+
+  CREATE TABLE interactions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      substance_a TEXT NOT NULL,
+      substance_b TEXT NOT NULL,
+      status TEXT NOT NULL,
+      note TEXT
+  );
+
+---
+kind: prompt
+name: harm_reduction_audit
+description: "Review a user's recent ingestions and combinations against the harm reduction interaction database."
+messages:
+  - content: "Analyze recent journal ingestions and check for any dangerous or caution-level interactions between substances taken in close temporal proximity: \n\n{{.recent_entries}}"
+arguments:
+  - name: "recent_entries"
+    description: "Details or JSON of the recent substance entries to review"

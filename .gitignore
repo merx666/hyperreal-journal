@@ -26,3 +26,14 @@ build/
 app/build/
 .idea/
 .kotlin/
+
+# SQLite local databases and journals
+*.db
+*.db-shm
+*.db-wal
+hyperreal_journal.db
+
+# Stitch design files & screens
+docs/stitch/
+/stitch/
+stitch/
