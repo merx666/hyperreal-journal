@@ -84,6 +84,7 @@ class JournalViewModelTest {
 
         every { ingestionRepository.getAllIngestions() } returns flowOf(emptyList())
         coEvery { ingestionRepository.deleteIngestion(any()) } returns Unit
+        coEvery { ingestionRepository.updateIngestion(any()) } returns Unit
         every { substanceRepository.getAllSubstances() } returns flowOf(emptyList())
         every { checkInRepository.getAllCheckIns() } returns flowOf(emptyList())
         coEvery { checkInRepository.insertCheckIn(any()) } returns 1L
@@ -142,6 +143,7 @@ class JournalViewModelTest {
         every { substanceRepository.getAllSubstances() } returns flowOf(listOf(testSubstance))
 
         val vm = createViewModel()
+        vm.setFilter(JournalFilter.ALL)
 
         vm.entries.test {
             assertEquals(emptyList<JournalEntry>(), awaitItem())
@@ -158,6 +160,7 @@ class JournalViewModelTest {
         every { substanceRepository.getAllSubstances() } returns flowOf(emptyList()) // no substances
 
         val vm = createViewModel()
+        vm.setFilter(JournalFilter.ALL)
 
         vm.entries.test {
             assertEquals(emptyList<JournalEntry>(), awaitItem())
@@ -247,6 +250,7 @@ class JournalViewModelTest {
         every { checkInRepository.getAllCheckIns() } returns flowOf(listOf(checkIn1, checkIn2))
 
         val vm = createViewModel()
+        vm.setFilter(JournalFilter.ALL)
 
         vm.entries.test {
             assertEquals(emptyList<JournalEntry>(), awaitItem())
@@ -397,4 +401,44 @@ class JournalViewModelTest {
 
         verify(atLeast = 1) { reminderScheduler.cancelReminder(20L) }
     }
+
+    @Test
+    fun `default filter is ACTIVE_ONLY`() = runTest {
+        val vm = createViewModel()
+        assertEquals(JournalFilter.ACTIVE_ONLY, vm.filter.value)
+    }
+
+    @Test
+    fun `archiveSession marks ingestion as ARCHIVED and cancels reminder`() = runTest {
+        val capturedSlot = slot<Ingestion>()
+        coEvery { ingestionRepository.updateIngestion(capture(capturedSlot)) } returns Unit
+
+        val vm = createViewModel()
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        vm.archiveSession(recentIngestion)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        coVerify(exactly = 1) { ingestionRepository.updateIngestion(any()) }
+        assertEquals("ARCHIVED", capturedSlot.captured.experienceId)
+        verify(atLeast = 1) { reminderScheduler.cancelReminder(recentIngestion.id) }
+    }
+
+    @Test
+    fun `counts emits correct active and completed numbers`() = runTest {
+        every { ingestionRepository.getAllIngestions() } returns flowOf(listOf(recentIngestion, oldIngestion))
+        every { substanceRepository.getAllSubstances() } returns flowOf(listOf(testSubstance))
+
+        val vm = createViewModel()
+
+        vm.counts.test {
+            assertEquals(JournalCounts(0, 0, 0), awaitItem())
+            val counts = awaitItem()
+            assertEquals(1, counts.active)
+            assertEquals(1, counts.completed)
+            assertEquals(2, counts.all)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
 }
+

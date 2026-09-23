@@ -3,8 +3,10 @@ package info.hyperreal.journal.ui.journal
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,26 +19,23 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
-import info.hyperreal.journal.ui.theme.HyperrealTokens
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,6 +47,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -64,7 +64,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -74,6 +78,7 @@ import info.hyperreal.journal.domain.model.InteractionStatus
 import info.hyperreal.journal.domain.model.ShulginRating
 import info.hyperreal.journal.domain.usecase.TimelinePhase
 import info.hyperreal.journal.ui.components.TimelineChart
+import info.hyperreal.journal.ui.theme.HyperrealTokens
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -97,7 +102,7 @@ private fun getPhaseLabel(phase: TimelinePhase?): String {
         TimelinePhase.PEAK -> "Szczyt (Peak)"
         TimelinePhase.OFFSET -> "Zejście (Offset)"
         TimelinePhase.AFTERGLOW -> "Powrót (Afterglow)"
-        TimelinePhase.BASELINE -> "Zakończone"
+        TimelinePhase.BASELINE -> "Zakończone (Baseline)"
         null -> ""
     }
 }
@@ -139,6 +144,7 @@ fun JournalScreen(
 ) {
     val entries by viewModel.entries.collectAsState()
     val activeEntries by viewModel.activeEntries.collectAsState()
+    val counts by viewModel.counts.collectAsState()
     val activeMixInteractions by viewModel.activeMixInteractions.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
     val currentFilter by viewModel.filter.collectAsState()
@@ -147,6 +153,7 @@ fun JournalScreen(
     val dateFormat = remember { SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault()) }
 
     var ingestionToDelete by remember { mutableStateOf<Ingestion?>(null) }
+    var ingestionToArchive by remember { mutableStateOf<Ingestion?>(null) }
     var ingestionToEdit by remember { mutableStateOf<Ingestion?>(null) }
     var checkInTargetEntry by remember { mutableStateOf<JournalEntry?>(null) }
 
@@ -159,6 +166,7 @@ fun JournalScreen(
         }
     }
 
+    // Confirmation dialog: Delete entry
     if (ingestionToDelete != null) {
         AlertDialog(
             onDismissRequest = { ingestionToDelete = null },
@@ -176,6 +184,31 @@ fun JournalScreen(
             },
             dismissButton = {
                 TextButton(onClick = { ingestionToDelete = null }) {
+                    Text("Anuluj")
+                }
+            }
+        )
+    }
+
+    // Confirmation dialog: Archive / End session
+    if (ingestionToArchive != null) {
+        AlertDialog(
+            onDismissRequest = { ingestionToArchive = null },
+            title = { Text("Zakończyć sesję?") },
+            text = { Text("Sesja zostanie oznaczona jako zakończona i zarchiwizowana. Natychmiast zniknie z ekranu aktywnych sesji i trafi do zakładki 'Zakończone'.") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        ingestionToArchive?.let { viewModel.archiveSession(it) }
+                        ingestionToArchive = null
+                    }
+                ) {
+                    Text("Zakończ i archiwizuj")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { ingestionToArchive = null }) {
                     Text("Anuluj")
                 }
             }
@@ -211,8 +244,12 @@ fun JournalScreen(
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = onAddClick) {
-                Icon(Icons.Default.Add, contentDescription = "Dodaj wpis")
+            FloatingActionButton(
+                onClick = onAddClick,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = HyperrealTokens.Canvas
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Dodaj sesję")
             }
         }
     ) { padding ->
@@ -221,18 +258,7 @@ fun JournalScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            // 1. Live Active Sessions Dashboard Card
-            if (activeEntries.isNotEmpty()) {
-                item {
-                    ActiveSessionsDashboardCard(
-                        activeEntries = activeEntries,
-                        activeInteractions = activeMixInteractions,
-                        onCheckInClick = { checkInTargetEntry = it }
-                    )
-                }
-            }
-
-            // 2. Search & Filter Bar
+            // 1. Search & Filter Tab Bar
             item {
                 Column(
                     modifier = Modifier
@@ -258,92 +284,266 @@ fun JournalScreen(
                         shape = RoundedCornerShape(12.dp)
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
 
+                    // Segmented Filter Tabs: Aktywne | Zakończone | Wszystkie
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         FilterChip(
-                            selected = currentFilter == JournalFilter.ALL,
-                            onClick = { viewModel.setFilter(JournalFilter.ALL) },
-                            label = { Text("Wszystkie") }
-                        )
-                        FilterChip(
                             selected = currentFilter == JournalFilter.ACTIVE_ONLY,
-                            onClick = { viewModel.setFilter(JournalFilter.ACTIVE_ONLY) },
-                            label = { Text("Aktywne (${activeEntries.size})") }
+                            onClick = {
+                                haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                viewModel.setFilter(JournalFilter.ACTIVE_ONLY)
+                            },
+                            label = {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    if (counts.active > 0) {
+                                        Box(
+                                            modifier = Modifier
+                                                .size(6.dp)
+                                                .background(HyperrealTokens.BrandGreen, CircleShape)
+                                        )
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                    }
+                                    Text("Aktywne (${counts.active})", fontWeight = FontWeight.SemiBold)
+                                }
+                            }
                         )
                         FilterChip(
                             selected = currentFilter == JournalFilter.COMPLETED_ONLY,
-                            onClick = { viewModel.setFilter(JournalFilter.COMPLETED_ONLY) },
-                            label = { Text("Zakończone") }
+                            onClick = {
+                                haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                viewModel.setFilter(JournalFilter.COMPLETED_ONLY)
+                            },
+                            label = {
+                                Text("Zakończone (${counts.completed})", fontWeight = FontWeight.SemiBold)
+                            }
+                        )
+                        FilterChip(
+                            selected = currentFilter == JournalFilter.ALL,
+                            onClick = {
+                                haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                viewModel.setFilter(JournalFilter.ALL)
+                            },
+                            label = {
+                                Text("Wszystkie (${counts.all})", fontWeight = FontWeight.SemiBold)
+                            }
                         )
                     }
                 }
             }
 
-            // 3. Entries List or Empty State
+            // 2. Multi-substance active mix warnings (if active interactions exist)
+            if (activeMixInteractions.isNotEmpty() && currentFilter != JournalFilter.COMPLETED_ONLY) {
+                item {
+                    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) {
+                        activeMixInteractions.forEach { interaction ->
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = getSeverityColor(interaction.status).copy(alpha = 0.15f)
+                                ),
+                                border = BorderStroke(1.dp, getSeverityColor(interaction.status).copy(alpha = 0.5f)),
+                                shape = RoundedCornerShape(12.dp)
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(12.dp),
+                                    verticalAlignment = Alignment.Top
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Warning,
+                                        contentDescription = null,
+                                        tint = getSeverityColor(interaction.status),
+                                        modifier = Modifier
+                                            .size(20.dp)
+                                            .padding(top = 2.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(10.dp))
+                                    Column {
+                                        Text(
+                                            text = "Interakcja: ${interaction.substanceA} + ${interaction.substanceB}",
+                                            style = MaterialTheme.typography.labelMedium,
+                                            fontWeight = FontWeight.Bold,
+                                            color = getSeverityColor(interaction.status)
+                                        )
+                                        Text(
+                                            text = "Status: ${interaction.status.name}",
+                                            style = MaterialTheme.typography.bodySmall,
+                                            fontWeight = FontWeight.SemiBold
+                                        )
+                                        if (!interaction.note.isNullOrBlank()) {
+                                            Spacer(modifier = Modifier.height(2.dp))
+                                            Text(
+                                                text = interaction.note,
+                                                style = MaterialTheme.typography.bodySmall,
+                                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 3. Entries List or Dedicated Tab Empty State
             if (entries.isEmpty()) {
                 item {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 48.dp, horizontal = 32.dp),
+                            .padding(vertical = 48.dp, horizontal = 24.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Icon(
-                                imageVector = Icons.Default.DateRange,
-                                contentDescription = null,
-                                modifier = Modifier.size(64.dp),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
-                            )
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Text(
-                                text = if (searchQuery.isNotBlank() || currentFilter != JournalFilter.ALL)
-                                    "Brak pasujących wpisów"
-                                else
-                                    "Twój dziennik jest pusty",
-                                style = MaterialTheme.typography.titleLarge,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = if (searchQuery.isNotBlank() || currentFilter != JournalFilter.ALL)
-                                    "Zmień filtr lub wyszukiwane hasło."
-                                else
-                                    "Dodaj przyjęcie substancji, aby monitorować fazy działania i potencjalne interakcje.",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
-                                textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                            )
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            when (currentFilter) {
+                                JournalFilter.ACTIVE_ONLY -> {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(64.dp)
+                                            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f), CircleShape),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.CheckCircle,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(36.dp),
+                                            tint = HyperrealTokens.BrandGreen
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.height(16.dp))
+                                    Text(
+                                        text = if (searchQuery.isNotBlank()) "Brak pasujących aktywnych sesji" else "Brak aktywnych sesji",
+                                        style = MaterialTheme.typography.titleLarge,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Text(
+                                        text = if (searchQuery.isNotBlank())
+                                            "Żadna trwająca sesja nie pasuje do wyszukiwanego hasła."
+                                        else
+                                            "Wszystkie poprzednie sesje zakończyły swoje działanie lub zostały zarchiwizowane.",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        textAlign = TextAlign.Center
+                                    )
+                                    Spacer(modifier = Modifier.height(20.dp))
+                                    Button(
+                                        onClick = onAddClick,
+                                        shape = RoundedCornerShape(10.dp)
+                                    ) {
+                                        Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                        Text("Rozpocznij nową sesję")
+                                    }
+                                }
+                                JournalFilter.COMPLETED_ONLY -> {
+                                    Icon(
+                                        imageVector = Icons.Default.DateRange,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(56.dp),
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                                    )
+                                    Spacer(modifier = Modifier.height(16.dp))
+                                    Text(
+                                        text = if (searchQuery.isNotBlank()) "Brak pasujących zakończonych sesji" else "Brak zakończonych sesji",
+                                        style = MaterialTheme.typography.titleLarge,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Text(
+                                        text = "Gdy sesja zakończy czas działania substancji lub zostanie zarchiwizowana, pojawi się tutaj.",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
+                                JournalFilter.ALL -> {
+                                    Icon(
+                                        imageVector = Icons.Default.DateRange,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(56.dp),
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                                    )
+                                    Spacer(modifier = Modifier.height(16.dp))
+                                    Text(
+                                        text = if (searchQuery.isNotBlank()) "Brak pasujących wpisów" else "Twój dziennik jest pusty",
+                                        style = MaterialTheme.typography.titleLarge,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Text(
+                                        text = "Dodaj przyjęcie substancji, aby monitorować fazy działania i potencjalne interakcje.",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        textAlign = TextAlign.Center
+                                    )
+                                    Spacer(modifier = Modifier.height(20.dp))
+                                    Button(
+                                        onClick = onAddClick,
+                                        shape = RoundedCornerShape(10.dp)
+                                    ) {
+                                        Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                        Text("Dodaj zażycie")
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             } else {
                 items(entries, key = { it.ingestion.id }) { entry ->
+                    val isActive = entry.isActive
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 12.dp, vertical = 6.dp),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-                        shape = RoundedCornerShape(14.dp)
+                            .padding(horizontal = 16.dp, vertical = 6.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surface
+                        ),
+                        border = BorderStroke(
+                            1.dp,
+                            if (isActive) MaterialTheme.colorScheme.primary.copy(alpha = 0.45f)
+                            else MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                        ),
+                        shape = RoundedCornerShape(16.dp)
                     ) {
-                        Column(modifier = Modifier.padding(14.dp)) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            // Top Row: Title, Dose, Date, Edit, Delete
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.Top
                             ) {
                                 Column(modifier = Modifier.weight(1f)) {
-                                    Text(
-                                        text = entry.substance?.name ?: entry.ingestion.substanceId,
-                                        style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.onSurface
-                                    )
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        if (isActive) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(8.dp)
+                                                    .background(HyperrealTokens.BrandGreen, CircleShape)
+                                            )
+                                            Spacer(modifier = Modifier.width(6.dp))
+                                        }
+                                        Text(
+                                            text = entry.substance?.name ?: entry.ingestion.substanceId,
+                                            style = MaterialTheme.typography.titleMedium,
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.onSurface
+                                        )
+                                    }
                                     val timeStr = dateFormat.format(Date(entry.ingestion.timestamp))
                                     Text(
                                         text = "${entry.ingestion.doseAmount} ${entry.ingestion.doseUnit} • ${entry.ingestion.roa} • $timeStr",
@@ -358,7 +558,7 @@ fun JournalScreen(
                                             haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                                             ingestionToEdit = entry.ingestion
                                         },
-                                        modifier = Modifier.size(36.dp)
+                                        modifier = Modifier.size(32.dp)
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Edit,
@@ -372,7 +572,7 @@ fun JournalScreen(
                                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                             ingestionToDelete = entry.ingestion
                                         },
-                                        modifier = Modifier.size(36.dp)
+                                        modifier = Modifier.size(32.dp)
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Delete,
@@ -384,25 +584,55 @@ fun JournalScreen(
                                 }
                             }
 
+                            // Phase / Status Badge
                             val phase = entry.timelineStatus?.phase
-                            if (phase != null) {
-                                Spacer(modifier = Modifier.height(8.dp))
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Box(
-                                        modifier = Modifier
-                                            .background(getPhaseColor(phase).copy(alpha = 0.2f), RoundedCornerShape(6.dp))
-                                            .padding(horizontal = 8.dp, vertical = 2.dp)
-                                    ) {
-                                        Text(
-                                            text = getPhaseLabel(phase),
-                                            style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
-                                            fontWeight = FontWeight.SemiBold,
-                                            color = getPhaseColor(phase)
-                                        )
+                                    if (entry.isArchived) {
+                                        Box(
+                                            modifier = Modifier
+                                                .background(HyperrealTokens.TextMuted.copy(alpha = 0.2f), RoundedCornerShape(6.dp))
+                                                .padding(horizontal = 8.dp, vertical = 3.dp)
+                                        ) {
+                                            Text(
+                                                text = "Zarchiwizowana",
+                                                style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
+                                                fontWeight = FontWeight.SemiBold,
+                                                color = HyperrealTokens.TextSecondary
+                                            )
+                                        }
+                                    } else if (phase != null) {
+                                        Box(
+                                            modifier = Modifier
+                                                .background(getPhaseColor(phase).copy(alpha = 0.2f), RoundedCornerShape(6.dp))
+                                                .padding(horizontal = 8.dp, vertical = 3.dp)
+                                        ) {
+                                            Text(
+                                                text = getPhaseLabel(phase),
+                                                style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
+                                                fontWeight = FontWeight.SemiBold,
+                                                color = getPhaseColor(phase)
+                                            )
+                                        }
                                     }
+                                }
+
+                                if (isActive) {
+                                    Text(
+                                        text = "Na żywo",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = HyperrealTokens.BrandGreen,
+                                        fontWeight = FontWeight.Bold
+                                    )
                                 }
                             }
 
+                            // Notes
                             if (!entry.ingestion.notes.isNullOrBlank()) {
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text(
@@ -412,12 +642,13 @@ fun JournalScreen(
                                 )
                             }
 
+                            // Bio-Timeline Chart
                             val duration = entry.substance?.roas?.find {
                                 it.name.equals(entry.ingestion.roa, ignoreCase = true)
                             }?.duration
 
                             if (duration != null) {
-                                Spacer(modifier = Modifier.height(8.dp))
+                                Spacer(modifier = Modifier.height(10.dp))
                                 TimelineChart(
                                     duration = duration,
                                     timeSinceIngestionMs = now - entry.ingestion.timestamp,
@@ -429,7 +660,7 @@ fun JournalScreen(
                             if (entry.checkIns.isNotEmpty()) {
                                 Spacer(modifier = Modifier.height(10.dp))
                                 Text(
-                                    text = "Oś czasu sesji (check-iny: ${entry.checkIns.size}):",
+                                    text = "Check-iny (${entry.checkIns.size}):",
                                     style = MaterialTheme.typography.labelSmall,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -438,7 +669,7 @@ fun JournalScreen(
                                 Column(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.6f), RoundedCornerShape(8.dp))
+                                        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f), RoundedCornerShape(8.dp))
                                         .padding(8.dp),
                                     verticalArrangement = Arrangement.spacedBy(6.dp)
                                 ) {
@@ -467,7 +698,7 @@ fun JournalScreen(
                                             Box(
                                                 modifier = Modifier
                                                     .background(getPhaseColor(checkIn.phase).copy(alpha = 0.2f), RoundedCornerShape(4.dp))
-                                                    .padding(horizontal = 6.dp, vertical = 2.dp)
+                                                .padding(horizontal = 6.dp, vertical = 2.dp)
                                             ) {
                                                 Text(
                                                     text = getPhaseLabel(checkIn.phase),
@@ -518,252 +749,71 @@ fun JournalScreen(
                                 }
                             }
 
+                            // Bottom Card Actions: Check-in, Archive/End Session, Restore
+                            Spacer(modifier = Modifier.height(12.dp))
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.End
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                TextButton(
-                                    onClick = { checkInTargetEntry = entry }
-                                ) {
-                                    Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
-                                    Spacer(modifier = Modifier.width(4.dp))
-                                    Text("Dodaj check-in", style = MaterialTheme.typography.labelSmall)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+                                if (isActive) {
+                                    OutlinedButton(
+                                        onClick = { ingestionToArchive = entry.ingestion },
+                                        shape = RoundedCornerShape(8.dp),
+                                        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp),
+                                        colors = ButtonDefaults.outlinedButtonColors(
+                                            contentColor = HyperrealTokens.TextSecondary
+                                        )
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.CheckCircle,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(16.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Text(
+                                            text = "Zakończ i archiwizuj",
+                                            style = MaterialTheme.typography.labelSmall
+                                        )
+                                    }
 
-@Composable
-private fun ActiveSessionsDashboardCard(
-    activeEntries: List<ActiveEntryInfo>,
-    activeInteractions: List<info.hyperreal.journal.domain.model.SubstanceInteraction>,
-    onCheckInClick: (JournalEntry) -> Unit
-) {
-    val haptic = LocalHapticFeedback.current
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.35f))
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = Modifier
-                            .size(10.dp)
-                            .background(MaterialTheme.colorScheme.primary, CircleShape)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Aktywne sesje (${activeEntries.size})",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-                Text(
-                    text = "Na żywo",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+                                    Button(
+                                        onClick = {
+                                            haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                            checkInTargetEntry = entry
+                                        },
+                                        shape = RoundedCornerShape(8.dp),
+                                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
+                                    ) {
+                                        Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Text("Check-in (Shulgin)", style = MaterialTheme.typography.labelSmall)
+                                    }
+                                } else {
+                                    if (entry.isArchived) {
+                                        TextButton(
+                                            onClick = { viewModel.restoreSession(entry.ingestion) },
+                                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Default.Refresh,
+                                                contentDescription = null,
+                                                modifier = Modifier.size(14.dp)
+                                            )
+                                            Spacer(modifier = Modifier.width(4.dp))
+                                            Text("Przywróć jako aktywną", style = MaterialTheme.typography.labelSmall)
+                                        }
+                                    } else {
+                                        Spacer(modifier = Modifier.width(1.dp))
+                                    }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            activeEntries.forEachIndexed { index, active ->
-                if (index > 0) {
-                    HorizontalDivider(
-                        modifier = Modifier.padding(vertical = 10.dp),
-                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
-                    )
-                }
-
-                val subName = active.entry.substance?.name ?: active.entry.ingestion.substanceId
-                val phase = active.countdown.currentPhase
-                val nextPhase = active.countdown.nextPhase
-                val minToNext = active.countdown.minutesToNextPhase
-                val minToBaseline = active.countdown.minutesToBaseline
-
-                Column {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "$subName (${active.entry.ingestion.doseAmount} ${active.entry.ingestion.doseUnit})",
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        Box(
-                            modifier = Modifier
-                                .background(getPhaseColor(phase).copy(alpha = 0.2f), RoundedCornerShape(6.dp))
-                                .padding(horizontal = 6.dp, vertical = 2.dp)
-                        ) {
-                            Text(
-                                text = getPhaseLabel(phase),
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = getPhaseColor(phase)
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    val countdownDetails = buildString {
-                        if (nextPhase != null && minToNext != null && minToNext > 0) {
-                            append("Do ${getPhaseLabel(nextPhase)}: ${formatMinutes(minToNext)}")
-                        }
-                        if (minToBaseline != null && minToBaseline > 0) {
-                            if (isNotEmpty()) append(" • ")
-                            append("Baseline: ~${formatMinutes(minToBaseline)}")
-                        }
-                    }
-
-                    if (countdownDetails.isNotEmpty()) {
-                        Text(
-                            text = countdownDetails,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(6.dp))
-                    LinearProgressIndicator(
-                        progress = { active.progressPercent },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(6.dp),
-                        color = getPhaseColor(phase),
-                        trackColor = MaterialTheme.colorScheme.surfaceVariant
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        val latestCheckIn = active.entry.checkIns.maxByOrNull { it.timestamp }
-                        if (latestCheckIn != null) {
-                            val checkInOffset = (latestCheckIn.timestamp - active.entry.ingestion.timestamp).coerceAtLeast(0L) / 60000L
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    text = "Ostatni:",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Box(
-                                    modifier = Modifier
-                                        .background(getShulginRatingColor(latestCheckIn.shulginRating).copy(alpha = 0.2f), RoundedCornerShape(4.dp))
-                                        .padding(horizontal = 4.dp, vertical = 1.dp)
-                                ) {
-                                    Text(
-                                        text = latestCheckIn.shulginRating.symbol,
-                                        style = MaterialTheme.typography.labelSmall,
-                                        fontWeight = FontWeight.Bold,
-                                        color = getShulginRatingColor(latestCheckIn.shulginRating)
-                                    )
-                                }
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text(
-                                    text = "(T+${formatMinutes(checkInOffset)})",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        } else {
-                            Spacer(modifier = Modifier.width(1.dp))
-                        }
-
-                        Button(
-                            onClick = {
-                                haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                                onCheckInClick(active.entry)
-                            },
-                            shape = RoundedCornerShape(8.dp),
-                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                            modifier = Modifier.height(32.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = null,
-                                modifier = Modifier.size(14.dp)
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = "Check-in (Shulgin)",
-                                style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
-                    }
-                }
-            }
-
-            // Multi-substance active mix warnings
-            if (activeInteractions.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(14.dp))
-                activeInteractions.forEach { interaction ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = getSeverityColor(interaction.status).copy(alpha = 0.15f)
-                        ),
-                        border = androidx.compose.foundation.BorderStroke(1.dp, getSeverityColor(interaction.status).copy(alpha = 0.5f)),
-                        shape = RoundedCornerShape(8.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(10.dp),
-                            verticalAlignment = Alignment.Top
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Warning,
-                                contentDescription = null,
-                                tint = getSeverityColor(interaction.status),
-                                modifier = Modifier
-                                    .size(20.dp)
-                                    .padding(top = 2.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Column {
-                                Text(
-                                    text = "Interakcja: ${interaction.substanceA} + ${interaction.substanceB}",
-                                    style = MaterialTheme.typography.labelMedium,
-                                    fontWeight = FontWeight.Bold,
-                                    color = getSeverityColor(interaction.status)
-                                )
-                                Text(
-                                    text = "Status: ${interaction.status.name}",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                                if (!interaction.note.isNullOrBlank()) {
-                                    Spacer(modifier = Modifier.height(2.dp))
-                                    Text(
-                                        text = interaction.note,
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f)
-                                    )
+                                    TextButton(
+                                        onClick = { checkInTargetEntry = entry }
+                                    ) {
+                                        Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Text("Dodaj notatkę", style = MaterialTheme.typography.labelSmall)
+                                    }
                                 }
                             }
                         }
@@ -954,7 +1004,7 @@ private fun CheckInBottomSheet(
                         colors = CardDefaults.cardColors(
                             containerColor = if (isSelected) ratingColor.copy(alpha = 0.25f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
                         ),
-                        border = if (isSelected) androidx.compose.foundation.BorderStroke(2.dp, ratingColor) else null,
+                        border = if (isSelected) BorderStroke(2.dp, ratingColor) else null,
                         shape = RoundedCornerShape(10.dp)
                     ) {
                         Box(

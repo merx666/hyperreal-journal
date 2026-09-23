@@ -23,14 +23,15 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 enum class JournalFilter {
-    ALL,
     ACTIVE_ONLY,
-    COMPLETED_ONLY
+    COMPLETED_ONLY,
+    ALL
 }
 
 data class ActiveEntryInfo(
@@ -39,12 +40,28 @@ data class ActiveEntryInfo(
     val progressPercent: Float
 )
 
+data class JournalCounts(
+    val active: Int = 0,
+    val completed: Int = 0,
+    val all: Int = 0
+)
+
 data class JournalEntry(
     val ingestion: Ingestion,
     val substance: Substance?,
     val timelineStatus: TimelineStatus?,
     val checkIns: List<CheckIn> = emptyList()
-)
+) {
+    val isArchived: Boolean
+        get() = ingestion.experienceId == "ARCHIVED" || ingestion.experienceId == "COMPLETED"
+
+    val isActive: Boolean
+        get() {
+            if (isArchived) return false
+            val phase = timelineStatus?.phase ?: return false
+            return phase != TimelinePhase.BASELINE && phase != TimelinePhase.NOT_STARTED
+        }
+}
 
 @HiltViewModel
 class JournalViewModel @Inject constructor(
@@ -59,7 +76,8 @@ class JournalViewModel @Inject constructor(
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
-    private val _filter = MutableStateFlow(JournalFilter.ALL)
+    // Default to ACTIVE_ONLY: Main screen displays exclusively active ongoing sessions
+    private val _filter = MutableStateFlow(JournalFilter.ACTIVE_ONLY)
     val filter: StateFlow<JournalFilter> = _filter.asStateFlow()
 
     private val scheduledReminderIds = mutableSetOf<Long>()
@@ -85,7 +103,18 @@ class JournalViewModel @Inject constructor(
         initialValue = emptyList()
     )
 
-    // Filtered entries for the main list
+    // Summary counts for tabs (Aktywne, Zakończone, Wszystkie)
+    val counts: StateFlow<JournalCounts> = rawEntries.map { list ->
+        val active = list.count { it.isActive }
+        val completed = list.size - active
+        JournalCounts(active = active, completed = completed, all = list.size)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = JournalCounts()
+    )
+
+    // Filtered entries for the main list based on current filter & search query
     val entries: StateFlow<List<JournalEntry>> = combine(
         rawEntries,
         _searchQuery,
@@ -100,14 +129,10 @@ class JournalViewModel @Inject constructor(
                 subName.contains(query, ignoreCase = true) || notes.contains(query, ignoreCase = true)
             }
 
-            val isOngoing = entry.timelineStatus != null &&
-                    entry.timelineStatus.phase != TimelinePhase.BASELINE &&
-                    entry.timelineStatus.phase != TimelinePhase.NOT_STARTED
-
             val matchesFilter = when (currentFilter) {
+                JournalFilter.ACTIVE_ONLY -> entry.isActive
+                JournalFilter.COMPLETED_ONLY -> !entry.isActive
                 JournalFilter.ALL -> true
-                JournalFilter.ACTIVE_ONLY -> isOngoing
-                JournalFilter.COMPLETED_ONLY -> !isOngoing
             }
 
             matchesQuery && matchesFilter
@@ -118,18 +143,12 @@ class JournalViewModel @Inject constructor(
         initialValue = emptyList()
     )
 
-    // Active entries for live dashboard card
-    val activeEntries: StateFlow<List<ActiveEntryInfo>> = combine(
-        rawEntries,
-        _filter
-    ) { allEntries, _ ->
+    // Active entries for live dashboard card & countdowns
+    val activeEntries: StateFlow<List<ActiveEntryInfo>> = rawEntries.map { allEntries ->
         val now = System.currentTimeMillis()
-        allEntries.mapNotNull { entry ->
+        allEntries.filter { it.isActive }.mapNotNull { entry ->
             val sub = entry.substance ?: return@mapNotNull null
             val status = entry.timelineStatus ?: return@mapNotNull null
-            if (status.phase == TimelinePhase.BASELINE || status.phase == TimelinePhase.NOT_STARTED) {
-                return@mapNotNull null
-            }
             val countdown = timelineCalculator.calculateCountdown(sub, entry.ingestion.roa, entry.ingestion.timestamp, now)
             ActiveEntryInfo(
                 entry = entry,
@@ -226,6 +245,20 @@ class JournalViewModel @Inject constructor(
 
     fun setFilter(filter: JournalFilter) {
         _filter.value = filter
+    }
+
+    fun archiveSession(ingestion: Ingestion) {
+        viewModelScope.launch {
+            reminderScheduler.cancelReminder(ingestion.id)
+            scheduledReminderIds.remove(ingestion.id)
+            ingestionRepository.updateIngestion(ingestion.copy(experienceId = "ARCHIVED"))
+        }
+    }
+
+    fun restoreSession(ingestion: Ingestion) {
+        viewModelScope.launch {
+            ingestionRepository.updateIngestion(ingestion.copy(experienceId = null))
+        }
     }
 
     fun updateIngestion(ingestion: Ingestion) {
